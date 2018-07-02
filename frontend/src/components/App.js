@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import ItemList from './ItemList';
 import VenueList from './VenueList';
+import Rate from './Rate';
 import SearchBar from './SearchBar';
 
 class App extends Component {
@@ -12,7 +13,7 @@ class App extends Component {
         <Router>
           <div className="routes">
           <Route path="/" component={SearchBar} />
-          <Route path ="/venues" component={VenueList} />
+          <Route path ="/venues" component={Rate} />
           <Route path ="/venues/:id" component={ItemList} />
           </div>
         </Router>
