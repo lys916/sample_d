@@ -3,5 +3,5 @@ const {
  } = require('../controllers');
 
 module.exports = server => {
-   server.route('/signup').post(createUser);
+//    server.route('/signup').post(createUser);
 }
