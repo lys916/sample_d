@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import {
-    payReducer,
+    VenueReducer,
 } from './venue';
 
 const rootReducer = combineReducers({
-    pay: payReducer,
+    venues: VenueReducer,
 });
 
 export default rootReducer;
