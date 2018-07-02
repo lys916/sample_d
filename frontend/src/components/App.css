@@ -26,3 +26,14 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/*SEARCH BAR*/
+.search .location {
+  width: 70%;
+  height: 30px;
+}
+
+.search .search-location {
+    margin-bottom: -10px;
+}
+

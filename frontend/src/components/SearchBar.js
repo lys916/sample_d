@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getLocation } from '../googleAPI';
+import { getLocation } from '../actions/index';
 
 class SearchBar extends React.Component {
 	state = {
@@ -15,10 +15,11 @@ class SearchBar extends React.Component {
 
 	handleSearch = (event) => {
 		event.preventDefault();
-		// this.props.getLocation({lat: null, long: null, location: this.state.location});
-		// // this.setState({
-		// // 	location: ''
-		// // });
+		console.log('searching', this.state.location);
+		this.props.getLocation({lat: null, long: null, location: this.state.location});
+		this.setState({
+			location: ''
+		});
 	}
 
 	getCurrentLocation = () => {
@@ -34,15 +35,13 @@ class SearchBar extends React.Component {
 
 	render() {
 		return (
-			<div className="container">
-				<div className="search-bar">
-					<form onSubmit={(event) => { this.handleSearch(event) }}>
-						<input placeholder="Enter a location" value={this.state.location} name="location" onChange={this.handleOnChange} />
-						<input type="submit" />
-						<br />
-						<button onClick={()=>{this.getCurrentLocation()}}>Search current location</button>
-					</form>
-				</div>
+			<div className="search">
+				<form onSubmit={(event) => { this.handleSearch(event) }}>
+					<input className="location" placeholder="Enter a location" value={this.state.location} name="location" onChange={this.handleOnChange} />
+					<button className="search-location" onClick={(event)=>{this.handleSearch(event)}}><i className="material-icons">search</i></button>
+					<br /><br/>
+					<button className="current-location" onClick={()=>{this.getCurrentLocation()}}>Search current location</button>
+				</form>
 			</div>
 		);
 	}
@@ -53,4 +52,4 @@ const mapStateToProps = (state) => {
 	} 
 }
 
-export default connect(mapStateToProps, { })(SearchBar);
+export default connect(mapStateToProps, { getLocation })(SearchBar);
