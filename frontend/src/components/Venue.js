@@ -8,11 +8,11 @@ import Rate from './Rate';
 
 class Venue extends React.Component {
     state = {
-        venue: {},
+        venue: '',
         detail: {},
         items: []
     }
-    componentDidMount(){
+    componentDidMount() {
         const venueId = this.props.match.params.id;
         this.props.getMenu(venueId);
     }
@@ -23,11 +23,14 @@ class Venue extends React.Component {
         }
 
         let venue = {};
-        this.props.venues.forEach(v=>{
-            if(v.id === this.props.match.params.id){
-                venue = v;
+        let v = this.props.venues;
+        for (let i = 0; i < this.props.venues.length; i++) {
+            if(v[i].id === this.props.match.params.id){
+                venue = v[i];
+                break;
             }
-        });
+        }
+        
         console.log('VENUE DETAIL + MENU', venue);
 		return (
             <Grid>
@@ -44,16 +47,13 @@ class Venue extends React.Component {
                         <Rate from={'venue'} />
                     </Col>
                 </Row>
-
-                { 
-                    // venue.menus.count > 0 ? 
-                    // <div className="item-list">
-                    //     {this.props.items.map(item => {
-                    //         return <ItemModal item={item}/>
-                    //      })}
-                    // </div> : null 
-                }
-                
+                { venue.menus ? 
+                    <div className="item-list">
+                        {venue.menus.map(item => {
+                            return <ItemModal item={item}/>
+                        })}
+                    </div> 
+                : <div>No menu available...add what you ate!</div> }
             </Grid>
 		);
 	}
