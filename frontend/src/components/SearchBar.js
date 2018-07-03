@@ -34,6 +34,7 @@ class SearchBar extends React.Component {
 	}
 
 	render() {
+		console.log('search bar');
 		return (
 			<div className="search">
 				<form onSubmit={(event) => { this.handleSearch(event) }}>
