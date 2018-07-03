@@ -1,9 +1,10 @@
 import axios from 'axios';
 
-const clientId = 'A3DC2VHRCCKE5MNXRDEWLAC21JZZUQFF2M0VISNETEJ3V2N0';
-const clientSecret = 'FUQZWMM1VORVZZ4EPG52EBSIYOQYQBCKTPHM4ZF5TXXZQKLF';
+const clientId = 'NDNEYEROXSCL3EKPBHENE4B3ODNATMPCLVH51ECG5K4JQAEA';
+const clientSecret = 'YJZSFIZSBZ24GSVTIMSRCE31BR15XQP1DR1TIHIYGXXQS5TN';
 const searchURL = 'https://api.foursquare.com/v2/venues/search';
 const detailURL = 'https://api.foursquare.com/v2/venues';
+const ROOT_URL = 'http://localhost:5000'
 
 export const getLocation = (data)=>{
 	let qs = {
@@ -66,5 +67,17 @@ export const getMenu = (id)=>{
 					payload: menuItems
 				});
 			})
+	}
+}
+
+export const setRating = (name, venue, rating) => {
+	return (dispatch) => {
+		axios.post(`${ROOT_URL}`, { name, venue, rating })
+			.then(savedItem => {
+				dispatch({
+					type: 'SET_ITEM_RATING',
+					payload: savedItem
+				});
+			});
 	}
 }

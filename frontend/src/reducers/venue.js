@@ -16,14 +16,31 @@ const VenueReducer = (venues = [], action) => {
 			});
 			return copyVenues;
 
+		case 'SET_ITEM_RATING':
+			const averageRating = action.payload.rating.reduce((t, n) => t + n) / action.payload.rating.length;
+			const newVenue = [...venues];
+			for (let j = 0; j < newVenue.length; j++) {
+				if (newVenue[j].id === action.payload.venueId) {
+					for (let i = 0; i < newVenue[j].menu.length; i++) {
+						if (newVenue[j].menu[i].name === action.payload.name) {
+							newVenue[j].menu[i].push(averageRating);
+							break;
+						}
+					}
+					break;
+				}
+			}
+			console.log('newItem is', newVenue);
+			console.log('averageRating', averageRating);
+			return newVenue;
+			
 		default:
-		return venues;
+			return venues;
 	}
 };
 
 const ItemReducer = (items = [], action) => {
 	switch (action.type) {
-
 		case 'FETCHED_ITEMS':
 			return action.payload;
 

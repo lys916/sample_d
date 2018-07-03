@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Glyphicon, Button } from 'react-bootstrap';
 import styled, { css } from 'styled-components'
+import { setRating } from '../actions';
 
 const StyledGlyph = styled(Glyphicon)`
     color: white;
@@ -21,15 +22,21 @@ class Rate extends React.Component {
     state = {
         chosen: [0, 0, 0, 0, 0],
         rated: 0,
+        venueId: this.props.venueId,
+        itemName: this.props.itemName,
     }
 
     handleClick = e => {
         e.preventDefault();
+        const { rated, venueId, itemName } = this.state;
         const newChosen = this.state.chosen;
-        for (let i = 0; i < +e.target.id + 1; i++) {
+        const rating = +e.target.id + 1;
+        for (let i = 0; i < rating; i++) {
             newChosen[i] = 1;
         }
-        this.setState({ chosen: newChosen, rated : e.target.id });
+        this.setState({ chosen: newChosen, rated : rating }, () => {
+            this.props.setRating({ itemName, venueId, rated });
+        });
     }
 
 	render() {
@@ -49,7 +56,8 @@ class Rate extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+
 	} 
 }
 
-export default connect(mapStateToProps, {  })(Rate);
+export default connect(mapStateToProps, { setRating })(Rate);

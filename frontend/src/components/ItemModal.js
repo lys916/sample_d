@@ -22,7 +22,7 @@ class ItemModal extends Component {
             imageUrl: this.props.item.imageUrl,
             itemName: this.props.item[0],
             itemPrice: this.props.item[1],
-            itemId: '',
+            venueId: this.props.venue,
         };
     }
 
@@ -110,8 +110,8 @@ class ItemModal extends Component {
                             <Image src={this.state.imageUrl} />
                         </div>
                         <h2>{this.state.itemName}</h2>
-                        <Rating itemId={this.state.itemId} />
-                        <Rate />
+                        <Rating itemName={this.state.itemName} />
+                        <Rate itemName={this.state.itemName} venueId={this.state.venueId} />
                         <div className="characteristic-icons">
                             <div className="ot">
                                 <OverlayTrigger 
@@ -145,7 +145,6 @@ class ItemModal extends Component {
                                     <Glyphicon glyph="trash" />
                                 </OverlayTrigger>
                             </div>
-      
                         </div>
                     </Modal.Body>
                     <Modal.Footer>

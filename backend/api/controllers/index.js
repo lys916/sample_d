@@ -2,18 +2,19 @@ const Item = require('../models/itemModel');
 const mongoose = require('mongoose');
 
 createItem = (req, res)=>{
-	const {rating, id, name} = req.body;
-	Item.findOne({id}).then(item=>{
+	console.log('body in createItem controller', req.body);
+	const {rated, venueId, itemName} = req.body;
+	Item.findOne({ venueId }).then(item=>{
 		if(item){
-			res.rating.push(rating);
-			res.save().then(saved=>{
+			item.rating.push(rated);
+			item.save().then(saved=>{
 				res.json(saved);
 			});
 		}else{
 			const item = new Item();
-			item.venueId = id;
-			item.name = name;
-			item.rating.push(rating);
+			item.venueId = venueId;
+			item.name = itemName;
+			item.rating.push(rated);
 			item.save().then(saved=>{
 				res.json(saved);
 			});
