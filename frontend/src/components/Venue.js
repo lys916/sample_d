@@ -7,8 +7,8 @@ import Item from './Item';
 import Rate from './Rate';
 
 const detailURL = 'https://api.foursquare.com/v2/venues';
-const clientId = 'EI3GHFP5FIFERWKVR2SYXSTOO4BKYZV33CLRVCHSCCKZJ0DF';
-const clientSecret = 'MG3Z0KQILIDDRIOCIWFMUDVF4QWL5C5RTVZDYS0SON5ZLAHF';
+const clientId = 'F5RTJTTG122SE1BHB0GE1OP2PACQLGBNUFPFAKT4HB2CR0OX';
+const clientSecret = 'A0RLUDRE4GIA201TOUVE5KM0SYMTSPZD50XYOP1HNUX1DQV0';
 
 class Venue extends React.Component {
     state = {
@@ -53,7 +53,7 @@ class Venue extends React.Component {
                 </Row>
                 <div className="item-list">
                     {
-                        this.props.items.map(item=>{
+                        this.state.menus.map(item=>{
                             return <Item item={item}/>
                         })
                     }
