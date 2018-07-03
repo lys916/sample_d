@@ -33,8 +33,14 @@ class Venue extends React.Component {
             <Grid>
                 <Row>
                     <Col xs={12}>
-                        <Image src={venue.bestPhotoPrefix + 'height300' + venue.bestPhotoSuffix} responsive />
+                        <div className="venue-photo">
+                            <Image src={venue.bestPhotoPrefix + 'height300' + venue.bestPhotoSuffix} responsive />
+                        </div>
+                    </Col>
+                    <Col xs={12}>
                         <h2 className='venue-title'>{venue.name}</h2>
+                    </Col>
+                    <Col xs={12}>
                         <Rate from={'venue'} />
                     </Col>
                 </Row>
