@@ -22,7 +22,7 @@ class Venue extends React.Component {
                     <Col xs={12}>
                         <Image src={this.state.imageUrl} responsive />
                         <h2 className='venue-title'>{this.state.venueName}</h2>
-                        <Rate />
+                        <Rate from={'venue'} />
                     </Col>
                 </Row>
                 <div className="item-list">
