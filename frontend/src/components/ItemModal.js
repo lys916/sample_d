@@ -113,30 +113,39 @@ class ItemModal extends Component {
                         <Rating itemId={this.state.itemId} />
                         <Rate />
                         <div className="characteristic-icons">
-                            <OverlayTrigger 
-                                overlay={<Tooltip>Good value for the $$</Tooltip>}
-                                delayHide={150}
-                            >
-                                <Glyphicon glyph="usd" />
-                            </OverlayTrigger>
-                            <OverlayTrigger 
-                                overlay={<Tooltip>Spicy!</Tooltip>}
-                                delayHide={150}
-                            >
-                                <Glyphicon glyph="fire" />
-                            </OverlayTrigger>
-                            <OverlayTrigger 
-                                overlay={<Tooltip>Instagrammable</Tooltip>}
-                                delayHide={150}
-                            >
-                                <Glyphicon glyph="camera" />
-                            </OverlayTrigger>
-                            <OverlayTrigger 
-                                overlay={<Tooltip>Inedible!</Tooltip>}
-                                delayHide={150}
-                            >
-                                <Glyphicon glyph="trash" />
-                            </OverlayTrigger>
+                            <div className="ot">
+                                <OverlayTrigger 
+                                    overlay={<Tooltip>Good value for the $$</Tooltip>}
+                                    delayHide={150}
+                                >
+                                    <Glyphicon glyph="usd" />
+                                </OverlayTrigger>
+                            </div>
+                            <div className="ot">
+                                <OverlayTrigger 
+                                    overlay={<Tooltip>Spicy!</Tooltip>}
+                                    delayHide={150}
+                                >
+                                    <Glyphicon glyph="fire" />
+                                </OverlayTrigger>
+                            </div>
+                            <div className="ot">
+                                <OverlayTrigger 
+                                    overlay={<Tooltip>Instagrammable</Tooltip>}
+                                    delayHide={150}
+                                >
+                                    <Glyphicon glyph="camera" />
+                                </OverlayTrigger>
+                            </div>
+                            <div className="ot">
+                                <OverlayTrigger 
+                                    overlay={<Tooltip>Inedible!</Tooltip>}
+                                    delayHide={150}
+                                >
+                                    <Glyphicon glyph="trash" />
+                                </OverlayTrigger>
+                            </div>
+      
                         </div>
                     </Modal.Body>
                     <Modal.Footer>

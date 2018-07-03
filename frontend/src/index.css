@@ -34,6 +34,10 @@ body {
 
     .itemModal {
         width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+
     }
 
     .addJobModal {
@@ -53,15 +57,26 @@ body {
     }
 
     .top-image-modal {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
 
     }
 
     h2 {
-
+        align-self: center;
     }
 
     .characteristic-icons {
+        display: flex;
+        width: 150px;
+        flex-direction: row;
+        justify-content: center;
 
+    }
+
+    .ot {
+        margin: 5px 3px 0 0;
     }
 
 
@@ -121,6 +136,8 @@ body {
     .venue {
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-content: center;
     }
 
     .venue-photo {
