@@ -10,7 +10,7 @@ export const getLocation = (data)=>{
 		client_id: clientId, 
 		client_secret: clientSecret,
 		query: data.query,
-		limit: 5,
+		limit: 2,
 		v: '20180702',
 	};
 	if (data.location) qs.near = data.location;
