@@ -11,26 +11,28 @@ export const getLocation = (data)=>{
 		const qs = { 
 			client_id: clientId, 
 			client_secret: clientSecret,
-			near: data.location, 
+			near: data.location,
+			query: data.query,
 			v: '20180702',
 			venuePhotos: 1
 		}
 		return (dispatch) => {
 			console.log('request axio');
-	      axios.get(`${searchURL}`, {params: qs}).then(res => {
-	      	console.log(res.data.response.venues);
-	       	dispatch({
-	       		type: 'FETCHED_VENUES',
-	       		payload: res.data.response.venues
-	       	});
-      	});
+			axios.get(`${searchURL}`, {params: qs}).then(res => {
+				console.log(res.data.response.venues);
+				dispatch({
+					type: 'FETCHED_VENUES',
+					payload: res.data.response.venues
+				});
+			});
     	}
 	}else{
 		// serach venues by lat and long
 		const qs = { 
 			client_id: clientId, 
 			client_secret: clientSecret,
-			ll: `${data.lat},${data.long}`, 
+			ll: `${data.lat},${data.long}`,
+			query: data.query,
 			v: '20180702',
 			venuePhotos: 1
 		}
