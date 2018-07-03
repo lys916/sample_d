@@ -1,21 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Venue from './Venue';
 import VenueList from './VenueList';
 import SearchBar from './SearchBar';
-import Item from './Item';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 class Home extends React.Component {
 
 	render() {
-		console.log('home');
 		return (
 			<div className="container">
-			<Route path="/" component={SearchBar} />
-			<Route path="/venues" component={VenueList} exact />
-          <Route path="/venues/:id" component={Venue} />
-          <Route path="/venues/:id/:menuid" component={Item} />
+				<SearchBar />
+				{this.props.venues ? <VenueList /> : null }
 			</div>
 		);
 	}
@@ -23,6 +17,7 @@ class Home extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		venues: state.venues
 	} 
 }
 
