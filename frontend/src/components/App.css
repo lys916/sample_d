@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  font-family: 'Poppins', sans-serif;
+  min-width: 400px;
 }
 
 .App-logo {
@@ -26,3 +28,41 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/*SEARCH BAR*/
+.search .location {
+  width: 70%;
+  height: 30px;
+}
+
+.search .search-location {
+    margin-bottom: -10px;
+}
+
+/*VENUE LIST*/
+.item-list .link{
+  color: black;
+}
+
+.item-list .venue {
+  border-top: 1px solid #dedede;
+  text-align: left;
+}
+
+.item-list .venue .image {
+  display: inline-block;
+  float: left;
+}
+
+.venue .image img {
+  width: 75px;
+  height: 75px;
+  background: gray;
+  margin-top: 12px;
+}
+
+.item-list .venue .description {
+  display: inline-block;
+  margin-left: 7px;
+}
+
