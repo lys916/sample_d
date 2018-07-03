@@ -6,7 +6,7 @@ import {
     Col,
     Image,
   } from 'react-bootstrap';
-import ItemList from './ItemList';
+import Item from './Item';
 import Rate from './Rate';
 
 class Venue extends React.Component {
@@ -25,7 +25,13 @@ class Venue extends React.Component {
                         <Rate />
                     </Col>
                 </Row>
-                <ItemList />
+                <div className="item-list">
+                    {
+                        this.props.items.map(item=>{
+                            return <Item />
+                        })
+                    }
+                </div>
             </Grid>
 		);
 	}
@@ -33,6 +39,7 @@ class Venue extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+        items: state.items
 	} 
 }
 
