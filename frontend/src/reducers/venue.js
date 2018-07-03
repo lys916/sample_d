@@ -24,7 +24,7 @@ const VenueReducer = (venues = [], action) => {
 			newVenue.forEach(venue=>{
 				if(venue.id === action.payload.venueId){
 					if(venue.menue){
-venue.menu.forEach(menu=>{
+						venue.menu.forEach(menu=>{
 						if(menu.name === action.payload.name){
 							menu.push(averageRating);
 						}
