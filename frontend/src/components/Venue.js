@@ -4,47 +4,29 @@ import {
     Grid,
     Row,
     Col,
-    ToggleButtonGroup, 
-    DropdownButton,
-    Button, 
-    Modal, 
-    OverlayTrigger, 
-    Radio, 
-    MenuItem, 
-    Glyphicon, 
-    Tooltip, 
-    Checkbox, 
-    FormControl,
-    FormGroup,
-    ControlLabel,
+    Image,
   } from 'react-bootstrap';
 import ItemList from './ItemList';
 import Rate from './Rate';
 
 class Venue extends React.Component {
-    
+    state = {
+        imageUrl : 'https://s3-media3.fl.yelpcdn.com/bphoto/mNa8XQ7MtY0usvTV3v1sCA/o.jpg',
+        venueName : 'Aburi Sushi',
+    }
 
 	render() {
 		return (
             <Grid>
                 <Row>
                     <Col xs={12}>
-                        <Image src={} responsive />
-                        <h2 className='venue-title'>{}</h2>
-                        <Rate value={}/>
+                        <Image src={this.state.imageUrl} responsive />
+                        <h2 className='venue-title'>{this.state.venueName}</h2>
+                        <Rate />
                     </Col>
                 </Row>
                 <ItemList />
             </Grid>
-			<div className="container">
-				<div className="venue">
-                    <img />
-                    <h2 className='venue-title' />
-
-					<div className="item-list">
-					</div>
-				</div>
-			</div>
 		);
 	}
 }
