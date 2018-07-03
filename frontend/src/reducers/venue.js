@@ -1,7 +1,7 @@
 
 import { } from '../actions/index';
 
-const VenueReducer = (venues = init, action) => {
+const VenueReducer = (venues = [], action) => {
 	switch (action.type) {
 
 		case 'FETCHED_VENUES':
