@@ -27,7 +27,6 @@ class SearchBar extends React.Component {
 
 	handleSearch = (event) => {
 		event.preventDefault();
-		console.log('searching', this.state.location);
 		this.props.getLocation({lat: null, long: null, location: this.state.location, query: this.state.query });
 	}
 
@@ -43,7 +42,6 @@ class SearchBar extends React.Component {
 	}
 
 	render() {
-		console.log('search bar');
 		return (
 			<div className="search">
 				<form onSubmit={(event) => { this.handleSearch(event) }}>
