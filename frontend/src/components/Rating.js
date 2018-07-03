@@ -15,6 +15,22 @@ const StyledButton = styled(Button)`
             background: palevioletred;
         }
     `}
+    ${props => props.chosen === 0.5 && css`
+        background-image: 
+            linear-gradient(
+                to right,
+                lightgrey,
+                palevioletred 50%
+            );
+        :focus {
+            background-image: 
+            linear-gradient(
+                to right,
+                lightgrey,
+                palevioletred 50%
+            );
+        }
+    `}
 `
 
 class Rating extends React.Component {
@@ -24,12 +40,21 @@ class Rating extends React.Component {
     }
 
     componentDidMount() {
-        
+        let rating = this.state.rated;
+        const newChosen = this.state.chosen;
+        for (let i = 0; i < newChosen.length; i++) {
+            if (rating > 0.75) newChosen[i] = 1;
+            else if (rating > 0.25) newChosen[i] = 0.5;
+            else break;
+            rating -= 1;
+        }
+        this.setState({ chosen: newChosen });
     }
 
 	render() {
 		return (
 			<div className="rate-container">
+                {console.log('chosen is', this.state.chosen)}
                 {this.state.chosen.map((e, i) => {
                     return (
                         <StyledButton onClick={this.handleClick} key={i} id={i} chosen={e} bsSize='xsmall'>
