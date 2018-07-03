@@ -8,8 +8,12 @@ class Home extends React.Component {
 	render() {
 		return (
 			<div className="container">
-				<SearchBar />
-				{this.props.venues ? <VenueList /> : null }
+				<div className="container-search">
+					<SearchBar />
+				</div>
+				<div className="container-list">
+					{this.props.venues ? <VenueList /> : null }
+				</div>
 			</div>
 		);
 	}
