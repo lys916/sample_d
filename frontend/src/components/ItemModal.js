@@ -20,8 +20,8 @@ class ItemModal extends Component {
         this.state = {
             show: false,
             imageUrl: this.props.item.imageUrl,
-            itemName: this.props.item.name,
-            itemRating: this.props.item.rating,
+            itemName: this.props.item[0],
+            itemPrice: this.props.item[1],
             itemId: '',
         };
     }
@@ -80,8 +80,8 @@ class ItemModal extends Component {
         const tooltip = <Tooltip id="modal-tooltip">Rate this!</Tooltip>;
 
         return (
-            <div className="addJobModal">
-                <OverlayTrigger overlay={tooltip}>
+            <div className="itemModal">
+                <OverlayTrigger overlay={tooltip} onClick={() => this.setState({ show: true })}>
                     {this.state.imageUrl ? (
                         <div className="item-with-image">
                             <Image src={this.state.imageUrl} />
@@ -89,7 +89,7 @@ class ItemModal extends Component {
                                 <Panel>
                                     <Panel.Body>
                                         <h3>{this.state.itemName}</h3>
-                                        <h3>{this.state.itemRating}</h3>
+                                        <h3>{this.state.itemPrice}</h3>
                                     </Panel.Body>
                                 </Panel>
                             </div>
@@ -97,7 +97,7 @@ class ItemModal extends Component {
                     ) : (
                         <Panel>
                             <h3>{this.state.itemName}</h3>
-                            <h3>{this.state.itemRating}</h3>
+                            <h3>{this.state.itemPrice}</h3>
                         </Panel>
                     )}
                 </OverlayTrigger>
@@ -107,9 +107,9 @@ class ItemModal extends Component {
                 >
                     <Modal.Body>
                         <div className="top-image-modal">
-                            <Image src={this.state.venue.imageUrl} />
+                            <Image src={this.state.imageUrl} />
                         </div>
-                        <h2>{this.state.venue.itemName}</h2>
+                        <h2>{this.state.itemName}</h2>
                         <Rating itemId={this.state.itemId} />
                         <Rate />
                         <div className="characteristic-icons">
