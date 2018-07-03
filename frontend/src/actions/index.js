@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const searchURL = 'https://api.foursquare.com/v2/venues/search';
+const detailURL = 'https://api.foursquare.com/v2/venues';
 const clientId = 'EI3GHFP5FIFERWKVR2SYXSTOO4BKYZV33CLRVCHSCCKZJ0DF';
 const clientSecret = 'MG3Z0KQILIDDRIOCIWFMUDVF4QWL5C5RTVZDYS0SON5ZLAHF';
 
@@ -44,6 +45,17 @@ export const getLocation = (data)=>{
 	       	});
 	      });
     	}
-	}
-	
+	}	
+}
+
+export const getVenueDetail = (id)=>{
+	return (dispatch) => {
+	      axios.get(`${detailURL}`, {params: {VENUE_ID: id}}).then(res => {
+	      	console.log('RES DETAIL', res);
+	       	dispatch({
+	       		type: 'FETCHED_DETAIL',
+	       		payload: res
+	       	});
+	      });
+    	}
 }
