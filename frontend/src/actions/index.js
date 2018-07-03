@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const clientId = 'F5RTJTTG122SE1BHB0GE1OP2PACQLGBNUFPFAKT4HB2CR0OX';
-const clientSecret = 'A0RLUDRE4GIA201TOUVE5KM0SYMTSPZD50XYOP1HNUX1DQV0';
+const clientId = 'A3DC2VHRCCKE5MNXRDEWLAC21JZZUQFF2M0VISNETEJ3V2N0';
+const clientSecret = 'FUQZWMM1VORVZZ4EPG52EBSIYOQYQBCKTPHM4ZF5TXXZQKLF';
 const searchURL = 'https://api.foursquare.com/v2/venues/search';
 const detailURL = 'https://api.foursquare.com/v2/venues';
 
@@ -10,7 +10,7 @@ export const getLocation = (data)=>{
 		client_id: clientId, 
 		client_secret: clientSecret,
 		query: data.query,
-		limit: 3,
+		limit: 5,
 		v: '20180702',
 	};
 	if (data.location) qs.near = data.location;
@@ -46,16 +46,23 @@ export const getMenu = (id)=>{
                 client_secret: clientSecret,
                 v: '20180702'
             }
-
-return (dispatch) => {
+	return (dispatch) => {
 		axios.get(`${detailURL}/${id}/menu`, {params: qs})
 			.then(res => {
-						const menus = res.data.response.menu.menus;
-						menus.venueId = id;
-						dispatch({
-							type: 'FETCHED_MENU',
-							payload: menus
-						});
+				const menu = res.data.response.menu.menus.items;
+				const menuItems = [];
+				const traverseMenu = (items) => {
+					items.forEach(item => {
+						if (item.entries) traverseMenu(item.entries.items);
+						menuItems.push([item.name, item.price]);
+					})
+				}
+				traverseMenu(menu);
+				menuItems.venueId = id;
+				dispatch({
+					type: 'FETCHED_MENU',
+					payload: menuItems
+				});
 			})
 	}
 }
