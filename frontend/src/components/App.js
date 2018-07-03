@@ -5,6 +5,7 @@ import Venue from './Venue';
 import VenueList from './VenueList';
 import SearchBar from './SearchBar';
 import Home from './Home';
+// import Rate from './Rate';
 
 class App extends Component {
   render() {
@@ -14,7 +15,8 @@ class App extends Component {
           <div className="routes">
           <Route path="/" component={Home}  />
           <Route path="/venues" component={VenueList} />
-          <Route path="/venuse/:id" component={Venue} />
+          <Route path="/venues/:id" component={Venue} />
+          <Route path="/venues/:id/:menuid" component={Item} />
           </div>
         </Router>
       </div>
