@@ -15,13 +15,13 @@ class VenueList extends React.Component {
 							<Link className="link" key={venue.id} to={`/venues/${venue.id}`}>
 								<div className="venue" key={index}>
 									<div className="image">
-										<img />
+										<img src={venue.bestPhotoPrefix + 'width500' + venue.bestPhotoSuffix}/>
 									</div>
 									<div className="description">
 										<div className="name">{index + 1}. {venue.name}</div>
-										<div className="avg-rating">Avg:{venue.rating}</div>
-										<div className="distance">{venue.location.distance}</div>
-										<div className="address">{venue.location.address}, {venue.location.city}</div>
+										{venue.rating ? <div className="avg-rating">Rating: {venue.rating}</div> : null }
+										<div className="distance">{(venue.location.distance / 1609).toFixed(2)} miles away</div>
+										<div className="address">{venue.location.address ? `${venue.location.address},` : null } {venue.location.city}</div>
 									</div>
 								</div>
 							</Link>

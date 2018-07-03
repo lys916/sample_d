@@ -7,6 +7,16 @@ const VenueReducer = (venues = [], action) => {
 		case 'FETCHED_VENUES':
 			return action.payload;
 
+		case 'FETCHED_MENU':
+		console.log('REDUCE MENU', action.payload);
+			const copyVenues = [...venues];
+			copyVenues.forEach(venue=>{
+				if(venue.id === action.payload.venueId){
+						venue.menus = action.payload;
+				}
+			});
+			return copyVenues;
+
 		default:
 		return venues;
 	}
