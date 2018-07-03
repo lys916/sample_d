@@ -19,17 +19,9 @@ const StyledButton = styled(Button)`
         background-image: 
             linear-gradient(
                 to right,
-                lightgrey,
-                palevioletred 50%
+                palevioletred,
+                lightgrey 65%
             );
-        :focus {
-            background-image: 
-            linear-gradient(
-                to right,
-                lightgrey,
-                palevioletred 50%
-            );
-        }
     `}
 `
 
