@@ -32,23 +32,25 @@ class Venue extends React.Component {
         }
         
         console.log('VENUE DETAIL + MENU', venue);
-        return (
-            <Grid>
+
+		return (
+            <Grid fluid>
                 <Row>
-                    <Col xs={12}>
+                    <Col xs={12} mb={5}>
                         <Image src={venue.bestPhotoPrefix + 'height300' + venue.bestPhotoSuffix} responsive />
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={12}>
+                    <Col xs={12} mb={5}>
                         <h2 className='venue-title'>{venue.name}</h2>
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={12}>
+                    <Col xs={12} mb={5}>
                         <Rate from={'venue'} />
                     </Col>
                 </Row>
+                <br />
                 { venue.menus ? 
                     <div className="item-list">
                         {venue.menus.map(item => {
