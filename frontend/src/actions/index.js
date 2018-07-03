@@ -6,36 +6,37 @@ const searchURL = 'https://api.foursquare.com/v2/venues/search';
 const detailURL = 'https://api.foursquare.com/v2/venues';
 
 export const getLocation = (data)=>{
-	console.log('loca', data);
 	let qs = {
 		client_id: clientId, 
 		client_secret: clientSecret,
 		query: data.query,
-		limit: 5,
+		limit: 1,
 		v: '20180702',
 	};
 	if (data.location) qs.near = data.location;
 	else qs.ll = `${data.lat},${data.long}`;
 	return (dispatch) => {
-		console.log('request axio');
-		axios.get(`${searchURL}`, {params: qs}).then(res => {
-			const { venues } = res.data.response;
-			venues.forEach(venue => {
-				axios.get(`${detailURL}/${venue.id}`, { params: qs })
+		axios.get(`${searchURL}`, {params: qs})
+			.then(res => {
+				const { venues } = res.data.response;
+				const Promises = [];
+				venues.forEach(venue => {
+					Promises.push(axios.get(`${detailURL}/${venue.id}`, { params: qs }));
+				});
+				Promise.all(Promises)
 					.then(res => {
-						venue.bestPhotoPrefix = res.data.response.venue.bestPhoto.prefix;
-						venue.bestPhotoSuffix = res.data.response.venue.bestPhoto.suffix;
-						venue.rating = res.data.response.venue.rating;
-						venue.numOfRatings = res.data.response.venue.ratingSignals;
-						console.log('venue details result is', res.data.response.venue)
+						for (let i = 0; i < venues.length; i++) {
+							venues[i].bestPhotoPrefix = res[i].data.response.venue.bestPhoto.prefix;
+							venues[i].bestPhotoSuffix = res[i].data.response.venue.bestPhoto.suffix;
+							venues[i].rating = res[i].data.response.venue.rating;
+							venues[i].numOfRatings = res[i].data.response.venue.ratingSignals;
+						}
+						dispatch({
+							type: 'FETCHED_VENUES',
+							payload: venues
+						});
 					})
 			})
-			console.log(res.data.response.venues);
-			dispatch({
-				type: 'FETCHED_VENUES',
-				payload: venues
-			});
-		});
 	}
 }
 
