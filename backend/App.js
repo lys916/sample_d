@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const port = process.env.PORT || 5000;
 const user = process.env.MLAB_USERNAME || "delp";
 const pass = process.env.MLAB_PASSWORD || "delp123";
-
 mongoose.Promise = global.Promise;
 
 mongoose

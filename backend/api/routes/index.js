@@ -1,7 +1,7 @@
 const { 
-    createUser,
+    createItem,
  } = require('../controllers');
 
 module.exports = server => {
-//    server.route('/signup').post(createUser);
+		server.route('/').post(createItem);
 }
