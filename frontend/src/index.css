@@ -32,6 +32,10 @@ body {
 
     /* ItemModal */
 
+    .itemModal {
+        width: 80%;
+    }
+
     .addJobModal {
 
     }
@@ -125,7 +129,14 @@ body {
 
     .venue-title {
         align-self: center;
-        /* font-size: 25px; */
+    }
+
+    .venue-rating {
+        margin: 10px 0;
+    }
+
+    .item-list {
+        font-size: 14px;
     }
 
 
