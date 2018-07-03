@@ -10,7 +10,7 @@ export const getLocation = (data)=>{
 		client_id: clientId, 
 		client_secret: clientSecret,
 		query: data.query,
-		limit: 1,
+		limit: 3,
 		v: '20180702',
 	};
 	if (data.location) qs.near = data.location;
@@ -39,20 +39,3 @@ export const getLocation = (data)=>{
 			})
 	}
 }
-
-// export const getVenueDetail = (id)=>{
-// 	const qs = { 
-//             client_id: clientId, 
-//             client_secret: clientSecret,
-//             v: '20180702'
-//         }
-// 	return (dispatch) => {
-// 	      axios.get(`${detailURL}/${id}`, {params: qs}).then(res => {
-// 	      	console.log('RES DETAIL', res);
-// 	       	dispatch({
-// 	       		type: 'FETCHED_DETAIL',
-// 	       		payload: res.data.response.venue
-// 	       	});
-// 	      });
-//     	}
-// }

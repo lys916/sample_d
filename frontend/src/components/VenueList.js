@@ -12,7 +12,7 @@ class VenueList extends React.Component {
 				{
 					this.props.venues.map((venue, index) => {
 						return (
-							<Link className="link" key={venue.id} to={`/venues/${venue.id}`}>
+							<Link className="link" key={venue.id} to={`/venues/${index}`}>
 								<div className="venue" key={index}>
 									<div className="image">
 										<img src={venue.bestPhotoPrefix + 'width500' + venue.bestPhotoSuffix}/>
