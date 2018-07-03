@@ -51,14 +51,16 @@ export const getMenu = (id)=>{
 			.then(res => {
 				const menu = res.data.response.menu.menus.items;
 				const menuItems = [];
-				const traverseMenu = (items) => {
-					items.forEach(item => {
-						if (item.entries) traverseMenu(item.entries.items);
-						menuItems.push([item.name, item.price]);
-					})
+				if (menu) {
+					const traverseMenu = (items) => {
+						items.forEach(item => {
+							if (item.entries) traverseMenu(item.entries.items);
+							menuItems.push([item.name, item.price]);
+						})
+					}
+					traverseMenu(menu);
+					menuItems.venueId = id;
 				}
-				traverseMenu(menu);
-				menuItems.venueId = id;
 				dispatch({
 					type: 'FETCHED_MENU',
 					payload: menuItems

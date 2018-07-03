@@ -3,3 +3,164 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+@media screen and (max-width: 400px) {
+    /* App */
+
+    .App {
+        margin: 100px 10px;
+    }
+
+
+    /* Home */
+
+    .container {
+        margin: 100px 0 0 0;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+    }
+
+    .container-search {
+        margin: 0 0 30px 0;
+    }
+
+
+    /* Item */
+
+
+
+    /* ItemModal */
+
+    .addJobModal {
+
+    }
+
+    .item-with-image {
+
+    }
+
+    .item-right {
+
+    }
+
+    .item-right h3 {
+
+    }
+
+    .top-image-modal {
+
+    }
+
+    h2 {
+
+    }
+
+    .characteristic-icons {
+
+    }
+
+
+    /* Rate */
+
+    .rate-container {
+
+    }
+
+
+    /* Rating */
+    /* same as rate */
+
+
+    /* SearchBar */
+
+    .search {
+        margin: 0 0 0 0;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+    }
+
+    .search-bar {
+        margin: 10px 0 0 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .query {
+        font-size: 30px;
+        text-align: center;
+        margin: 0 0 0 0;
+        color: #000;
+    }
+
+    .location {
+        border: #999 solid;
+        border-width: 1px;
+        border-radius: 3px;
+        padding: 0 0 0 5px;
+    }
+
+    .current-location {
+        align-self: center;
+        margin: 20px 0 0 0;
+        padding: 5px 0;
+        background-color: #000;
+        width: 200px;
+        color: #fff;
+    }
+
+
+    /* Venue */
+
+    .venue {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .venue-photo {
+        align-self: center;
+    }
+
+    .venue-title {
+        align-self: center;
+        /* font-size: 25px; */
+    }
+
+
+    /* VenueList */
+
+    .item-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .venue {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-content: center;
+    }
+
+    .image {
+        display: flex;
+        width: 20%;
+        align-content: center;
+        justify-content: center;
+        align-self: center;
+        padding: 0 0 0 5px;
+    }
+
+    .description {
+        padding: 0 5px;
+        font-size: 14px;
+    }
+
+    .description .name {
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+}
+

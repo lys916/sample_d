@@ -23,13 +23,8 @@ class Rating extends React.Component {
         rated: 3.43,
     }
 
-    handleClick = e => {
-        e.preventDefault();
-        const newChosen = this.state.chosen;
-        for (let i = 0; i < +e.target.id + 1; i++) {
-            newChosen[i] = 1;
-        }
-        this.setState({ chosen: newChosen, rated : e.target.id });
+    componentDidMount() {
+        
     }
 
 	render() {
