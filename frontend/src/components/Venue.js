@@ -1,19 +1,44 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import { Grid, Row, Col, Image } from 'react-bootstrap';
-import { getVenueDetail } from '../actions/index';
+// import { getVenueDetail } from '../actions/index';
 import Item from './Item';
 import Rate from './Rate';
 
+const detailURL = 'https://api.foursquare.com/v2/venues';
+const clientId = 'EI3GHFP5FIFERWKVR2SYXSTOO4BKYZV33CLRVCHSCCKZJ0DF';
+const clientSecret = 'MG3Z0KQILIDDRIOCIWFMUDVF4QWL5C5RTVZDYS0SON5ZLAHF';
+
 class Venue extends React.Component {
     state = {
-        imageUrl : 'https://s3-media3.fl.yelpcdn.com/bphoto/mNa8XQ7MtY0usvTV3v1sCA/o.jpg',
-        venueName : 'Aburi Sushi',
+        detail: {},
+        menus: []
     }
     componentDidMount(){
         const venueId = this.props.match.params.id;
-        this.props.getVenueDetail(venueId);
-        console.log('ID', venueId);
+        // this.props.getVenueDetail(venueId);
+
+        const qs = { 
+            client_id: clientId, 
+            client_secret: clientSecret,
+            v: '20180702'
+        }
+
+        axios.get(`${detailURL}/${venueId}`, {params: qs}).then(res => {
+         console.log('RES DETAIL', res);
+         this.setState({
+            detail: res.data.venue
+         });
+         axios.get(`${detailURL}/${venueId}/menu`, {params: qs}).then(res => {
+         console.log('RES MENU', res);
+         this.setState({
+            menus: res.data.response.menu.menus
+         });
+
+        });
+
+       });
     }
 
 	render() {
@@ -44,4 +69,4 @@ const mapStateToProps = (state) => {
 	} 
 }
 
-export default connect(mapStateToProps, { getVenueDetail })(Venue);
+export default connect(mapStateToProps, { })(Venue);

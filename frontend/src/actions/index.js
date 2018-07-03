@@ -39,19 +39,19 @@ export const getLocation = (data)=>{
 	}
 }
 
-export const getVenueDetail = (id)=>{
-	const qs = { 
-            client_id: clientId, 
-            client_secret: clientSecret,
-            v: '20180702'
-        }
-	return (dispatch) => {
-	      axios.get(`${detailURL}/${id}`, {params: qs}).then(res => {
-	      	console.log('RES DETAIL', res);
-	       	dispatch({
-	       		type: 'FETCHED_DETAIL',
-	       		payload: res
-	       	});
-	      });
-    	}
-}
+// export const getVenueDetail = (id)=>{
+// 	const qs = { 
+//             client_id: clientId, 
+//             client_secret: clientSecret,
+//             v: '20180702'
+//         }
+// 	return (dispatch) => {
+// 	      axios.get(`${detailURL}/${id}`, {params: qs}).then(res => {
+// 	      	console.log('RES DETAIL', res);
+// 	       	dispatch({
+// 	       		type: 'FETCHED_DETAIL',
+// 	       		payload: res.data.response.venue
+// 	       	});
+// 	      });
+//     	}
+// }
