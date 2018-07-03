@@ -4,6 +4,7 @@ import { } from '../actions/index';
 const init = [{
 	name: 'Cabalen Filipino Cuisine',
 	rating: 4,
+	id: 'dummy-id',
 	location: {
 		address: '1122 Western St',
 		city: 'Fairfield',
@@ -13,6 +14,7 @@ const init = [{
 {
 	name: "Mini Burgers",
 	rating: 4.5,
+	id: 'dummy-id',
 	location: {
 		address: '1122 N Texas St',
 		city: 'Fairfield',
@@ -31,4 +33,16 @@ const VenueReducer = (venues = init, action) => {
 	}
 };
 
-export { VenueReducer }
+const ItemReducer = (items = [], action) => {
+	switch (action.type) {
+
+		case 'FETCHED_ITEMS':
+			return action.payload;
+
+		default:
+		return items;
+	}
+};
+
+
+export { VenueReducer, ItemReducer}

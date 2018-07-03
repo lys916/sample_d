@@ -13,7 +13,7 @@ class Home extends React.Component {
 		return (
 			<div className="container">
 			<Route path="/" component={SearchBar} />
-			<Route path="/venues" component={VenueList} />
+			<Route path="/venues" component={VenueList} exact />
           <Route path="/venues/:id" component={Venue} />
           <Route path="/venues/:id/:menuid" component={Item} />
 			</div>

@@ -28,7 +28,7 @@ class Venue extends React.Component {
                 <div className="item-list">
                     {
                         this.props.items.map(item=>{
-                            return <Item />
+                            return <Item item={item}/>
                         })
                     }
                 </div>

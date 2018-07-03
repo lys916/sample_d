@@ -47,18 +47,20 @@
 .item-list .venue {
   border-top: 1px solid #dedede;
   text-align: left;
+  font-size: 15px;
+  padding:3px 0px;
 }
 
 .item-list .venue .image {
   display: inline-block;
   float: left;
+  margin-top: 4px;
 }
 
 .venue .image img {
   width: 75px;
   height: 75px;
   background: gray;
-  margin-top: 12px;
 }
 
 .item-list .venue .description {
