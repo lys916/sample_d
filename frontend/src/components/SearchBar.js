@@ -38,10 +38,10 @@ class SearchBar extends React.Component {
 			<div className="search">
 				<form onSubmit={(event) => { this.handleSearch(event) }}>
 					<input className="location" placeholder="Enter a location" value={this.state.location} name="location" onChange={this.handleOnChange} />
-					<button className="search-location" onClick={(event)=>{this.handleSearch(event)}}><i className="material-icons">search</i></button>
+					<button className="search-location" type="submit"><i className="material-icons">search</i></button>
 					<br /><br/>
-					<button className="current-location" onClick={()=>{this.getCurrentLocation()}}>Search current location</button>
 				</form>
+				<button className="current-location" onClick={()=>{this.getCurrentLocation()}}>Search current location</button>
 			</div>
 		);
 	}

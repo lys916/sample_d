@@ -1,28 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { venues } from '../dummy-data';
+import { Link } from 'react-router-dom';
 
 class VenueList extends React.Component {
 
 	render() {
 		return (
-			<div className="container">
-				<div className="venue">
-					<div className="item-list">
-						{
-							venues.map((venue, index) => {
-								return (
-									<div className="item" key={index}>
-										<div className="name">{venue.name}</div>
-										<div className="image">{venue.image}</div>
-										<div className="description">{venue.description}</div>
-										<div className="price">{venue.rating}</div> 
+			<div className="item-list">
+				{
+					this.props.venues.map((venue, index) => {
+						return (
+							<Link className="link" key={venue.id} to={`/venues/${venue.id}`}>
+								<div className="venue" key={index}>
+									<div className="image">
+										<img />
 									</div>
-								)
-							})
-						}
-					</div>
-				</div>
+									<div className="description">
+										<div className="name">{index + 1}. {venue.name}</div>
+										<div className="avg-rating">Avg:{venue.rating}</div>
+										<div className="distance">{venue.location.distance}</div>
+										<div className="address">{venue.location.address}, {venue.location.city}</div>
+									</div>
+								</div>
+							</Link>
+						)
+					})
+				}
 			</div>
 		);
 	}
@@ -30,6 +34,7 @@ class VenueList extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		venues: state.venues
 	} 
 }
 
