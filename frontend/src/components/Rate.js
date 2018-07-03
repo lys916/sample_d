@@ -28,13 +28,14 @@ class Rate extends React.Component {
 
     handleClick = e => {
         e.preventDefault();
-        const { rated, venueId, itemName } = this.state;
+        const { venueId, itemName } = this.state;
         const newChosen = this.state.chosen;
         const rating = +e.target.id + 1;
         for (let i = 0; i < rating; i++) {
             newChosen[i] = 1;
         }
         this.setState({ chosen: newChosen, rated : rating }, () => {
+            const rated = this.state.rated;
             this.props.setRating({ itemName, venueId, rated });
         });
     }

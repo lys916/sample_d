@@ -17,6 +17,7 @@ const VenueReducer = (venues = [], action) => {
 			return copyVenues;
 
 		case 'SET_ITEM_RATING':
+				console.log('rating from action', action.payload);
 			const averageRating = action.payload.rating.reduce((t, n) => t + n) / action.payload.rating.length;
 			const newVenue = [...venues];
 			for (let j = 0; j < newVenue.length; j++) {

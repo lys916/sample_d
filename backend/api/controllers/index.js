@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 createItem = (req, res)=>{
 	console.log('body in createItem controller', req.body);
-	const {rated, venueId, itemName} = req.body;
+	const {rated, venueId, itemName} = req.body.name;
 	Item.findOne({ venueId }).then(item=>{
 		if(item){
 			item.rating.push(rated);

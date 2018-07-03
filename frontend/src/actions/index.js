@@ -11,7 +11,7 @@ export const getLocation = (data)=>{
 		client_id: clientId, 
 		client_secret: clientSecret,
 		query: data.query,
-		limit: 2,
+		limit: 5,
 		v: '20180702',
 	};
 	if (data.location) qs.near = data.location;
@@ -76,7 +76,7 @@ export const setRating = (name, venue, rating) => {
 			.then(savedItem => {
 				dispatch({
 					type: 'SET_ITEM_RATING',
-					payload: savedItem
+					payload: savedItem.data
 				});
 			});
 	}
