@@ -46,7 +46,6 @@ class Rating extends React.Component {
 	render() {
 		return (
 			<div className="rate-container">
-                {console.log('chosen is', this.state.chosen)}
                 {this.state.chosen.map((e, i) => {
                     return (
                         <StyledButton onClick={this.handleClick} key={i} id={i} chosen={e} bsSize='xsmall'>

@@ -19,7 +19,7 @@ class VenueList extends React.Component {
 									<div className="description">
 										<div className="name">{index + 1}. {venue.name}</div>
 										{venue.rating ? <div className="avg-rating">Rating: {venue.rating}</div> : null }
-										<div className="distance">{(venue.location.distance / 1609).toFixed(2)} miles away</div>
+										{venue.location.distance ? <div className="distance">{(venue.location.distance / 1609).toFixed(2)} miles away</div> : null }
 										<div className="address">{venue.location.address ? `${venue.location.address},` : null } {venue.location.city}</div>
 									</div>
 								</div>
