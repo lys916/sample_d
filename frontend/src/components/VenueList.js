@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 class VenueList extends React.Component {
 
 	render() {
+		console.log(this.props.venues);
 		return (
 			<div className="item-list">
 				{
