@@ -10,7 +10,8 @@ class SearchBar extends React.Component {
 		long: ''
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
+		console.log('componentMounts in SearchBar, executing getLocation()');
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((position)=>{
 				const { latitude, longitude } = position.coords;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import axios from 'axios';
 import shortid from 'shortid';
 import {
@@ -6,7 +7,6 @@ import {
     Modal,
     OverlayTrigger,
     Image,
-    Panel,
     Glyphicon,
     Tooltip,
 } from 'react-bootstrap';
@@ -19,11 +19,13 @@ class ItemModal extends Component {
 
         this.state = {
             show: false,
-            imageUrl: this.props.item.imageUrl,
-            itemName: this.props.item[0],
-            itemPrice: this.props.item[1],
+            index: this.props.index,
+            imageUrl: '',
+            itemName: this.props.item.itemName,
+            itemPrice: this.props.item.itemPrice,
+            itemId: this.props.item.itemId,
             venueId: this.props.venue,
-            rating: 4
+            rating: this.props.item.rating,
         };
     }
 
@@ -79,7 +81,6 @@ class ItemModal extends Component {
 
     render() {
         const tooltip = <Tooltip id="modal-tooltip">Rate this!</Tooltip>;
-
         return (
             <div className="itemModal">
                 <OverlayTrigger overlay={tooltip} onClick={() => this.setState({ show: true })}>
@@ -88,8 +89,9 @@ class ItemModal extends Component {
                             {this.state.imageURL ? <Image src={this.state.imageUrl} /> : <div>Add Image!</div>}
                         </div>
                         <div className="item-description">
-                            <div className="item-name">{this.props.index + 1}. {this.state.itemName}</div>
-                            <div className="item-rating">Rating: {this.state.rating}</div>
+                            <div className="item-name">{this.state.index + 1}. {this.state.itemName}</div>
+                            {console.log('rating in state in ItemModal is', this.state.rating)}
+                            {this.state.rating ? <div className="item-rating">Rating: {this.state.rating}</div> : null}
                             <div className="item-price">${this.state.itemPrice}</div>
                             <div className="item-tags"></div>
                         </div>
@@ -105,7 +107,7 @@ class ItemModal extends Component {
                         </div>
                         <h2>{this.state.itemName}</h2>
                         <Rating itemName={this.state.itemName} />
-                        <Rate itemName={this.state.itemName} venueId={this.state.venueId} />
+                        <Rate itemId={this.state.itemId} venueId={this.state.venueId} />
                         <div className="characteristic-icons">
                             <div className="ot">
                                 <OverlayTrigger 
@@ -150,4 +152,10 @@ class ItemModal extends Component {
     }
 }
 
-export default ItemModal;
+const mapStateToProps = (state) => {
+    return {
+        venues: state.venues,
+    } 
+}
+
+export default connect(mapStateToProps, {  })(ItemModal);

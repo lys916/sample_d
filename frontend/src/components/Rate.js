@@ -23,12 +23,12 @@ class Rate extends React.Component {
         chosen: [0, 0, 0, 0, 0],
         rated: 0,
         venueId: this.props.venueId,
-        itemName: this.props.itemName,
+        itemId: this.props.itemId,
     }
 
     handleClick = e => {
-        e.preventDefault();
-        const { venueId, itemName } = this.state;
+        e.stopPropagation();
+        const { venueId, itemId } = this.state;
         const newChosen = this.state.chosen;
         const rating = +e.target.id + 1;
         for (let i = 0; i < rating; i++) {
@@ -36,7 +36,7 @@ class Rate extends React.Component {
         }
         this.setState({ chosen: newChosen, rated : rating }, () => {
             const rated = this.state.rated;
-            this.props.setRating({ itemName, venueId, rated });
+            this.props.setRating({ itemId, venueId, rated });
         });
     }
 
@@ -45,8 +45,8 @@ class Rate extends React.Component {
 			<div className="rate-container">
                 {this.state.chosen.map((e, i) => {
                     return (
-                        <StyledButton onClick={this.handleClick} key={i} id={i} chosen={e} bsSize='xsmall'>
-                            <StyledGlyph onClick={this.handleClick} id={i} glyph='star' />
+                        <StyledButton key={i} id={i} onClick={this.handleClick} chosen={e} bsSize='xsmall'>
+                            <StyledGlyph id={i} onClick={this.handleClick} glyph='star' />
                         </StyledButton>
                     )
                 })}

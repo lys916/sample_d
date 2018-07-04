@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const clientId = 'NDNEYEROXSCL3EKPBHENE4B3ODNATMPCLVH51ECG5K4JQAEA';
-const clientSecret = 'YJZSFIZSBZ24GSVTIMSRCE31BR15XQP1DR1TIHIYGXXQS5TN';
+const clientId = 'EI3GHFP5FIFERWKVR2SYXSTOO4BKYZV33CLRVCHSCCKZJ0DF';
+const clientSecret = 'MG3Z0KQILIDDRIOCIWFMUDVF4QWL5C5RTVZDYS0SON5ZLAHF';
 const searchURL = 'https://api.foursquare.com/v2/venues/search';
 const detailURL = 'https://api.foursquare.com/v2/venues';
 const ROOT_URL = 'http://localhost:5000'
@@ -58,32 +58,54 @@ export const getMenu = (id)=>{
                 v: '20180702'
             }
 	return (dispatch) => {
+		const menuItems = [];
 		axios.get(`${detailURL}/${id}/menu`, {params: qs})
 			.then(res => {
 				const menu = res.data.response.menu.menus.items;
-				const menuItems = [];
 				if (menu) {
 					const traverseMenu = (items) => {
 						items.forEach(item => {
 							if (item.entries) traverseMenu(item.entries.items);
-							menuItems.push([item.name, item.price]);
+							else menuItems.push({
+								itemName: item.name, 
+								itemPrice: item.price,
+								itemId: item.entryId,
+							});
 						})
 					}
 					traverseMenu(menu);
 					menuItems.venueId = id;
 				}
-				dispatch({
-					type: 'FETCHED_MENU',
-					payload: menuItems
-				});
 			})
+			.then(() => {
+				axios.get(`${ROOT_URL}/venues`, { headers: { venueId: id }})
+					.then(res => {
+						console.log('res in getMenu is', res);
+						const ratings = res.data;
+						menuItems.forEach(item => {
+							for (let i = 0; i < ratings.length; i++) {
+								if (item.itemId === ratings[i].itemId) {
+									item.rating = ratings[i].rating.reduce((t,n) => t+n) / ratings[i].rating.length;
+									ratings.splice(i, 1);
+								}
+							}
+						});
+					})
+					.then(() => {
+						dispatch({
+							type: 'FETCHED_MENU',
+							payload: menuItems
+						});
+					});
+			});
 	}
 }
 
-export const setRating = (name, venue, rating) => {
+export const setRating = (itemId, venueId, rated) => {
 	return (dispatch) => {
-		axios.post(`${ROOT_URL}`, { name, venue, rating })
+		axios.post(`${ROOT_URL}`, { itemId, venueId, rated })
 			.then(savedItem => {
+				console.log('savedItem in setRating action', savedItem);
 				dispatch({
 					type: 'SET_ITEM_RATING',
 					payload: savedItem.data

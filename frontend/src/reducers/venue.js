@@ -21,29 +21,31 @@ const VenueReducer = (venues = [], action) => {
 
 			const averageRating = action.payload.rating.reduce((t, n) => t + n) / action.payload.rating.length;
 			const newVenue = [...venues];
-			newVenue.forEach(venue=>{
-				if(venue.id === action.payload.venueId){
-					if(venue.menue){
-						venue.menu.forEach(menu=>{
-						if(menu.name === action.payload.name){
-							menu.push(averageRating);
-						}
-					});
-					}
-					
-				}
-			});
-			// for (let j = 0; j < newVenue.length; j++) {
-			// 	if (newVenue[j].id === action.payload.venueId) {
-			// 		for (let i = 0; i < newVenue[j].menu.length; i++) {
-			// 			if (newVenue[j].menu[i].name === action.payload.name) {
-			// 				newVenue[j].menu[i].push(averageRating);
-			// 				break;
+			// newVenue.forEach(venue=>{
+			// 	if(venue.id === action.payload.venueId){
+			// 		if(venue.menus){
+			// 			venue.menu.forEach(menu=>{
+			// 			if(menu.name === action.payload.name){
+			// 				menu.push(averageRating);
 			// 			}
+			// 		});
 			// 		}
-			// 		break;
+					
 			// 	}
-			// }
+			// });
+			for (let i = 0; i < newVenue.length; i++) {
+				if (newVenue[i].id === action.payload.venueId) {
+					if (newVenue[i].menus) {
+						for (let j = 0; j < newVenue[i].menus.length; j++) {
+							if (newVenue[i].menus[j].itemId === action.payload.itemId) {
+								newVenue[i].menus[j].rating = averageRating;
+								break;
+							}
+						}
+					} else console.log('found venue does not have a menu');
+					break;
+				}
+			}
 			console.log('newItem is', newVenue);
 			console.log('averageRating', averageRating);
 			return newVenue;

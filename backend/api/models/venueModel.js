@@ -7,10 +7,4 @@ const VenueSchema = Schema({
     items: [{type: mongoose.Schema.Types.Mixed}]
 });
 
-const ItemSchema = Schema({
-    name: {type: String, required: true},
-    rating: [{type: Number}],
-    id: {type: String}
-});
-
-module.exports = mongoose.model('Item', ItemSchema);
+module.exports = mongoose.model('Item', VenueSchema);

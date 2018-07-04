@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ItemSchema = Schema({
-    name: {type: String, required: true},
+    itemId: {type: String, required: true},
     rating: [{type: Number}],
-    venueId: {type: String}
+    venueId: {type: String, required: true}
 });
 
 module.exports = mongoose.model('Item', ItemSchema);
