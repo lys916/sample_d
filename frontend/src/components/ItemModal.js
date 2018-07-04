@@ -88,7 +88,7 @@ class ItemModal extends Component {
                             {this.state.imageURL ? <Image src={this.state.imageUrl} /> : <div>Add Image!</div>}
                         </div>
                         <div className="item-description">
-                            <div className="item-name">{this.state.itemName}</div>
+                            <div className="item-name">{this.props.index + 1}. {this.state.itemName}</div>
                             <div className="item-rating">{this.state.rating}</div>
                             <div className="item-price">{this.state.itemPrice}</div>
                             <div className="item-tags"></div>

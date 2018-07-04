@@ -53,8 +53,8 @@ class Venue extends React.Component {
                 <br />
                 { venue.menus ? 
                     <div className="item-list">
-                        {venue.menus.map(item => {
-                            return <ItemModal venue={venue.id} item={item}/>
+                        {venue.menus.map((item, i) => {
+                            return <ItemModal venue={venue.id} item={item} index={i}/>
                         })}
                     </div> 
                 : <div>No menu available...add what you ate!</div> }

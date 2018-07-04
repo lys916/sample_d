@@ -20,10 +20,12 @@
 }
 
 .item-list .venue {
-  border-top: 1px solid #dedede;
   text-align: left;
-  font-size: 15px;
-  padding:8px 0px;
+  border-top: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
+  margin: 8px 2px;
+  height: 85px;
+  box-shadow: 0 1px 1px 0 rgba(43, 43, 43, 0.151), 0 3px 1px -2px rgba(34, 34, 34, 0.082), 0 1px 5px 0 rgba(31, 31, 31, 0.13);
 }
 
 .item-list .venue .image {
@@ -36,6 +38,8 @@
   width: 55px;
   height: 55px;
   background: gray;
+  border: 1px solid #dedede;
+  margin: 2px;
 }
 
 .item-list .venue .description {
@@ -68,6 +72,6 @@
 .item-description {
   display: inline-block;
   margin: 5px;
-  font-size: 17px;
+  font-size: 16px;
 }
 
