@@ -89,8 +89,8 @@ class ItemModal extends Component {
                         </div>
                         <div className="item-description">
                             <div className="item-name">{this.props.index + 1}. {this.state.itemName}</div>
-                            <div className="item-rating">{this.state.rating}</div>
-                            <div className="item-price">{this.state.itemPrice}</div>
+                            <div className="item-rating">Rating: {this.state.rating}</div>
+                            <div className="item-price">${this.state.itemPrice}</div>
                             <div className="item-tags"></div>
                         </div>
                     </div>
