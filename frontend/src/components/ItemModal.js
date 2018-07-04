@@ -23,6 +23,7 @@ class ItemModal extends Component {
             itemName: this.props.item[0],
             itemPrice: this.props.item[1],
             venueId: this.props.venue,
+            rating: 4
         };
     }
 
@@ -82,24 +83,17 @@ class ItemModal extends Component {
         return (
             <div className="itemModal">
                 <OverlayTrigger overlay={tooltip} onClick={() => this.setState({ show: true })}>
-                    {this.state.imageUrl ? (
-                        <div className="item-with-image">
-                            <Image src={this.state.imageUrl} />
-                            <div className="item-right">
-                                <Panel>
-                                    <Panel.Body>
-                                        <h3>{this.state.itemName}</h3>
-                                        <h3>{this.state.itemPrice}</h3>
-                                    </Panel.Body>
-                                </Panel>
-                            </div>
+                    <div className="item-box">
+                        <div className="item-image">
+                            {this.state.imageURL ? <Image src={this.state.imageUrl} /> : <div>'Add Image!'</div>}
                         </div>
-                    ) : (
-                        <Panel>
-                            <h3>{this.state.itemName}</h3>
-                            <h3>{this.state.itemPrice}</h3>
-                        </Panel>
-                    )}
+                        <div className="item-description">
+                            <div className="item-name">{this.state.itemName}</div>
+                            <div className="item-rating">{this.state.rating}</div>
+                            <div className="item-price">{this.state.itemPrice}</div>
+                            <div className="item-tags"></div>
+                        </div>
+                    </div>
                 </OverlayTrigger>
                 <Modal
                     show={this.state.show}
