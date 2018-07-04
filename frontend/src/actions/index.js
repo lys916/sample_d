@@ -11,7 +11,7 @@ export const getLocation = (data)=>{
 		client_id: clientId, 
 		client_secret: clientSecret,
 		query: data.query,
-		limit: 5,
+		limit: 10,
 		v: '20180702',
 	};
 	if (data.location) qs.near = data.location;
@@ -26,12 +26,22 @@ export const getLocation = (data)=>{
 				});
 				Promise.all(Promises)
 					.then(res => {
+						console.log('RES PROMISES', res);
+						// res.forEach((detail, index)=>{
+						// 	venues[index] = detail.data.response.venue
+						// });
 						for (let i = 0; i < venues.length; i++) {
-							venues[i].bestPhotoPrefix = res[i].data.response.venue.bestPhoto.prefix;
-							venues[i].bestPhotoSuffix = res[i].data.response.venue.bestPhoto.suffix;
+							if(res[i].data.response.venue.bestPhoto){
+								venues[i].bestPhotoPrefix = res[i].data.response.venue.bestPhoto.prefix;
+								venues[i].bestPhotoSuffix = res[i].data.response.venue.bestPhoto.suffix;
+							}else{
+								venues[i].bestPhotoPrefix = 'no-img';
+								venues[i].bestPhotoSuffix = 'no-img';
+							}
 							venues[i].rating = res[i].data.response.venue.rating;
 							venues[i].numOfRatings = res[i].data.response.venue.ratingSignals;
 						}
+						console.log('VENUE AFTER', venues);
 						dispatch({
 							type: 'FETCHED_VENUES',
 							payload: venues
