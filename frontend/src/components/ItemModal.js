@@ -85,7 +85,7 @@ class ItemModal extends Component {
                 <OverlayTrigger overlay={tooltip} onClick={() => this.setState({ show: true })}>
                     <div className="item-box">
                         <div className="item-image">
-                            {this.state.imageURL ? <Image src={this.state.imageUrl} /> : <div>'Add Image!'</div>}
+                            {this.state.imageURL ? <Image src={this.state.imageUrl} /> : <div>Add Image!</div>}
                         </div>
                         <div className="item-description">
                             <div className="item-name">{this.state.itemName}</div>
