@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import VenueList from './VenueList';
+import VenueList from '../unused components/VenueList';
 import SearchBar from './SearchBar';
 
 class Home extends React.Component {
@@ -11,9 +11,7 @@ class Home extends React.Component {
 				<div className="container-search">
 					<SearchBar />
 				</div>
-				<div className="container-list">
-					{this.props.venues ? <VenueList /> : null }
-				</div>
+				<SearchResults />
 			</div>
 		);
 	}
