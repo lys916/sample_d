@@ -12,6 +12,7 @@ class Camera extends React.Component {
 	render() {
 		return (
 			<div className="camera-container">
+				camera
 			</div>
 		);
 	}

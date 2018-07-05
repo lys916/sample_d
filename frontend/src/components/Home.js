@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import VenueList from '../unused components/VenueList';
 import SearchBar from './SearchBar';
+import SearchResults from './SearchResults';
 
 class Home extends React.Component {
 

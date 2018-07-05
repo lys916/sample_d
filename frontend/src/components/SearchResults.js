@@ -4,6 +4,7 @@ import { Grid, Row, Col, Image } from 'react-bootstrap';
 import {  } from '../actions/index';
 import ItemModal from './ItemModal';
 import Rate from './Rate';
+// import Filter from './Filter';
 
 class SearchResults extends React.Component {
     state = {
@@ -12,22 +13,24 @@ class SearchResults extends React.Component {
         items: []
     }
     componentDidMount() {
-        const venueId = this.props.match.params.id;
-        this.props.getMenu(venueId);
+        // const venueId = this.props.match.params.id;
+        // this.props.getMenu(venueId);
     }
 
     render() {
         
 		return (
-            <Filters />
+            <div>
+            {/* <Filters /> */}
             <br />
-            { venue.menus ? 
+            {/* venue.menus ? 
                 <div className="item-list">
                     {venue.menus.map((item, i) => {
                         return <ItemModal venue={venue.id} item={item} index={i}/>
                     })}
                 </div> 
-            : <div>No menu available...add what you ate!</div> }
+            : <div>No menu available...add what you ate!</div> */}
+            </div>
         );
     }
 }
