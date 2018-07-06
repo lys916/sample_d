@@ -52,6 +52,10 @@ class ItemInput extends React.Component {
 					onError={this.handleScriptError}
 					onLoad={this.handleScriptLoad}
 				/>
+				<div className="staged-image"><img src={this.props.location.state.blobURL}/></div>
+				<div>ADD RATING</div>
+				<div>ADD REVIEW</div>
+				<button>Submit</button>
 			</div>
 		);
 	}

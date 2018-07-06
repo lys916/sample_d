@@ -1,7 +1,13 @@
+
+#root {
+  position: relative;
+}
 .App {
   text-align: center;
   font-family: 'Poppins', sans-serif;
   min-width: 400px;
+/*  position: absolute;
+  top: -100px;*/
 }
 
 /*SEARCH BAR*/
@@ -75,3 +81,20 @@
   font-size: 16px;
 }
 
+
+/*CAMERA COMPONENT*/
+.take-a-photo {
+  display: inline-block;
+  float: left;
+}
+.skip-photo {
+  display: inline-block;
+}
+
+/*INPUT ITEM*/
+.staged-image {
+  background: #333333;
+}
+.staged-image img{
+  width: 50%;
+}
