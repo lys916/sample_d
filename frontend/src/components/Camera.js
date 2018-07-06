@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom';
 
 class CameraComp extends React.Component {
     state = {
-    showCam: true,
-		blob: null,
-		blobURL: null,
-		image: null
+        showCam: true,
+        blob: null,
+        blobURL: null,
+        image: null
     }
 
     componentDidMount() {
@@ -20,16 +20,16 @@ class CameraComp extends React.Component {
 	}
 
 	takePicture = ()=> {
-    this.camera.capture()
-    .then(blob => {
-    	// console.log('BLOB', blob);
-     //  this.img.src = URL.createObjectURL(blob);
-      const blobURL = URL.createObjectURL(blob);
-     //  console.log('this.IMAG', this.img.src);
-      //this.img.onload = () => { URL.revokeObjectURL(this.src); }
-      this.setState({showCam: false, blob, blobURL});
-    })
-  }
+        this.camera.capture()
+            .then(blob => {
+                // console.log('BLOB', blob);
+                //  this.img.src = URL.createObjectURL(blob);
+                const blobURL = URL.createObjectURL(blob);
+                //  console.log('this.IMAG', this.img.src);
+                //this.img.onload = () => { URL.revokeObjectURL(this.src); }
+                this.setState({showCam: false, blob, blobURL});
+            })
+    }
 
 
 	render() {
@@ -41,29 +41,27 @@ class CameraComp extends React.Component {
 				</div>
 				<div className="camera-content">
 					{ this.state.showCam ? 
-            <div>
-						<Camera style={style.preview} ref={(cam) => {
-	            		this.camera = cam;
-	          		}}>
-	          		<div style={style.captureContainer} onClick={this.takePicture}>
-	            		<div style={style.captureButton} />
-	            	</div>
-                
-	        			</Camera>
-                <button>Select photo from gallery</button>
-                </div> : <div>
-                  <img style={style.captureImage} src={this.state.blobURL}/>
-                  <div>
-                    <button onClick={()=>{this.setState({showCam: true})}}>Re-take</button>
-                    <Link to={{ pathname: `/addItem`, state: {blob: this.state.blob, blobURL: this.state.blobURL}}}>
-                    <button>Next</button>
-                    </Link>
-                  </div>
-                </div>
+                        <div>
+                            <Camera style={style.preview} ref={(cam) => {
+                                this.camera = cam;
+                            }}>
+                                <div style={style.captureContainer} onClick={this.takePicture}>
+                                    <div style={style.captureButton} />
+                                </div>
+                            </Camera>
+                            <button>Select photo from gallery</button>
+                        </div> : 
+                        <div>
+                            <img style={style.captureImage} src={this.state.blobURL}/>
+                            <div>
+                                <button onClick={()=>{this.setState({showCam: true})}}>Re-take</button>
+                                <Link to={{ pathname: `/addItem`, state: {blob: this.state.blob, blobURL: this.state.blobURL}}}>
+                                    <button>Next</button>
+                                </Link>
+                            </div>
+                        </div>
 	        		}
-
-        			
-      		</div>
+      		    </div>
 			</div>
 		);
 	}
