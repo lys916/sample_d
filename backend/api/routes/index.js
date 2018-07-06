@@ -4,6 +4,6 @@ const {
  } = require('../controllers');
 
 module.exports = server => {
-    server.route('/').post(createItem);
-    server.route('/').get(findItems);
+    server.route('/createItem').post(createItem);
+    server.route('/items').get(findItems);
 }

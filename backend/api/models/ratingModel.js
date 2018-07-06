@@ -2,13 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const ItemRatingSchema = Schema({
-    item_id: ObjectId,
-    user_id: ObjectId,
-    photo: {
-        urls: String,
-        winPercent: Number,
-    },
+const RatingSchema = Schema({
+    user_id: {type: ObjectId, ref: 'Item'},
+    // photo: {type: ObjectId, ref: 'Item'},
     review: {
         type: String,
         maxLength: 50,
@@ -20,4 +16,4 @@ const ItemRatingSchema = Schema({
     celebrateVote: Boolean,
 });
 
-module.exports = mongoose.model('ItemRating', ItemRatingSchema);
+module.exports = mongoose.model('Rating', RatingSchema);
