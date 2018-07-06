@@ -1,25 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getLocation } from '../actions/index';
+import { getItems } from '../actions';
 
 class SearchBar extends React.Component {
 	state = {
+		service: null,
+		map: null,
 		query: '',
 		location: '',
 		lat: '',
-		long: ''
+		lng: ''
 	}
 
 	componentDidMount() {
-		console.log('componentMounts in SearchBar, executing getLocation()');
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((position)=>{
+				console.log('reaches inside componentDidMount, SearchBar', position);
 				const { latitude, longitude } = position.coords;
-				this.props.getLocation({ lat: latitude, long: longitude, query: 'Restaurant' });
-		 	});
-		} else {
-			console.log("Geolocation is not supported by this browser")
-		}
+				this.props.getItems(latitude, longitude);
+			});
+		} else console.log("Geolocation is not supported by this browser");
 	}
 
 	handleOnChange = (event) => {
@@ -35,11 +35,9 @@ class SearchBar extends React.Component {
 		if (navigator.geolocation) {
       		navigator.geolocation.getCurrentPosition((position)=>{
 				const { latitude, longitude } = position.coords;
-				this.props.getLocation({ lat: latitude, long: longitude, query: this.state.query });
+				this.setState({ lat: latitude, lng: longitude });
         	});
-    	} else {
-       		console.log("Geolocation is not supported by this browser")
-    	}
+    	} else console.log("Geolocation is not supported by this browser");
 	}
 
 	render() {
@@ -64,4 +62,4 @@ const mapStateToProps = (state) => {
 	} 
 }
 
-export default connect(mapStateToProps, { getLocation })(SearchBar);
+export default connect(mapStateToProps, { getItems })(SearchBar);

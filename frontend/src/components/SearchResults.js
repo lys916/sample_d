@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Grid, Row, Col, Image } from 'react-bootstrap';
 import {  } from '../actions/index';
 import ItemModal from './ItemModal';
-import Rate from './Rate';
-// import Filter from './Filter';
+import Filters from './Filters';
 
 class SearchResults extends React.Component {
     state = {
@@ -21,7 +19,7 @@ class SearchResults extends React.Component {
         
 		return (
             <div>
-            {/* <Filters /> */}
+            <Filters />
             <br />
             {/* venue.menus ? 
                 <div className="item-list">

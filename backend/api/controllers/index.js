@@ -23,9 +23,10 @@ createItem = (req, res)=>{
 	});
 }
 
-findRatings = (req, res) => {
-	const venueId = req.get('venueId');
-	Item.find({ venueId })
+findItems = (req, res) => {
+	console.log('req.params are', req.params);
+	const { lat, lng } = req.params;
+	Item.find({ $near: [ lng, lat ] })
 		.then(items => {
 			res.json(items);
 		})
@@ -33,5 +34,5 @@ findRatings = (req, res) => {
 
 module.exports = {
 	createItem,
-	findRatings,
+	findItems,
 }
