@@ -2,15 +2,44 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Glyphicon, Button } from 'react-bootstrap';
 import Camera from 'react-camera';
+// import Camera from 'react-dom-camera';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import shortid from 'short-id';
+
+const ROOT_URL = 'http://localhost:5000';
 
 class CameraComp extends React.Component {
     state = {
         showCam: true,
         blob: null,
         blobURL: null,
-        image: null
+        image: null,
+        selectedFile: '',
+        photoTitle: '',
+        photoUrl: '',
+        userdoc: 'photo',
     }
+
+    handlePhotoUpload = () => {
+        const { currentitemid } = this.state;
+        // const config = {
+        //     headers: {
+        //         currentitemid
+        //     },
+        // };
+        // const data = new FormData();
+        // data.append('file', this.state.selectedFile);
+        // data.append('name', this.state.selectedFile.name);
+        // this.props.uploadPhoto(data, config);
+        // console.log('data and config are', data, config);
+        axios.post(`${ROOT_URL}/photo`)
+          .then(url => {
+            this.setState({ photoUrl : url });
+            console.log('photo upload successful for', this.state.photoUrl);
+          })
+          .catch(err => console.log(err));
+    };
 
     componentDidMount() {
     }
@@ -22,12 +51,15 @@ class CameraComp extends React.Component {
 	takePicture = ()=> {
         this.camera.capture()
             .then(blob => {
-                // console.log('BLOB', blob);
                 //  this.img.src = URL.createObjectURL(blob);
+                let blobToFile = blob;
+                blobToFile.lastModifiedDate = new Date();
+                blobToFile.name = shortid.generate();
                 const blobURL = URL.createObjectURL(blob);
+                console.log('BLOB & blobURL', blob, blobURL);
                 //  console.log('this.IMAG', this.img.src);
                 //this.img.onload = () => { URL.revokeObjectURL(this.src); }
-                this.setState({showCam: false, blob, blobURL});
+                this.setState({showCam: false, selectedFile: blobToFile, blob, blobURL});
             })
     }
 
@@ -42,6 +74,7 @@ class CameraComp extends React.Component {
 				<div className="camera-content">
 					{ this.state.showCam ? 
                         <div>
+                            {/* <Camera onTakePhoto={this.handleImage} /> */}
                             <Camera style={style.preview} ref={(cam) => {
                                 this.camera = cam;
                             }}>
@@ -55,8 +88,8 @@ class CameraComp extends React.Component {
                             <img style={style.captureImage} src={this.state.blobURL}/>
                             <div>
                                 <button onClick={()=>{this.setState({showCam: true})}}>Re-take</button>
+                                <button onClick={this.handlePhotoUpload}>Next</button>
                                 <Link to={{ pathname: `/addItem`, state: {blob: this.state.blob, blobURL: this.state.blobURL}}}>
-                                    <button>Next</button>
                                 </Link>
                             </div>
                         </div>

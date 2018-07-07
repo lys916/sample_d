@@ -1,5 +1,6 @@
 const Item = require('../models/itemModel');
 const mongoose = require('mongoose');
+const { uploadPhoto } = require('./files');
 
 createItem = (req, res)=>{
 	console.log('body in createItem controller', req.body);
@@ -19,7 +20,6 @@ createItem = (req, res)=>{
 				res.json(saved);
 			});
 		}
-		
 	});
 }
 
@@ -35,4 +35,5 @@ findItems = (req, res) => {
 module.exports = {
 	createItem,
 	findItems,
+	uploadPhoto,
 }
