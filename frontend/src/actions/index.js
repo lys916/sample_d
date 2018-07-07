@@ -31,6 +31,18 @@ export const setRating = (itemId, venueId, rated) => {
 	}
 }
 
+export const addItem = (itemData) => {
+	return (dispatch) => {
+		axios.post(`${ROOT_URL}/createItem`, itemData)
+			.then(savedItem => {
+				dispatch({
+					type: 'SAVED_ITEM',
+					payload: savedItem.data
+				});
+			});
+	}
+}
+
 // export const getLocation = (data)=>{
 // 	let qs = {
 // 		client_id: clientId, 

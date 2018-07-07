@@ -6,7 +6,8 @@ const pass = process.env.MLAB_PASSWORD || "delp123";
 mongoose.Promise = global.Promise;
 
 mongoose
-  .connect(`mongodb://${user}:${pass}@ds123971.mlab.com:23971/delp`)
+  .connect('mongodb://localhost:27017/Dishes')
+  // .connect(`mongodb://${user}:${pass}@ds123971.mlab.com:23971/delp`)
   .then(result => {
     console.log('Mongo Connected');
   })
