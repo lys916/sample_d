@@ -1,54 +1,59 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Glyphicon, Button } from 'react-bootstrap';
+import { Glyphicon, Button, FormGroup, FormControl } from 'react-bootstrap';
 import Script from 'react-load-script';
 import GOOGLE_API_KEY from './config';
 import { addItem } from '../actions';
+import ReactStars from 'react-stars';
 
 class ItemInput extends React.Component {
     state = {
 		lat: '',
 		long: '',
-		location: {},
+		locations: null,
+		location: null,
 		name: '',
 		tags: [],
 		rating: '',
 		review: '',
 		price: '',
-		imageURL: ''
+		imageURL: '',
+		atCurrentRestaurant: false,
+		selectedRestaurant: null,
+		stageDelete: false
     }
-
     componentDidMount() {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((position)=>{
 				const { latitude, longitude } = position.coords;
-				this.setState({ lat: latitude, long: longitude });
+				this.setState({ lat: latitude, long: longitude }, ()=>{
+				});
 		  });
 	  } else console.log("Geolocation is not supported by this browser");
-	  this.handleAddItem();
+	  console.log(this.recordPrice("Thiasdfasfasfasdfut"));
 	}
 	
 	handleAddItem = () => {
-				// const theWindow = new Window();
 		const { lat, long } = this.state;
-		const currentLocation = new google.maps.LatLng(lat, long);
-		const map = new google.maps.Map(document.createElement('div'));
-		console.log('SDFLKSJDF', currentLocation, map);
+		console.log('latlong', lat, long);
+		const currentLocation = new window.google.maps.LatLng(lat, long);
+		const map = new window.google.maps.Map(document.createElement('div'));
 		const request = {
 			location: currentLocation,
-			type: ['restaurant'],
-			query: 'restaurant'
+			rankby: 'distance',
+			type: 'restaurant'
 		}
 
-		// const service = new window.google.maps.places.PlacesService(map);
-		// service.textSearch(request, (results, status) => {
-		// console.log('result is', results);
-		// 	if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-		// 		for (let i = 0; i < results.length; i++) {
-		// 			let place = results[i];
-		// 		}
-		// 	}  
-		// });
+		const service = new window.google.maps.places.PlacesService(map);
+		service.textSearch(request, (results, status) => {
+		console.log('result is', results);
+			if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+				this.setState({locations: results});
+				// for (let i = 0; i < results.length; i++) {
+				// 	let place = results[i];
+				// }
+			}  
+		});
 	}
 
 	handleScriptCreate = () => this.setState({ scriptLoaded: false });
@@ -59,6 +64,9 @@ class ItemInput extends React.Component {
 		this.setState({ [event.target.name]: event.target.value });
 	}
 
+	ratingChanged = (rating)=>{
+		this.setState({rating});
+	}
 	handleSubmit = (event) => {
 		// NOTE: save image to amazon here...
 		// once image is saved.. set imageURL to state
@@ -66,20 +74,92 @@ class ItemInput extends React.Component {
 		this.props.addItem(this.state);
 	}
 
+	toggleCurrentLocation = ()=>{
+		this.setState({atCurrentRestaurant: !this.state.atCurrentRestaurant}, ()=>{
+			if(this.state.atCurrentRestaurant){
+				this.handleAddItem();
+			}
+		});
+	}
+
+	handleSelectRestaurant =(rest)=>{
+		this.setState({selectedRestaurant: rest});
+	}
+
+	recordPrice = (input)=>{
+	 if(input === "This is my input"){
+	 	return true;
+	 }else{
+	 	return false;
+	 }
+	}
+
+	handleRemoveRestaurant = ()=>{
+		this.setState({selectedRestaurant: null, stageDelete: false});
+	}
+
+	toggleStageDelete = ()=>{
+		this.setState({stageDelete: !this.state.stageDelete});
+	}
+
 	render() {
+		const restaurantList = [];
+		if(this.state.locations){
+			for(let i = 0; i < 5; i++){
+				restaurantList.push(this.state.locations[i]);
+			}
+		}
 		return (
 			<div className="item-input-container">
-				<Script
+				{/*<Script
 					url={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`}
 					onCreate={this.handleScriptCreate}
 					onError={this.handleScriptError}
 					onLoad={this.handleScriptLoad}
-				/>
-				<div className="staged-image"><img src={this.props.location.state.blobURL}/></div>
+				/>*/}
+				<div className="staged-image">
+					<img src={this.props.location.state.blobURL}/>
+				</div>
+				{!this.state.selectedRestaurant ?
+					<div>
+						<div onClick={()=>{this.toggleCurrentLocation()}}>I'm currently not at this restaurant</div>
+
+				<div onClick={()=>{this.toggleCurrentLocation()}}>I'm currently at this restaurant</div>
+
+				{this.state.atCurrentRestaurant ? 
+					<div>
+						{
+							restaurantList.map(rest => {
+								return (
+									<div key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
+										<div className="rest-name">{rest.name}</div>
+										<div className="rest-address">{rest.formatted_address}</div>
+									</div>
+								);
+							})
+						}
+						<div>Restaurant not on the list? "Click I'm not at this restaurant and enter the restaurant name"
+						</div>
+					</div> 
+					: <div>show form for enter restaurant</div>}
+					</div> : 
+					<div className="selected-rest-wrapper">
+						<div className="selected-rest" onClick={()=>{this.toggleStageDelete()}}>
+							<div className="rest-name">{this.state.selectedRestaurant.name}</div>
+							<div className="rest-address">{this.state.selectedRestaurant.formatted_address}</div>
+						</div>
+						{this.state.stageDelete ? <div className="delete-selected-rest" onClick={()=>{this.handleRemoveRestaurant()}}>Remove</div> : null}
+					</div>
+				}
+				
 				<form onSubmit={(event) => { this.handleSubmit(event) }}>
-				<input onChange={this.handleOnChange} name="rating" value={this.state.rating} type="text" placeholder="Enter rating" /><br/>
-				<textarea onChange={this.handleOnChange} name="review" value={this.state.review} type="textarea" placeholder="Enter your review" />
+				<ReactStars  count={5} onChange={this.ratingChanged} size={35} color2={'#ffd700'} value={Number(this.state.rating)}/>
 				<br/>
+				<FormGroup controlId="formControlsTextarea">
+     				 <FormControl componentClass="textarea" placeholder="Enter your review" onChange={this.handleOnChange} name="review" value={this.state.review} />
+    			</FormGroup>
+    		
+    			<br/>
 				<button type="submit">Submit</button>
 				</form>
 			</div>
