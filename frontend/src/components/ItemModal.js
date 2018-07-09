@@ -27,31 +27,6 @@ class ItemModal extends Component {
         };
     }
 
-    handleFileUpload = e => {
-        this.setState({ [e.target.name]: e.target.files[0] });
-    };
-
-    handleFileSubmit = jobdocument => {
-        const fileName =
-            jobdocument === 'offerUrl' ? 'offerFile' : 'rejectionFile';
-        const { currentJobId } = this.state;
-        const config = {
-            headers: {
-                currentJobId,
-                jobdocument,
-            },
-        };
-        const data = new FormData();
-        data.append('file', this.state[fileName]);
-        data.append('name', this.state[fileName].name);
-        // axios.post(`${ROOT_URL}/jobfiles`, data, config)
-        //   .then(url => {
-        //     this.setState({ [jobdocument] : url });
-        //     console.log('job file upload successful for', jobdocument);
-        //   })
-        //   .catch(err => console.log(err));
-    };
-
     handleAddJob = e => {
         e.preventDefault();
         const token = localStorage.getItem('token');

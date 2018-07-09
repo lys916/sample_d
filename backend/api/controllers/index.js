@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { uploadPhoto } = require('./files');
 const Rating = require('../models/ratingModel');
 const Item = require('../models/itemModel');
 
@@ -40,4 +41,5 @@ findItems = (req, res) => {
 module.exports = {
 	createItem,
 	findItems,
+	uploadPhoto,
 }
