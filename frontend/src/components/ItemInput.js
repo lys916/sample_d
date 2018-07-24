@@ -5,6 +5,8 @@ import Script from 'react-load-script';
 import GOOGLE_API_KEY from './config';
 import { addItem } from '../actions';
 import ReactStars from 'react-stars';
+import axios from 'axios';
+const ROOT_URL = 'http://localhost:5000';
 
 class ItemInput extends React.Component {
     state = {
@@ -18,11 +20,18 @@ class ItemInput extends React.Component {
 		review: '',
 		price: '',
 		imageURL: '',
+		imageBlob: null,
 		atCurrentRestaurant: false,
 		selectedRestaurant: null,
 		stageDelete: false
     }
     componentDidMount() {
+    	// blobURL and blob iamge coming from Camera.js
+    	this.setState({
+    		imageURL: this.props.location.state.blobURL,
+    		imageBlob: this.props.location.state.blob
+    	});
+    	// get user's current location in lat and lng
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((position)=>{
 				const { latitude, longitude } = position.coords;
@@ -30,7 +39,7 @@ class ItemInput extends React.Component {
 				});
 		  });
 	  } else console.log("Geolocation is not supported by this browser");
-	  console.log(this.recordPrice("Thiasdfasfasfasdfut"));
+	  // console.log(this.recordPrice("Thiasdfasfasfasdfut"));
 	}
 	
 	handleAddItem = () => {
@@ -67,15 +76,28 @@ class ItemInput extends React.Component {
 	ratingChanged = (rating)=>{
 		this.setState({rating});
 	}
+
+	// 'handleSubmit' will send everything in the state over to the server 
+	// using 'addItem' in action
 	handleSubmit = (event) => {
-		// NOTE: save image to amazon here...
-		// once image is saved.. set imageURL to state
+
+		const {lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob} = this.state;
+
 		event.preventDefault();
-		this.props.addItem(this.state);
+		this.props.addItem({lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob});
+
+		this.setState({rating: '', name: '', review: ''});
 	}
 
+	// 'toggleCurrentLocation' will set true of false to 'atCurrentRestaurant' depending 
+	// if user is at the current restaurant or not. 
+	// if the user is not at the current restaurant, user will have to enter 
+	// the restaurant info manually. 
+	// if the user is at the current restaurant, a list of restaurants will show up.. 
+	// letting the user to select the correct restaurant.
 	toggleCurrentLocation = ()=>{
 		this.setState({atCurrentRestaurant: !this.state.atCurrentRestaurant}, ()=>{
+			console.log('at current restaurant', this.state.atCurrentRestaurant);
 			if(this.state.atCurrentRestaurant){
 				this.handleAddItem();
 			}
@@ -145,9 +167,14 @@ class ItemInput extends React.Component {
 					</div> : 
 					<div className="selected-rest-wrapper">
 						<div className="selected-rest" onClick={()=>{this.toggleStageDelete()}}>
-							<div className="rest-name">{this.state.selectedRestaurant.name}</div>
-							<div className="rest-address">{this.state.selectedRestaurant.formatted_address}</div>
+							<div className="rest-name">
+								{this.state.selectedRestaurant.name}
+								</div>
+							<div className="rest-address">
+								{this.state.selectedRestaurant.formatted_address}
+							</div>
 						</div>
+						<input onChange={this.handleOnChange} name="name" value={this.state.name} placeholder="enter food name"/>
 						{this.state.stageDelete ? <div className="delete-selected-rest" onClick={()=>{this.handleRemoveRestaurant()}}>Remove</div> : null}
 					</div>
 				}

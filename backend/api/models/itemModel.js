@@ -4,24 +4,19 @@ const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const ItemSchema = Schema({
-    place_id: { type: String, required: true },
     restaurantName: { type: String, required: true },
-    itemName: { type: String, required: true },
+    lat: Number,
+    long: Number,
+    name: { type: String, required: true },
     price: Number,
     category: [{ type: String }],
     cuisine: [{ type: String }],
-    totalRatings: { type: Number, required: true },
-    numRatings: { type: Number, required: true },
     totalValueRatings: Number,
     numValueRatings: Number,
     spicyVotes: Number,
     instaVotes: Number,
     celebrateVotes: Number,
-    photos: [{
-        urls: String,
-        winPercent: Number,
-        user_id: ObjectId,
-    }],
+    photos: [{type: mongoose.Schema.Types.Mixed}],
     ratings: [{type: ObjectId, ref: 'Rating'}],
     // reviews: [{
     //     text: {

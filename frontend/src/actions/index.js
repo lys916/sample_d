@@ -32,14 +32,16 @@ export const setRating = (itemId, venueId, rated) => {
 }
 
 export const addItem = (itemData) => {
+	// sending dish/item data to server 'createItem' route
 	return (dispatch) => {
 		axios.post(`${ROOT_URL}/createItem`, itemData)
-			.then(savedItem => {
-				dispatch({
-					type: 'SAVED_ITEM',
-					payload: savedItem.data
-				});
+		.then(savedItem => {
+			dispatch({
+				type: 'SAVED_ITEM',
+				payload: savedItem.data
 			});
+			alert('Thank you for leaving a review!');
+		});
 	}
 }
 

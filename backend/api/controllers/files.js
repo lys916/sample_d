@@ -11,13 +11,13 @@ const bucket = process.env.S3_BUCKET_NAME;
 AWS.config.update({ region });
 
 const uploadPhoto = (req, res) => {
-  console.log('COMES INTO UPLOAD PHOTO', req.files);
-  const { currentitemid, token } = req.headers;
+
+  // const { currentitemid, token } = req.headers;
   // const storedPayload = await jwt.verify(token, mySecret);
   // const email = storedPayload.email;
-  const file = req.files.file.data; 
-  const type = req.files.file.mimetype;
-  console.log('file and type are', file, type);
+  // const file = req.files.file.data; 
+  // const type = req.files.file.mimetype;
+  // console.log('file and type are', file, type);
   // const { name } = req.files.file;
 
   //   const s3 = new AWS.S3();
