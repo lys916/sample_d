@@ -71,5 +71,6 @@ nearbyItems = (req, res) => {
 
 module.exports = {
 	createItem,
-	nearbyItems
+	nearbyItems,
+	uploadPhoto,
 }

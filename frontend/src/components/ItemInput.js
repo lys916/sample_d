@@ -6,6 +6,8 @@ import GOOGLE_API_KEY from './config';
 import { addItem } from '../actions';
 import ReactStars from 'react-stars';
 import axios from 'axios';
+import shortid from 'short-id';
+
 const ROOT_URL = 'http://localhost:5000';
 
 class ItemInput extends React.Component {
@@ -19,6 +21,7 @@ class ItemInput extends React.Component {
 		rating: '',
 		review: '',
 		price: '',
+		image: '',
 		imageURL: '',
 		imageBlob: null,
 		atCurrentRestaurant: false,
@@ -26,10 +29,10 @@ class ItemInput extends React.Component {
 		stageDelete: false
     }
     componentDidMount() {
-    	// blobURL and blob iamge coming from Camera.js
+    	// blobURL and blob image coming from Camera.js
     	this.setState({
     		imageURL: this.props.location.state.blobURL,
-    		imageBlob: this.props.location.state.blob
+			imageBlob: this.props.location.state.blob,
     	});
     	// get user's current location in lat and lng
 		if (navigator.geolocation) {
@@ -71,6 +74,11 @@ class ItemInput extends React.Component {
 	// 'handleSubmit' will send item data over to action 'add item'
 	handleSubmit = (event) => {
 		event.preventDefault();
+		console.log('blob in ItemInput is', this.state.imageBlob);
+		// const data = new FormData();
+		// data.append('file', this.state.imageBlob, this.state.imageBlob.name);
+		// console.log('image formdata from frontend is', data)
+		// this.props.uploadPhoto(data);
 		const {lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob} = this.state;
 		// send item data to action
 		this.props.addItem({lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);

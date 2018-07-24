@@ -5,7 +5,7 @@ import Camera from 'react-camera';
 // import Camera from 'react-dom-camera';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-// import shortid from 'short-id';
+import shortid from 'short-id';
 
 const ROOT_URL = 'http://localhost:5000';
 
@@ -34,12 +34,13 @@ class CameraComp extends React.Component {
                 //  this.img.src = URL.createObjectURL(blob);
                 let blobToFile = blob;
                 blobToFile.lastModifiedDate = new Date();
-                // blobToFile.name = shortid.generate();
+                blobToFile.name = `IMG_${shortid.generate()}`;
                 const blobURL = URL.createObjectURL(blob);
                 console.log('BLOB & blobURL', blob, blobURL);
+                // console.log('blobToFile', blobToFile);
                 //  console.log('this.IMAG', this.img.src);
                 //this.img.onload = () => { URL.revokeObjectURL(this.src); }
-                this.setState({showCam: false, selectedFile: blobToFile, blob, blobURL});
+                this.setState({showCam: false, blob: blobToFile, blobURL});
             })
     }
 
@@ -68,7 +69,7 @@ class CameraComp extends React.Component {
                             <img style={style.captureImage} src={this.state.blobURL}/>
                             <div>
                                 <button onClick={()=>{this.setState({showCam: true})}}>Re-take</button>
-                                <Link to={{ pathname: `/addItem`, state: {blob: this.state.blob, blobURL: this.state.blobURL}}}>Next
+                                <Link to={{ pathname: `/addItem`, state: { blob: this.state.blob, blobURL: this.state.blobURL }}}>Next
                                 </Link>
                             </div>
                         </div>

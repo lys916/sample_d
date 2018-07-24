@@ -10,50 +10,52 @@ const bucket = process.env.S3_BUCKET_NAME;
 
 AWS.config.update({ region });
 
+// AWS.config.update({ 
+// 	accessKeyId: process.env.AWS_ACCESS_KEY_ID, 
+// 	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY 
+// });
+
 const uploadPhoto = (req, res) => {
+  console.log('req.files is', req.files);
+  const file = req.files.file.data; 
+  const type = req.files.file.mimetype;
+  const { name } = req.files.file;
+  console.log('FILE, TYPE, NAME are', file, type, name);
 
-  // const { currentitemid, token } = req.headers;
-  // const storedPayload = await jwt.verify(token, mySecret);
-  // const email = storedPayload.email;
-  // const file = req.files.file.data; 
-  // const type = req.files.file.mimetype;
-  // console.log('file and type are', file, type);
-  // const { name } = req.files.file;
+    const s3 = new AWS.S3();
+    const s3Params = {
+      Body: file,
+      Bucket: bucket,
+      Key: name,
+      Expires: 60,
+      ContentType: type,
+      ACL: 'public-read'
+    };
 
-  //   const s3 = new AWS.S3();
-  //   const s3Params = {
-  //     Body: file,
-  //     Bucket: bucket,
-  //     Key: name,
-  //     Expires: 60,
-  //     ContentType: type,
-  //     ACL: 'public-read'
-  //   };
+    // saves file on s3 server
+    s3.putObject(s3Params, (err, data) => {
+      if(err) console.log(err);
+      else console.log(data);
+    });
 
-  //   // saves file on s3 server
-  //   s3.putObject(s3Params, (err, data) => {
-  //     if(err) console.log(err);
-  //     else console.log(data);
-  //   });
-
-  //   // gets info on the file and saves it to the user resume
-  //   s3.getSignedUrl('putObject', s3Params, (err, data) => {
-  //     if(err){
-  //       console.log(err);
-  //       return res.end();
-  //     }
-  //     const returnData = {
-  //       signedRequest: data,
-  //       url: `https://s3-${region}.amazonaws.com/${bucket}/${shortid.generate()}`
-  //     };
-  //     res.write(JSON.stringify(returnData));
-  //     const newURL = returnData.url;
-  //     console.log('reaches right before item lookup with the url', newURL);
-  //     Item.findOneAndUpdate({ _id: currentitemid }, { [jobdocument] : newURL }, { new: true })
-  //       .then(job => res.status(200).json(job[jobdocument]))
-  //       .catch(err => console.log(err));
-  //     res.end();
-  //     });
+    // gets info on the file and saves it to the user resume
+    s3.getSignedUrl('putObject', s3Params, (err, data) => {
+      if(err){
+        console.log(err);
+        return res.end();
+      }
+      const returnData = {
+        signedRequest: data,
+        url: `https://s3-${region}.amazonaws.com/${bucket}/${name}`
+      };
+      res.write(JSON.stringify(returnData));
+      const newURL = returnData.url;
+      console.log('reaches right before item lookup with the url', newURL);
+      // Item.findOneAndUpdate({ _id: currentitemid }, { [jobdocument] : newURL }, { new: true })
+      //   .then(job => res.status(200).json(job[jobdocument]))
+      //   .catch(err => console.log(err));
+      // res.end();
+      });
 };
 
 // const getPhoto = async (req, res) => {
