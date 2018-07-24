@@ -10,19 +10,6 @@ createItem = (req, res)=>{
 	// after saving the image successfully.. 
 	// then we save image data to the database
 
-	 // restaurantName: { type: String, required: true },
-  //   itemName: { type: String, required: true },
-  //   price: Number,
-  //   category: [{ type: String }],
-  //   cuisine: [{ type: String }],
-  //   totalValueRatings: Number,
-  //   numValueRatings: Number,
-  //   spicyVotes: Number,
-  //   instaVotes: Number,
-  //   celebrateVotes: Number,
-  //   photos: [{type: mongoose.Schema.Types.Mixed}],
-  //   ratings: [{type: ObjectId, ref: 'Rating'}],
-
 	console.log('CREATING FOOD ITEM');
 	console.log(req.body);
 	const {lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob} = req.body;
