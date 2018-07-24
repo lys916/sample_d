@@ -10,8 +10,8 @@ class Home extends React.Component {
 	render() {
 		return (
 			<div>
-				{/* <SearchBar />
-				<SearchResults /> */}
+				<SearchBar />
+				<SearchResults />
 				<NearbyItem /> 
 			</div>
 		);

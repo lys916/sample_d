@@ -13,10 +13,15 @@ class NearbyItem extends React.Component {
 
    getAverageRating = (ratings) => {
       let total = 0;
+      let rating = '';
       ratings.forEach(({rating}) => {
          total += rating;
       });
-      return total / ratings.length;
+      rating = (total / ratings.length).toString().slice(0, 3);
+      if(rating.length < 2){
+         rating += '.0';
+      }
+      return rating;
    }
 
    getItemDistance = (lat, long) => {
@@ -50,11 +55,19 @@ class NearbyItem extends React.Component {
                               <img src={item.photos[0].url}/>
                            </div>
                            <div className="description">
-                              <div className="name">{index + 1}. {item.name}</div>
-                              <div className="avg-rating">Rating: {this.getAverageRating(item.ratings)}</div>
-                              <div className="distance">{this.getItemDistance(item.lat, item.long)} miles away</div>
+                              <div className="desc-top">
+                                 <div className="name">{index + 1}. {item.name}</div>
+                                 <i className="material-icons">star</i>
+                                 <div className="avg-rating">{this.getAverageRating(item.ratings)}</div>
+
+                              </div>
+                              
                               {/*item.location.distance ? <div className="distance">{(item.location.distance / 1609).toFixed(2)} miles away</div> : null */}
+                              <div className="desc-bottom">
+                              <div className="rest-name">{item.restaurantName}</div>
                               <div className="address">123 Main st, Fairfield</div>
+                              <div className="distance">{this.getItemDistance(item.lat, item.long)} miles away</div>
+                              </div>
                            </div>
                         </div>
                      </Link>
