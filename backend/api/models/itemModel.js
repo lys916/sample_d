@@ -5,6 +5,15 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const ItemSchema = Schema({
     restaurantName: { type: String, required: true },
+    loc: {
+        type: {
+            type: "String",
+            required: true,
+            enum: ['Point', 'LineString', 'Polygon'],
+            default: 'Point'
+        },
+        coordinates: [Number]
+    },
     lat: Number,
     long: Number,
     name: { type: String, required: true },
@@ -37,5 +46,5 @@ const ItemSchema = Schema({
     instaVote: Boolean,
     celebrateVote: Boolean,
 });
-
+ItemSchema.index({'loc': '2dsphere'});
 module.exports = mongoose.model('Item', ItemSchema);

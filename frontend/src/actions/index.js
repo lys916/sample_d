@@ -31,7 +31,7 @@ export const setRating = (itemId, venueId, rated) => {
 	}
 }
 
-export const addItem = (itemData) => {
+export const addItem = (itemData, history) => {
 	// sending dish/item data to server 'createItem' route
 	return (dispatch) => {
 		axios.post(`${ROOT_URL}/createItem`, itemData)
@@ -41,7 +41,24 @@ export const addItem = (itemData) => {
 				payload: savedItem.data
 			});
 			alert('Thank you for leaving a review!');
+			history.push('/');
 		});
+	}
+}
+
+export const searchNearby = (lat, long) => {
+	return (dispatch) => {
+		const config = {
+			params: {lat: lat, long: long}
+		}
+		axios.get(`${ROOT_URL}/nearbyItems`, config)
+			.then(items => {
+				console.log('nearBy items', items);
+				dispatch({
+					type: 'NEARBY_ITEMS',
+					payload: items.data
+				});
+			});
 	}
 }
 

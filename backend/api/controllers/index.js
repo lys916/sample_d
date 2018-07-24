@@ -41,6 +41,7 @@ createItem = (req, res)=>{
 			newItem.name = name;
 			newItem.lat = lat,
 			newItem.long = long,
+			newItem.loc.coordinates = [long, lat],
 			newItem.price = price;
 			// newItem.tags = tags;
 			newItem.photos.push({url: 'https://www.rotinrice.com/wp-content/uploads/2015/07/IMG_6174.jpg'});
@@ -53,16 +54,22 @@ createItem = (req, res)=>{
 	}
 }
 
-findItems = (req, res) => {
-	console.log('req.params are', req.params);
-	const { lat, lng } = req.params;
-	Item.find({ $near: [ lng, lat ] })
+nearbyItems = (req, res) => {
+	const { lat, long } = req.query;
+	const locQuery = (coords, distance) => {
+    return { loc: { $near: { $geometry: { type: "Point", coordinates: coords }, $maxDistance: parseInt(distance)}}}
+	}
+	Item.find(locQuery([long, lat], 400))
 		.then(items => {
+			console.log('nearby itetms', items);
 			res.json(items);
+		})
+		.catch(err => {
+			console.log(err);
 		})
 }
 
 module.exports = {
 	createItem,
-	findItems
+	nearbyItems
 }

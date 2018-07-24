@@ -38,7 +38,7 @@ class ItemInput extends React.Component {
 				this.setState({ lat: latitude, long: longitude }, ()=>{
 				});
 		  });
-	  } else console.log("Geolocation is not supported by this browser");
+	  	} else console.log("Geolocation is not supported by this browser");
 	}
 	// when user is at the current restaurant.. this method will get invoked
 	searchNearbyRestaurant = () => {
@@ -51,7 +51,7 @@ class ItemInput extends React.Component {
 			rankby: 'distance',
 			type: 'restaurant'
 		}
-
+		// search searby restaurants
 		const service = new window.google.maps.places.PlacesService(map);
 		service.textSearch(request, (results, status) => {
 			if (status === window.google.maps.places.PlacesServiceStatus.OK) {
@@ -73,7 +73,7 @@ class ItemInput extends React.Component {
 		event.preventDefault();
 		const {lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob} = this.state;
 		// send item data to action
-		this.props.addItem({lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob});
+		this.props.addItem({lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);
 		// reset some state properties
 		this.setState({rating: '', name: '', review: ''});
 	}

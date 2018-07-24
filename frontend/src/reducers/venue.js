@@ -55,13 +55,21 @@ const VenueReducer = (venues = [], action) => {
 	}
 };
 
-const ItemReducer = (items = [], action) => {
+const initItem = {
+	allItems: [],
+	nearbyItems: []
+}
+
+const ItemReducer = (state = initItem, action) => {
 	switch (action.type) {
 		case 'FETCHED_ITEMS':
-			return action.payload;
+			return {...state, allItems: action.payload}
+
+		case 'NEARBY_ITEMS':
+			return {...state, nearbyItems: action.payload}
 
 		default:
-		return items;
+		return state;
 	}
 };
 
