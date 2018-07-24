@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { Glyphicon, Button, FormGroup, FormControl } from 'react-bootstrap';
 import Script from 'react-load-script';
 import GOOGLE_API_KEY from './config';
-import { addItem } from '../actions';
+import { addItem, addRating, fetchMenu } from '../actions';
 import ReactStars from 'react-stars';
 import axios from 'axios';
+import '../css/iteminput.css';
 const ROOT_URL = 'http://localhost:5000';
 
 class ItemInput extends React.Component {
@@ -15,14 +16,16 @@ class ItemInput extends React.Component {
 		locations: null,
 		location: null,
 		name: '',
+		id: null,
 		tags: [],
 		rating: '',
 		review: '',
 		price: '',
 		imageURL: '',
 		imageBlob: null,
-		atCurrentRestaurant: false,
-		selectedRestaurant: null,
+		atCurrentRestaurant: true,
+		selectedRestaurant: false,
+		selectedItem: false,
 		stageDelete: false
     }
     componentDidMount() {
@@ -36,6 +39,7 @@ class ItemInput extends React.Component {
 			navigator.geolocation.getCurrentPosition((position)=>{
 				const { latitude, longitude } = position.coords;
 				this.setState({ lat: latitude, long: longitude }, ()=>{
+					this.searchNearbyRestaurant();
 				});
 		  });
 	  	} else console.log("Geolocation is not supported by this browser");
@@ -71,11 +75,21 @@ class ItemInput extends React.Component {
 	// 'handleSubmit' will send item data over to action 'add item'
 	handleSubmit = (event) => {
 		event.preventDefault();
-		const {lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob} = this.state;
-		// send item data to action
-		this.props.addItem({lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);
-		// reset some state properties
-		this.setState({rating: '', name: '', review: ''});
+		const {lat, long, name, id, selectedRestaurant, rating, review, price, imageURL, imageBlob} = this.state;
+		if(id){
+			// create new review for this dish
+			// send item data to action
+			this.props.addRating({lat, long, id, name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);
+			// reset some state properties
+			this.setState({rating: '', name: '', review: ''});
+		}else{
+			// create new item including first review
+			
+			// send item data to action
+			this.props.addItem({lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);
+			// reset some state properties
+			this.setState({rating: '', name: '', review: ''});
+		}
 	}
 	// set true or false depending if user is at current restaurant
 	toggleCurrentLocation = ()=>{
@@ -89,7 +103,9 @@ class ItemInput extends React.Component {
 	}
 	// when user clicks on a particular restaurant from the list.. set it to state
 	handleSelectRestaurant =(rest)=>{
-		this.setState({selectedRestaurant: rest});
+		this.setState({selectedRestaurant: rest}, ()=>{
+			this.props.fetchMenu(rest.id);
+		});
 	}
 
 	// state or set a restaurant for deletion
@@ -100,6 +116,14 @@ class ItemInput extends React.Component {
 	// when user remove the selected restaurant
 	handleRemoveRestaurant = ()=>{
 		this.setState({selectedRestaurant: null, stageDelete: false});
+	}
+
+	handleSelectItem = (item)=>{
+		console.log('ITEM SELECT', item);
+		if(item){
+			this.setState({name: item.name, id: item._id});
+		}
+		this.setState({selectedItem: true});
 	}
 
 	render() {
@@ -120,28 +144,27 @@ class ItemInput extends React.Component {
 				<div className="staged-image">
 					<img src={this.props.location.state.blobURL}/>
 				</div>
-				{!this.state.selectedRestaurant ?
-					<div>
-						<div onClick={()=>{this.toggleCurrentLocation()}}>I'm currently not at this restaurant</div>
-
-				<div onClick={()=>{this.toggleCurrentLocation()}}>I'm currently at this restaurant</div>
-
-				{this.state.atCurrentRestaurant ? 
-					<div>
-						{
-							restaurantList.map(rest => {
-								return (
-									<div key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
-										<div className="rest-name">{rest.name}</div>
-										<div className="rest-address">{rest.formatted_address}</div>
-									</div>
-								);
-							})
-						}
-						<div>Restaurant not on the list? "Click I'm not at this restaurant and enter the restaurant name"
-						</div>
-					</div> 
-					: <div>show form for enter restaurant</div>}
+					{!this.state.selectedRestaurant ?
+						<div>
+						<div>Select a restaurant</div>
+						{this.state.atCurrentRestaurant ? 
+						<div className="rest-list">
+							{
+								restaurantList.map(rest => {
+									return (
+										<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
+											<div className="rest-name">{rest.name}</div>
+											<div className="rest-address">{rest.formatted_address}</div>
+										</div>
+									);
+								})
+							}
+							<br/>
+							<br/>
+							<br/>
+							<button>I'm not currently at this restaurant</button>
+						</div> 
+					: <div>Show form for user to enter restaurant info</div>}
 					</div> : 
 					<div className="selected-rest-wrapper">
 						<div className="selected-rest" onClick={()=>{this.toggleStageDelete()}}>
@@ -152,13 +175,35 @@ class ItemInput extends React.Component {
 								{this.state.selectedRestaurant.formatted_address}
 							</div>
 						</div>
-						<input onChange={this.handleOnChange} name="name" value={this.state.name} placeholder="enter food name"/>
+
+						{ this.props.menu.length > 0 && !this.state.selectedItem ? 
+							<div className="dish-list">
+							<br/>
+							<br/>
+							<div>Select a dish</div>
+							{ this.props.menu.map(item=>{
+								return (
+									<div className="select-dish" onClick={()=>{this.handleSelectItem(item)}}>{item.name}</div>
+								);
+							})}
+
+							</div> : null }
+
+						{ !this.props.menu.length > 0 && !this.state.selectedItem ? <div>
+							<div>There's no item on the menu for this restaurant at this time</div>
+							<div>Add a new dish</div>
+							<input onChange={this.handleOnChange} name="name" value={this.state.name} placeholder="
+							Enter dish name"/>
+							<button onClick={()=>{this.handleSelectItem()}}>Next</button>
+						</div> : <div>{this.state.name}</div> }
+
+						
 						{this.state.stageDelete ? <div className="delete-selected-rest" onClick={()=>{this.handleRemoveRestaurant()}}>Remove</div> : null}
 					</div>
 				}
 
 				{/*todo: most this form into a new component ??*/}
-				<form onSubmit={(event) => { this.handleSubmit(event) }}>
+				{this.state.selectedItem ? <form onSubmit={(event) => { this.handleSubmit(event) }}>
 				<ReactStars  count={5} onChange={this.ratingChanged} size={35} color2={'#ffd700'} value={Number(this.state.rating)}/>
 				<br/>
 				<FormGroup controlId="formControlsTextarea">
@@ -167,7 +212,8 @@ class ItemInput extends React.Component {
     		
     			<br/>
 				<button type="submit">Submit</button>
-				</form>
+				</form> : null}
+				
 
 			</div>
 		);
@@ -176,7 +222,8 @@ class ItemInput extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		menu: state.items.menu
 	} 
 }
 
-export default connect(mapStateToProps, { addItem })(ItemInput);
+export default connect(mapStateToProps, { addItem, addRating, fetchMenu })(ItemInput);

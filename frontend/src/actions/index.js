@@ -46,6 +46,21 @@ export const addItem = (itemData, history) => {
 	}
 }
 
+export const addRating = (itemData, history) => {
+	// sending dish/item data to server 'createItem' route
+	return (dispatch) => {
+		axios.post(`${ROOT_URL}/addRating`, itemData)
+		.then(savedItem => {
+			dispatch({
+				type: 'SAVED_ITEM',
+				payload: savedItem.data
+			});
+			alert('Thank you for leaving a review!');
+			history.push('/');
+		});
+	}
+}
+
 export const searchNearby = (lat, long) => {
 	return (dispatch) => {
 		const config = {
@@ -57,6 +72,21 @@ export const searchNearby = (lat, long) => {
 				console.log('nearBy items', items);
 				dispatch({
 					type: 'NEARBY_ITEMS',
+					payload: items.data
+				});
+			});
+	}
+}
+
+export const fetchMenu = (id) => {
+	console.log('action id', id);
+	return (dispatch) => {
+		dispatch({type: 'MENU_LOADING'});
+		axios.get(`${ROOT_URL}/menu`, {params: {id}})
+			.then(items => {
+				console.log('menu items', items);
+				dispatch({
+					type: 'GOT_MENU',
 					payload: items.data
 				});
 			});

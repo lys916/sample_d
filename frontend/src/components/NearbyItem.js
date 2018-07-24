@@ -12,7 +12,11 @@ class NearbyItem extends React.Component {
    }
 
    getAverageRating = (ratings) => {
-      return '4.5';
+      let total = 0;
+      ratings.forEach(({rating}) => {
+         total += rating;
+      });
+      return total / ratings.length;
    }
 
    getItemDistance = (lat, long) => {

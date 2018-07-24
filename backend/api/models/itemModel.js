@@ -5,6 +5,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const ItemSchema = Schema({
     restaurantName: { type: String, required: true },
+    restaurantId: { type: String, required: true},
     loc: {
         type: {
             type: "String",

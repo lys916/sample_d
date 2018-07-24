@@ -8,9 +8,10 @@
 .item-list .item {
   text-align: left;
   border-top: 1px solid #dedede;
-  border-bottom: 1px solid #dedede;
-  margin: 8px 0px;
+/*  border-bottom: 1px solid #dedede;
+  margin: 10px 0px;
   box-shadow: 0 1px 1px 0 rgba(43, 43, 43, 0.151), 0 3px 1px -2px rgba(34, 34, 34, 0.082), 0 1px 5px 0 rgba(31, 31, 31, 0.13);
+*/
 }
 
 .item-list .item .image {
@@ -24,10 +25,12 @@
   height: 79px;
   background: gray;
   border: 1px solid #dedede;
-  margin: 2px;
+  margin: 12px 3px;
+  border-radius: 5px;
 }
 
 .item-list .item .description {
   display: inline-block;
-  padding: 5px;
+  padding: 15px 5px;
 }
+
