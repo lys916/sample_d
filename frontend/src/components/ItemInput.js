@@ -26,7 +26,8 @@ class ItemInput extends React.Component {
 		atCurrentRestaurant: true,
 		selectedRestaurant: false,
 		selectedItem: false,
-		stageDelete: false
+		stageDelete: false,
+		newDish: false
     }
     componentDidMount() {
     	// blobURL and blob iamge coming from Camera.js
@@ -176,7 +177,7 @@ class ItemInput extends React.Component {
 							</div>
 						</div>
 
-						{ this.props.menu.length > 0 && !this.state.selectedItem ? 
+						{ this.props.menu.length > 0 && !this.state.selectedItem && !this.state.newDish ? 
 							<div className="dish-list">
 							<br/>
 							<br/>
@@ -186,8 +187,14 @@ class ItemInput extends React.Component {
 									<div className="select-dish" onClick={()=>{this.handleSelectItem(item)}}>{item.name}</div>
 								);
 							})}
-
+							<button onClick={()=>{this.setState({newDish: true})}}>Add new dish</button>
 							</div> : null }
+
+						{ this.state.newDish ? 
+							<div>
+							<input onChange={this.handleOnChange} name="name" value={this.state.name} placeholder="
+							Enter dish name"/>
+							<button onClick={()=>{this.handleSelectItem()}}>Next</button> </div> : null }
 
 						{ !this.props.menu.length > 0 && !this.state.selectedItem ? <div>
 							<div>There's no item on the menu for this restaurant at this time</div>
