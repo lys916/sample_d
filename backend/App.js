@@ -1,13 +1,13 @@
 const server = require('./server');
 const mongoose = require('mongoose');
+require('dotenv').config();
 const port = process.env.PORT || 5000;
-const user = process.env.MLAB_USERNAME || "delp";
-const pass = process.env.MLAB_PASSWORD || "delp123";
+const user = process.env.MLAB_USERNAME;
+const pass = process.env.MLAB_PASSWORD;
 mongoose.Promise = global.Promise;
 
 mongoose
-  .connect('mongodb://localhost:27017/Dishes')
-  // .connect(`mongodb://${user}:${pass}@ds123971.mlab.com:23971/delp`)
+  .connect(`mongodb://${user}:${pass}@ds123971.mlab.com:23971/delp`)
   .then(result => {
     console.log('Mongo Connected');
   })
