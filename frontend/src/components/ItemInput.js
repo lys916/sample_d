@@ -39,10 +39,9 @@ class ItemInput extends React.Component {
 				});
 		  });
 	  } else console.log("Geolocation is not supported by this browser");
-	  // console.log(this.recordPrice("Thiasdfasfasfasdfut"));
 	}
-	
-	handleAddItem = () => {
+	// when user is at the current restaurant.. this method will get invoked
+	searchNearbyRestaurant = () => {
 		const { lat, long } = this.state;
 		console.log('latlong', lat, long);
 		const currentLocation = new window.google.maps.LatLng(lat, long);
@@ -55,73 +54,52 @@ class ItemInput extends React.Component {
 
 		const service = new window.google.maps.places.PlacesService(map);
 		service.textSearch(request, (results, status) => {
-		console.log('result is', results);
 			if (status === window.google.maps.places.PlacesServiceStatus.OK) {
 				this.setState({locations: results});
-				// for (let i = 0; i < results.length; i++) {
-				// 	let place = results[i];
-				// }
 			}  
 		});
 	}
 
-	handleScriptCreate = () => this.setState({ scriptLoaded: false });
-	handleScriptError = () => this.setState({ scriptError: true });
-	handleScriptLoad = () => this.setState({ scriptLoaded: true });
-
 	handleOnChange = (event) => {
 		this.setState({ [event.target.name]: event.target.value });
 	}
-
+	// when user clicks on star rating
 	ratingChanged = (rating)=>{
 		this.setState({rating});
 	}
 
-	// 'handleSubmit' will send everything in the state over to the server 
-	// using 'addItem' in action
+	// 'handleSubmit' will send item data over to action 'add item'
 	handleSubmit = (event) => {
-
-		const {lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob} = this.state;
-
 		event.preventDefault();
+		const {lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob} = this.state;
+		// send item data to action
 		this.props.addItem({lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob});
-
+		// reset some state properties
 		this.setState({rating: '', name: '', review: ''});
 	}
-
-	// 'toggleCurrentLocation' will set true of false to 'atCurrentRestaurant' depending 
-	// if user is at the current restaurant or not. 
-	// if the user is not at the current restaurant, user will have to enter 
-	// the restaurant info manually. 
-	// if the user is at the current restaurant, a list of restaurants will show up.. 
-	// letting the user to select the correct restaurant.
+	// set true or false depending if user is at current restaurant
 	toggleCurrentLocation = ()=>{
 		this.setState({atCurrentRestaurant: !this.state.atCurrentRestaurant}, ()=>{
 			console.log('at current restaurant', this.state.atCurrentRestaurant);
 			if(this.state.atCurrentRestaurant){
-				this.handleAddItem();
+				// search nearby restaurant
+				this.searchNearbyRestaurant();
 			}
 		});
 	}
-
+	// when user clicks on a particular restaurant from the list.. set it to state
 	handleSelectRestaurant =(rest)=>{
 		this.setState({selectedRestaurant: rest});
 	}
 
-	recordPrice = (input)=>{
-	 if(input === "This is my input"){
-	 	return true;
-	 }else{
-	 	return false;
-	 }
-	}
-
-	handleRemoveRestaurant = ()=>{
-		this.setState({selectedRestaurant: null, stageDelete: false});
-	}
-
+	// state or set a restaurant for deletion
 	toggleStageDelete = ()=>{
 		this.setState({stageDelete: !this.state.stageDelete});
+	}
+
+	// when user remove the selected restaurant
+	handleRemoveRestaurant = ()=>{
+		this.setState({selectedRestaurant: null, stageDelete: false});
 	}
 
 	render() {
@@ -178,7 +156,8 @@ class ItemInput extends React.Component {
 						{this.state.stageDelete ? <div className="delete-selected-rest" onClick={()=>{this.handleRemoveRestaurant()}}>Remove</div> : null}
 					</div>
 				}
-				
+
+				{/*todo: most this form into a new component ??*/}
 				<form onSubmit={(event) => { this.handleSubmit(event) }}>
 				<ReactStars  count={5} onChange={this.ratingChanged} size={35} color2={'#ffd700'} value={Number(this.state.rating)}/>
 				<br/>
@@ -189,6 +168,7 @@ class ItemInput extends React.Component {
     			<br/>
 				<button type="submit">Submit</button>
 				</form>
+
 			</div>
 		);
 	}
