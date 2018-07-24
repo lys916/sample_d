@@ -3,12 +3,29 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { searchNearby } from '../actions';
-import '../css/nearby.css'
+import '../css/itemlist.css'
 
 class NearbyItem extends React.Component {
    state = {
       lat: null,
       long: null
+   }
+
+   getAverageRating = (ratings) => {
+      let total = 0;
+      let rating = '';
+      ratings.forEach(({rating}) => {
+         total += rating;
+      });
+      rating = (total / ratings.length).toString().slice(0, 3);
+      if(rating.length < 2){
+         rating += '.0';
+      }
+      return rating;
+   }
+
+   getItemDistance = (lat, long) => {
+      return '1.3';
    }
 
    componentDidMount() {
@@ -25,22 +42,38 @@ class NearbyItem extends React.Component {
    }
 
 	render() {
+
 		return (
-			<div className="nearby">
+			<div className="item-list">
 			   <div>Try these dishes near you</div>
-            {
-               this.props.nearbyItems.map(item => {
+            { !this.props.nearbyLoading ? 
+               this.props.nearbyItems.map((item, index) => {
                   return (
-                     <div className="nearby-item">
-                        <div className="image">
-                           <img src={item.photos[0].url} />
+                     <Link className="link" key={item.id} to={`/items/${item.id}`}>
+                        <div className="item" key={item.id}>
+                           <div className="image">
+                              <img src={item.photos[0].url}/>
+                           </div>
+                           <div className="description">
+                              <div className="desc-top">
+                                 <div className="name">{index + 1}. {item.name}</div>
+                                 <i className="material-icons">star</i>
+                                 <div className="avg-rating">{this.getAverageRating(item.ratings)}</div>
+
+                              </div>
+                              
+                              {/*item.location.distance ? <div className="distance">{(item.location.distance / 1609).toFixed(2)} miles away</div> : null */}
+                              <div className="desc-bottom">
+                              <div className="rest-name">{item.restaurantName}</div>
+                              <div className="address">123 Main st, Fairfield</div>
+                              <div className="distance">{this.getItemDistance(item.lat, item.long)} miles away</div>
+                              </div>
+                           </div>
                         </div>
-                        <div>{item.name}</div>
-                        <div>{item.restaurantName}</div>
-                     </div>
+                     </Link>
                   );
-               })
-            }
+               }) : <div>Loading...</div>}
+
 			</div>
 		);
 	}
@@ -48,7 +81,8 @@ class NearbyItem extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-      nearbyItems: state.items.nearbyItems
+      nearbyItems: state.items.nearbyItems,
+      nearbyLoading: state.items.nearbyLoading
 	} 
 }
 

@@ -57,7 +57,10 @@ const VenueReducer = (venues = [], action) => {
 
 const initItem = {
 	allItems: [],
-	nearbyItems: []
+	nearbyItems: [],
+	nearbyLoading: false,
+	menuLoading: false,
+	menu: []
 }
 
 const ItemReducer = (state = initItem, action) => {
@@ -65,8 +68,17 @@ const ItemReducer = (state = initItem, action) => {
 		case 'FETCHED_ITEMS':
 			return {...state, allItems: action.payload}
 
+		case 'GOT_MENU':
+			return {...state, menu: action.payload, menuLoading: false}
+
+		case 'MENU_LOADING':
+			return {...state, menuLoading: true}
+
+		case 'NEARBY_LOADING':
+			return {...state, nearbyLoading: true}
+
 		case 'NEARBY_ITEMS':
-			return {...state, nearbyItems: action.payload}
+			return {...state, nearbyItems: action.payload, nearbyLoading: false}
 
 		default:
 		return state;

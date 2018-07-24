@@ -1,0 +1,10 @@
+/*RESTAURANT LIST*/
+.rest-list .select-rest {
+	border-top: 1px solid #dedede;
+	margin: 3px 0px;
+}
+
+.dish-list .select-dish {
+		border-top: 1px solid #dedede;
+	margin: 3px 0px;
+}
