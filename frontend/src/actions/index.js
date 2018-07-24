@@ -51,6 +51,7 @@ export const searchNearby = (lat, long) => {
 		const config = {
 			params: {lat: lat, long: long}
 		}
+		dispatch({type: 'NEARBY_LOADING'});
 		axios.get(`${ROOT_URL}/nearbyItems`, config)
 			.then(items => {
 				console.log('nearBy items', items);

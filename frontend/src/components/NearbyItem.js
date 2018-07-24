@@ -28,7 +28,7 @@ class NearbyItem extends React.Component {
 		return (
 			<div className="nearby">
 			   <div>Try these dishes near you</div>
-            {
+            { !this.props.nearbyLoading ? 
                this.props.nearbyItems.map(item => {
                   return (
                      <div className="nearby-item">
@@ -39,8 +39,8 @@ class NearbyItem extends React.Component {
                         <div>{item.restaurantName}</div>
                      </div>
                   );
-               })
-            }
+               }) : <div>Loading...</div>}
+
 			</div>
 		);
 	}
