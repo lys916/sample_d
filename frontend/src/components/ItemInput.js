@@ -1,14 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Glyphicon, Button, FormGroup, FormControl } from 'react-bootstrap';
+import { FormGroup, FormControl } from 'react-bootstrap';
 import Script from 'react-load-script';
 import GOOGLE_API_KEY from './config';
 import { addItem } from '../actions';
 import ReactStars from 'react-stars';
-import axios from 'axios';
-import shortid from 'short-id';
-
-const ROOT_URL = 'http://localhost:5000';
 
 class ItemInput extends React.Component {
     state = {
@@ -132,16 +128,14 @@ class ItemInput extends React.Component {
 
 				{this.state.atCurrentRestaurant ? 
 					<div>
-						{
-							restaurantList.map(rest => {
-								return (
-									<div key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
-										<div className="rest-name">{rest.name}</div>
-										<div className="rest-address">{rest.formatted_address}</div>
-									</div>
-								);
-							})
-						}
+						{restaurantList.map(rest => {
+							return (
+								<div key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
+									<div className="rest-name">{rest.name}</div>
+									<div className="rest-address">{rest.formatted_address}</div>
+								</div>
+							);
+						})}
 						<div>Restaurant not on the list? "Click I'm not at this restaurant and enter the restaurant name"
 						</div>
 					</div> 

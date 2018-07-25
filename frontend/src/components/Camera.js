@@ -1,10 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Glyphicon, Button } from 'react-bootstrap';
 import Camera from 'react-camera';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import shortid from 'short-id';
 
 const ROOT_URL = 'http://localhost:5000';
 
@@ -30,14 +27,7 @@ class CameraComp extends React.Component {
 	takePicture = ()=> {
         this.camera.capture()
             .then(blob => {
-                //  this.img.src = URL.createObjectURL(blob);
-                // let blobToFile = blob;
-                // blobToFile.lastModifiedDate = new Date();
-                // blobToFile.name = `IMG_${shortid.generate()}`;
                 const blobURL = URL.createObjectURL(blob);
-                console.log('BLOB & blobURL', blob, blobURL);
-                // console.log('blobToFile', blobToFile);
-                //  console.log('this.IMAG', this.img.src);
                 //this.img.onload = () => { URL.revokeObjectURL(this.src); }
                 this.setState({showCam: false, blob, blobURL});
             })
@@ -54,7 +44,6 @@ class CameraComp extends React.Component {
 				<div className="camera-content">
 					{ this.state.showCam ? 
                         <div>
-                            {/* <Camera onTakePhoto={this.handleImage} /> */}
                             <Camera style={style.preview} ref={(cam) => {
                                 this.camera = cam;
                             }}>

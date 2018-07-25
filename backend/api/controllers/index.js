@@ -5,11 +5,6 @@ const Item = require('../models/itemModel');
 const Photo = require('../models/photoModel');
 
 createItem = (req, res)=>{
-	// NOTE:
-	// this is where we save image to amazon by requiring uploadPhoto module
-	// after saving the image successfully.. 
-	// then we save image data to the database
-
 	 // restaurantName: { type: String, required: true },
   //   itemName: { type: String, required: true },
   //   price: Number,
