@@ -15,8 +15,19 @@
   	url('/assets/seafood.jpg');
    background-repeat: no-repeat;
 	background-size: cover;
-	height: 200px;
-	padding: 20px 20px 20px 20px;
+	padding: 10px 20px 20px 20px;
+}
+
+@media screen and (min-width: 430px) {
+	.search {
+		padding: 10px 40px 20px 40px;
+	}	
+}
+
+@media screen and (min-width: 600px) {
+	.search {
+		padding: 10px 70px 20px 70px;
+	}	
 }
 
 .search form input {
@@ -37,4 +48,5 @@
 	border-radius: 3px;
 	padding: 7px;
 	margin-top: 7px;
+	margin-bottom: 15px;
 }

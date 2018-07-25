@@ -45,14 +45,14 @@ class NearbyItem extends React.Component {
 
 		return (
 			<div className="item-list">
-			   <div className="title">Try these dishes near you</div>
+			   <div className="title">Top dishes near you</div>
             { !this.props.nearbyLoading ? 
                this.props.nearbyItems.map((item, index) => {
                   return (
                      <Link className="link" key={item.id} to={`/items/${item.id}`}>
                         <div className="item" key={item.id}>
                            <div className="image">
-                              <img src={item.photos[0].url}/>
+                              {item.photos.length > 0 ? <img src={item.photos[0].url}/> : <img src='/assets/no_image.png'/>}
                            </div>
                            <div className="description">
                               <div className="desc-top">

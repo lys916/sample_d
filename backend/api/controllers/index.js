@@ -41,7 +41,9 @@ createItem = (req, res)=>{
 				newItem.loc.coordinates = [long, lat];
 				newItem.price = price;
 				// newItem.tags = tags;
-				newItem.photos.push({ url: imageUrl });
+				if(imageUrl){
+					newItem.photos.push({ url: imageUrl });
+				}
 				newItem.ratings.push(savedRating._id);
 				newItem.save().then(savedItem => {
 					console.log('ITEM SAVED');

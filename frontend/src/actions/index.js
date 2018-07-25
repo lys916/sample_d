@@ -32,15 +32,19 @@ export const setRating = (itemId, venueId, rated) => {
 }
 
 export const addItem = (itemData, history) => {
-	const data = new FormData();
-	data.append('file', itemData.imageBlob);
-	// sending dish/item data to server 'createItem' route
-	return (dispatch) => {
-		axios.post(`${ROOT_URL}/uploadPhoto`, data, {
-			headers: {
-				'Content-Type': 'multipart/form-data'
-			}
-		})
+	// if user includes a photo then we'll save the photo to
+	// aws first then we'll save the item info to db.
+	// else we just save the item info to db
+	if(itemData.imageBlob){
+		const data = new FormData();
+		data.append('file', itemData.imageBlob);
+		// sending dish/item data to server 'createItem' route
+		return (dispatch) => {
+			axios.post(`${ROOT_URL}/uploadPhoto`, data, {
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				}
+			})
 			.then(imageUrl => {
 				itemData.imageUrl = imageUrl.data.url;
 				axios.post(`${ROOT_URL}/createItem`, itemData)
@@ -54,7 +58,23 @@ export const addItem = (itemData, history) => {
 				});
 
 			})
+		}
+	}else{
+	// add item photo photo
+	   return (dispatch) => {
+	   	itemData.imageUrl = null;
+			axios.post(`${ROOT_URL}/createItem`, itemData)
+			.then(savedItem => {
+					dispatch({
+						type: 'SAVED_ITEM',
+						payload: savedItem.data
+					});
+					alert('Thank you for leaving a review!');
+					history.push('/');
+			});
+		}
 	}
+	
 }
 
 export const addRating = (itemData, history) => {
