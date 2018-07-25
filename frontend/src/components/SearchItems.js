@@ -42,7 +42,7 @@ class SearchItem extends React.Component {
                      <Link className="link" key={item.id} to={`/items/${item.id}`}>
                         <div className="item" key={item.id}>
                            <div className="image">
-                              <img src={item.photos[0].url}/>
+                              {item.photos.length > 0 ? <img src={item.photos[0].url}/> : <img src='/assets/no_image.png'/>}
                            </div>
                            <div className="description">
                               <div className="desc-top">

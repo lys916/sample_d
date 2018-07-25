@@ -37,10 +37,6 @@ class CameraComp extends React.Component {
 	render() {
 		return (
 			<div className="camera-container">
-				<div>
-					<div className="take-a-photo">Take a photo!</div>
-					<button className="skip-photo">Skip</button>
-				</div>
 				<div className="camera-content">
 					{ this.state.showCam ? 
                         <div>
@@ -52,6 +48,8 @@ class CameraComp extends React.Component {
                                 </div>
                             </Camera>
                             <button>Select photo from gallery</button>
+                            <br/>
+                            <Link to={{ pathname: `/addItem`, state: { blob: null, blobURL: null }}}><button className="skip-photo">Review without a photo</button></Link>
                         </div> : 
                         <div>
                             <img style={style.captureImage} src={this.state.blobURL}/>
