@@ -4,6 +4,7 @@ import './App.css';
 import Home from './Home';
 import Camera from './Camera';
 import ItemInput from './ItemInput';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 class App extends Component {
   render() {

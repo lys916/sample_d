@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getItems, searchItems } from '../actions';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import AddReviewModal from './AddReviewModal';
 import '../css/search_bar.css';
 class SearchBar extends React.Component {
 	state = {
@@ -75,6 +76,7 @@ class SearchBar extends React.Component {
 	render() {
 		return (
 			<div className="search">
+				<AddReviewModal />
 				<form onSubmit={(event)=>{this.handleSearch(event)}}>
 				<input className="search-term" placeholder="e.g. tacos, noodles" value={this.state.term} name="term" onChange={this.handleOnChange} />
 

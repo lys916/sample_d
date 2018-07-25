@@ -20,7 +20,7 @@ class ItemInput extends React.Component {
 		review: '',
 		price: '',
 		image: '',
-		imageURL: '',
+		imageURL: null,
 		imageBlob: null,
 		atCurrentRestaurant: true,
 		selectedRestaurant: false,
@@ -77,6 +77,9 @@ class ItemInput extends React.Component {
 		event.preventDefault();
 		console.log('blob in ItemInput is', this.state.imageBlob);
 		const {lat, long, name, id, selectedRestaurant, rating, review, price, imageURL, imageBlob} = this.state;
+		// if state.id is not null then this means user is leaving a 
+		// review for a existing item in the db.
+		// else if there is no id then user is creating a new item.
 		if (id) {
 			// create new review for this dish
 			// send item data to action
@@ -139,9 +142,9 @@ class ItemInput extends React.Component {
 					onError={this.handleScriptError}
 					onLoad={this.handleScriptLoad}
 				/>*/}
-				<div className="staged-image">
+				{this.props.location.state.blobURL ? <div className="staged-image">
 					<img src={this.props.location.state.blobURL}/>
-				</div>
+				</div> : <div>You're leaving a review without a photo</div> }
 				{!this.state.selectedRestaurant ?
 					<div>
 						<div>Select a restaurant</div>

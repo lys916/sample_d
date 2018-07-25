@@ -8,14 +8,17 @@ import SearchItems from './SearchItems';
 import '../css/home.css';
 
 class Home extends React.Component {
+	state = {
+		modal: true
+	}
 
 	render() {
 		return (
 			<div className="home-container">
-				<SearchBar />
+				<SearchBar toggle={this.toggle}/>
 				<SearchItems />
 				{/*<SearchResults />*/}
-				<NearbyItem /> 
+				<NearbyItem />
 			</div>
 		);
 	}
