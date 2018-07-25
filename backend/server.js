@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const routes = require('./api/routes');
-// const fileUpload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 
 const server = express();
 const corsOptions = {
@@ -13,7 +13,7 @@ const corsOptions = {
 server.use(cors(corsOptions));
 server.use(express.json());
 server.use(morgan('combined'));
-// server.use(fileUpload);
+server.use(fileUpload());
 
 routes(server);
 

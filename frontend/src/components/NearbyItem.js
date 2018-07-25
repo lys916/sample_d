@@ -6,10 +6,10 @@ import { searchNearby } from '../actions';
 import '../css/itemlist.css'
 
 class NearbyItem extends React.Component {
-   state = {
-      lat: null,
-      long: null
-   }
+    state = {
+        lat: null,
+        long: null
+    }
 
    getAverageRating = (ratings) => {
       let total = 0;

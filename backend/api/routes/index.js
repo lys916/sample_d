@@ -7,7 +7,7 @@ const {
  } = require('../controllers');
 
 module.exports = server => {
-    // server.route('/photo').post( uploadPhoto );
+    server.route('/uploadPhoto').post(uploadPhoto);
     server.route('/createItem').post(createItem);
     server.route('/addRating').post(addRating);
     server.route('/nearbyItems').get(nearbyItems);

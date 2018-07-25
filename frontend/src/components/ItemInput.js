@@ -1,13 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Glyphicon, Button, FormGroup, FormControl } from 'react-bootstrap';
+import { FormGroup, FormControl } from 'react-bootstrap';
 import Script from 'react-load-script';
 import GOOGLE_API_KEY from './config';
 import { addItem, addRating, fetchMenu } from '../actions';
 import ReactStars from 'react-stars';
-import axios from 'axios';
 import '../css/iteminput.css';
-const ROOT_URL = 'http://localhost:5000';
 
 class ItemInput extends React.Component {
     state = {
@@ -21,6 +19,7 @@ class ItemInput extends React.Component {
 		rating: '',
 		review: '',
 		price: '',
+		image: '',
 		imageURL: '',
 		imageBlob: null,
 		atCurrentRestaurant: true,
@@ -30,10 +29,10 @@ class ItemInput extends React.Component {
 		newDish: false
     }
     componentDidMount() {
-    	// blobURL and blob iamge coming from Camera.js
+    	// blobURL and blob image coming from Camera.js
     	this.setState({
     		imageURL: this.props.location.state.blobURL,
-    		imageBlob: this.props.location.state.blob
+			imageBlob: this.props.location.state.blob,
     	});
     	// get user's current location in lat and lng
 		if (navigator.geolocation) {
@@ -56,7 +55,7 @@ class ItemInput extends React.Component {
 			rankby: 'distance',
 			type: 'restaurant'
 		}
-		// search searby restaurants
+		// search nearby restaurants
 		const service = new window.google.maps.places.PlacesService(map);
 		service.textSearch(request, (results, status) => {
 			if (status === window.google.maps.places.PlacesServiceStatus.OK) {
@@ -76,21 +75,19 @@ class ItemInput extends React.Component {
 	// 'handleSubmit' will send item data over to action 'add item'
 	handleSubmit = (event) => {
 		event.preventDefault();
+		console.log('blob in ItemInput is', this.state.imageBlob);
 		const {lat, long, name, id, selectedRestaurant, rating, review, price, imageURL, imageBlob} = this.state;
-		if(id){
+		if (id) {
 			// create new review for this dish
 			// send item data to action
 			this.props.addRating({lat, long, id, name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);
-			// reset some state properties
-			this.setState({rating: '', name: '', review: ''});
-		}else{
+		} else {
 			// create new item including first review
-			
 			// send item data to action
 			this.props.addItem({lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);
-			// reset some state properties
-			this.setState({rating: '', name: '', review: ''});
 		}
+		// reset some state properties
+		this.setState({rating: '', name: '', review: ''});
 	}
 	// set true or false depending if user is at current restaurant
 	toggleCurrentLocation = ()=>{
@@ -145,27 +142,27 @@ class ItemInput extends React.Component {
 				<div className="staged-image">
 					<img src={this.props.location.state.blobURL}/>
 				</div>
-					{!this.state.selectedRestaurant ?
-						<div>
+				{!this.state.selectedRestaurant ?
+					<div>
 						<div>Select a restaurant</div>
 						{this.state.atCurrentRestaurant ? 
-						<div className="rest-list">
-							{
-								restaurantList.map(rest => {
-									return (
-										<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
-											<div className="rest-name">{rest.name}</div>
-											<div className="rest-address">{rest.formatted_address}</div>
-										</div>
-									);
-								})
-							}
-							<br/>
-							<br/>
-							<br/>
-							<button>I'm not currently at this restaurant</button>
-						</div> 
-					: <div>Show form for user to enter restaurant info</div>}
+							<div className="rest-list">
+								{
+									restaurantList.map(rest => {
+										return (
+											<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
+												<div className="rest-name">{rest.name}</div>
+												<div className="rest-address">{rest.formatted_address}</div>
+											</div>
+										);
+									})
+								}
+								<br/>
+								<br/>
+								<br/>
+								<button>I'm not currently at this restaurant</button>
+							</div> 
+						: <div>Show form for user to enter restaurant info</div>}
 					</div> : 
 					<div className="selected-rest-wrapper">
 						<div className="selected-rest" onClick={()=>{this.toggleStageDelete()}}>
