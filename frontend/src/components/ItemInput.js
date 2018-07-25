@@ -77,24 +77,17 @@ class ItemInput extends React.Component {
 		event.preventDefault();
 		console.log('blob in ItemInput is', this.state.imageBlob);
 		const {lat, long, name, id, selectedRestaurant, rating, review, price, imageURL, imageBlob} = this.state;
-		// send item data to action
-		this.props.addItem({ lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob }, this.props.history);
-		// reset some state properties
-		this.setState({rating: '', name: '', review: ''});
 		if (id) {
 			// create new review for this dish
 			// send item data to action
 			this.props.addRating({lat, long, id, name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);
-			// reset some state properties
-			this.setState({rating: '', name: '', review: ''});
 		} else {
 			// create new item including first review
-			
 			// send item data to action
 			this.props.addItem({lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);
-			// reset some state properties
-			this.setState({rating: '', name: '', review: ''});
 		}
+		// reset some state properties
+		this.setState({rating: '', name: '', review: ''});
 	}
 	// set true or false depending if user is at current restaurant
 	toggleCurrentLocation = ()=>{
@@ -149,27 +142,27 @@ class ItemInput extends React.Component {
 				<div className="staged-image">
 					<img src={this.props.location.state.blobURL}/>
 				</div>
-					{!this.state.selectedRestaurant ?
-						<div>
+				{!this.state.selectedRestaurant ?
+					<div>
 						<div>Select a restaurant</div>
 						{this.state.atCurrentRestaurant ? 
-						<div className="rest-list">
-							{
-								restaurantList.map(rest => {
-									return (
-										<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
-											<div className="rest-name">{rest.name}</div>
-											<div className="rest-address">{rest.formatted_address}</div>
-										</div>
-									);
-								})
-							}
-							<br/>
-							<br/>
-							<br/>
-							<button>I'm not currently at this restaurant</button>
-						</div> 
-					: <div>Show form for user to enter restaurant info</div>}
+							<div className="rest-list">
+								{
+									restaurantList.map(rest => {
+										return (
+											<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
+												<div className="rest-name">{rest.name}</div>
+												<div className="rest-address">{rest.formatted_address}</div>
+											</div>
+										);
+									})
+								}
+								<br/>
+								<br/>
+								<br/>
+								<button>I'm not currently at this restaurant</button>
+							</div> 
+						: <div>Show form for user to enter restaurant info</div>}
 					</div> : 
 					<div className="selected-rest-wrapper">
 						<div className="selected-rest" onClick={()=>{this.toggleStageDelete()}}>
