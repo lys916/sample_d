@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import Camera from 'react-camera';
 import { Link } from 'react-router-dom';
 
-const ROOT_URL = 'http://localhost:5000';
-
 class CameraComp extends React.Component {
     state = {
         showCam: true,
@@ -33,6 +31,11 @@ class CameraComp extends React.Component {
             })
     }
 
+    handleUpload = (e) => {
+        const file = e.target.files[0];
+        const blobURL = URL.createObjectURL(file);
+        this.setState({ showCam: false, blob: file, blobURL });
+    }
 
 	render() {
 		return (
@@ -51,7 +54,10 @@ class CameraComp extends React.Component {
                                     <div style={style.captureButton} />
                                 </div>
                             </Camera>
-                            <button>Select photo from gallery</button>
+                            <div>
+                                <label for='deviceUpload'>Select photo from device: </label>
+                                <input type="file" accept="image/*" name='deviceUpload' capture="camera" onChange={this.handleUpload} />
+                            </div>
                         </div> : 
                         <div>
                             <img style={style.captureImage} src={this.state.blobURL}/>
