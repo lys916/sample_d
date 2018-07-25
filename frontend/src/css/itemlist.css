@@ -1,4 +1,14 @@
 .item-list {
+  background: white;
+  margin-top: 20px;
+}
+
+.item-list .title {
+  background: #dedede;
+  text-align: left;
+  font-size: 17px;
+  font-weight: bold;
+  padding-left: 3px;
 }
 
 .item-list .link{

@@ -97,6 +97,26 @@ nearbyItems = (req, res) => {
 		})
 }
 
+searchItems = (req, res) => {
+
+	const { type, term, lat, long, location } = req.query;
+console.log('SERACHINGXXXXXX', req.query);
+	if(type === "current"){
+		const locQuery = (coords, distance) => {
+    	return { loc: { $near: { $geometry: { type: "Point", coordinates: coords }, $maxDistance: parseInt(distance)}}, name: term}
+		}
+		Item.find(locQuery([long, lat], 400))
+		.populate('ratings')
+		.then(items => {
+			res.json(items);
+		})
+		.catch(err => {
+			console.log(err);
+		})
+	}
+	
+}
+
 menu = (req, res) => {
 	const { id } = req.query;
 	Item.find({restaurantId: id})
@@ -113,5 +133,6 @@ module.exports = {
 	nearbyItems,
 	uploadPhoto,
 	menu,
-	addRating
+	addRating,
+	searchItems
 }
