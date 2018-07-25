@@ -89,13 +89,14 @@ nearbyItems = (req, res) => {
 }
 
 searchItems = (req, res) => {
-	const { term, lat, long, location } = req.query;
-	if(term === "current"){
+
+	const { type, term, lat, long, location } = req.query;
+console.log('SERACHINGXXXXXX', req.query);
+	if(type === "current"){
 		const locQuery = (coords, distance) => {
     	return { loc: { $near: { $geometry: { type: "Point", coordinates: coords }, $maxDistance: parseInt(distance)}}, name: term}
 		}
-	}
-	Item.find(locQuery([long, lat], 400))
+		Item.find(locQuery([long, lat], 400))
 		.populate('ratings')
 		.then(items => {
 			res.json(items);
@@ -103,6 +104,8 @@ searchItems = (req, res) => {
 		.catch(err => {
 			console.log(err);
 		})
+	}
+	
 }
 
 menu = (req, res) => {

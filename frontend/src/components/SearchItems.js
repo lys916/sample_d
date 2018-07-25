@@ -2,10 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { searchNearby } from '../actions';
 import '../css/itemlist.css'
 
-class NearbyItem extends React.Component {
+class SearchItem extends React.Component {
    state = {
       lat: null,
       long: null
@@ -29,25 +28,16 @@ class NearbyItem extends React.Component {
    }
 
    componentDidMount() {
-      // get current location and search nearby top dishes
-      if (navigator.geolocation) {
-         navigator.geolocation.getCurrentPosition((position)=>{
-            const { latitude, longitude } = position.coords;
-            this.setState({ lat: latitude, long: longitude }, ()=>{
-               // search nearby restaurants
-               this.props.searchNearby(this.state.lat, this.state.long);
-            })
-         });
-      } else console.log("Geolocation is not supported by this browser");
+
    }
 
 	render() {
 
 		return (
 			<div className="item-list">
-			   <div className="title">Try these dishes near you</div>
-            { !this.props.nearbyLoading ? 
-               this.props.nearbyItems.map((item, index) => {
+			   { this.props.searchItems.length > 0 ? <div className="title">Search results</div> : null }
+            { !this.props.searchLoading ? 
+               this.props.searchItems.map((item, index) => {
                   return (
                      <Link className="link" key={item.id} to={`/items/${item.id}`}>
                         <div className="item" key={item.id}>
@@ -81,9 +71,9 @@ class NearbyItem extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-      nearbyItems: state.items.nearbyItems,
-      nearbyLoading: state.items.nearbyLoading
+      searchItems: state.items.searchItems,
+      searchLoading: state.items.searchLoading
 	} 
 }
 
-export default connect(mapStateToProps, { searchNearby })(NearbyItem);
+export default connect(mapStateToProps, { })(SearchItem);

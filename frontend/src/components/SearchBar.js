@@ -9,23 +9,27 @@ class SearchBar extends React.Component {
 		map: null,
 		term: '',
 		location: '',
-		lat: '',
-		long: '',
+		lat: null,
+		long: null,
 		inputType: 'select'
 	}
 
 	componentDidMount() {
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition((position)=>{
-				console.log('reaches inside componentDidMount, SearchBar', position);
-				const { latitude, longitude } = position.coords;
-				this.props.getItems(latitude, longitude);
-			});
-		} else console.log("Geolocation is not supported by this browser");
+		
 	}
 
 	handleOnChange = (event) => {
 		this.setState({ [event.target.name]: event.target.value });
+	}
+
+	getCurrentLocation = ()=>{
+		if (navigator.geolocation) {
+         navigator.geolocation.getCurrentPosition((position)=>{
+            const { latitude, longitude } = position.coords;
+            this.setState({ lat: latitude, long: longitude }, ()=>{
+            })
+         });
+      } else console.log("Geolocation is not supported by this browser");
 	}
 
 	handleSearch = (event) => {
@@ -43,6 +47,7 @@ class SearchBar extends React.Component {
 			searchData.type = 'city';
 			this.props.searchItems(searchData);
 		}
+		this.setState({term: ''});
 	}
 
 	getCurrentLocation = () => {
@@ -61,6 +66,9 @@ class SearchBar extends React.Component {
 	}
 
 	handleOnChange = (event) => {
+		if(event.target.value === "Current location"){
+			this.getCurrentLocation();
+		}
 		this.setState({ [event.target.name]: event.target.value });
 	}
 
