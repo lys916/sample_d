@@ -78,6 +78,23 @@ export const searchNearby = (lat, long) => {
 	}
 }
 
+export const searchItems = (searchData) => {
+	return (dispatch) => {
+		const config = {
+			params: searchData
+		}
+		dispatch({type: 'SEARCH_LOADING'});
+		axios.get(`${ROOT_URL}/searchItems`, config)
+			.then(items => {
+				console.log('xxxxxsearched itemsxxxxxx', items);
+				dispatch({
+					type: 'SEARCHED_ITEMS',
+					payload: items.data
+				});
+			});
+	}
+}
+
 export const fetchMenu = (id) => {
 	console.log('action id', id);
 	return (dispatch) => {
