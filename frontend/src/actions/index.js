@@ -33,8 +33,7 @@ export const setRating = (itemId, venueId, rated) => {
 
 export const addItem = (itemData, history) => {
 	const data = new FormData();
-	data.append('file', itemData.imageBlob, itemData.imageBlob.name);
-	console.log('image formdata in addItem action is', data)
+	data.append('file', itemData.imageBlob);
 	// sending dish/item data to server 'createItem' route
 	return (dispatch) => {
 		axios.post(`${ROOT_URL}/uploadPhoto`, data, {
@@ -43,8 +42,7 @@ export const addItem = (itemData, history) => {
 			}
 		})
 			.then(imageUrl => {
-				console.log('imageUrl is', imageUrl);
-				itemData.imageUrl = imageUrl.data;
+				itemData.imageUrl = imageUrl.data.url;
 				axios.post(`${ROOT_URL}/createItem`, itemData)
 				.then(savedItem => {
 					dispatch({

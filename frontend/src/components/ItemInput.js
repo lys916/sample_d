@@ -75,10 +75,6 @@ class ItemInput extends React.Component {
 	handleSubmit = (event) => {
 		event.preventDefault();
 		console.log('blob in ItemInput is', this.state.imageBlob);
-		// const data = new FormData();
-		// data.append('file', this.state.imageBlob, this.state.imageBlob.name);
-		// console.log('image formdata from frontend is', data)
-		// this.props.uploadPhoto(data);
 		const {lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob} = this.state;
 		// send item data to action
 		this.props.addItem({lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);

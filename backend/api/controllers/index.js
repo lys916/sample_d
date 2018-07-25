@@ -25,7 +25,7 @@ createItem = (req, res)=>{
 
 	console.log('CREATING FOOD ITEM');
 	console.log(req.body);
-	const {lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob} = req.body;
+	const { lat, long, name, selectedRestaurant, rating, review, price, imageUrl } = req.body;
 	// save rating
 	if(rating){
 		const newRating = new Rating();
@@ -34,22 +34,23 @@ createItem = (req, res)=>{
 			newRating.review = review;
 		}
 		newRating.rating = rating;
-		newRating.save().then(savedRating => {
-			console.log('RATING SAVED');
-			newItem = new Item();
-			newItem.restaurantName = selectedRestaurant.name;
-			newItem.name = name;
-			newItem.lat = lat,
-			newItem.long = long,
-			newItem.loc.coordinates = [long, lat],
-			newItem.price = price;
-			// newItem.tags = tags;
-			newItem.photos.push({url: 'https://www.rotinrice.com/wp-content/uploads/2015/07/IMG_6174.jpg'});
-			newItem.ratings.push(savedRating._id);
-			newItem.save().then(savedItem => {
-				console.log('ITEM SAVED');
-				res.json(savedItem);
-			});
+		newRating.save()
+			.then(savedRating => {
+				console.log('RATING SAVED');
+				newItem = new Item();
+				newItem.restaurantName = selectedRestaurant.name;
+				newItem.name = name;
+				newItem.lat = lat,
+				newItem.long = long,
+				newItem.loc.coordinates = [long, lat],
+				newItem.price = price;
+				// newItem.tags = tags;
+				newItem.photos.push({url: imageUrl});
+				newItem.ratings.push(savedRating._id);
+				newItem.save().then(savedItem => {
+					console.log('ITEM SAVED');
+					res.json(savedItem);
+				});
 		});
 	}
 }
@@ -57,11 +58,11 @@ createItem = (req, res)=>{
 nearbyItems = (req, res) => {
 	const { lat, long } = req.query;
 	const locQuery = (coords, distance) => {
-    return { loc: { $near: { $geometry: { type: "Point", coordinates: coords }, $maxDistance: parseInt(distance)}}}
+    	return { loc: { $near: { $geometry: { type: "Point", coordinates: coords }, $maxDistance: parseInt(distance)}}}
 	}
 	Item.find(locQuery([long, lat], 400))
 		.then(items => {
-			console.log('nearby itetms', items);
+			console.log('nearby items', items);
 			res.json(items);
 		})
 		.catch(err => {
