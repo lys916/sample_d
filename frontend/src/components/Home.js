@@ -5,6 +5,7 @@ import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
 import NearbyItem from './NearbyItem';
 import SearchItems from './SearchItems';
+import SearchPlaces from './SearchPlaces';
 import '../css/home.css';
 
 class Home extends React.Component {
@@ -19,6 +20,7 @@ class Home extends React.Component {
 				<SearchItems />
 				{/*<SearchResults />*/}
 				<NearbyItem />
+				<SearchPlaces />
 			</div>
 		);
 	}
