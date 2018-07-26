@@ -13,9 +13,15 @@ class CameraComp extends React.Component {
         photoTitle: '',
         photoUrl: '',
         userdoc: 'photo',
+        video: null,
     }
 
     componentDidMount() {
+        this.state.video = this.camera.video;
+    }
+
+    componentWillUnmount() {
+        this.state.video.srcObject.getTracks().forEach(track => track.stop());
     }
 
     openCamera =()=>{
