@@ -82,6 +82,13 @@ const ItemReducer = (state = initItem, action) => {
 		case 'NEARBY_ITEMS':
 			return {...state, nearbyItems: action.payload, nearbyLoading: false}
 
+		case 'NEARBY_DISTANCE':
+		const copyNearby = Object.assign([], state.nearbyItems);
+			copyNearby.forEach((item, index)=>{
+				item.distance = action.payload[index]
+			});
+			return {...state, nearbyItems: copyNearby}
+
 		case 'SEARCH_LOADING':
 			return {...state, searchLoading: true}
 

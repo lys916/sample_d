@@ -5,22 +5,17 @@ import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
 import NearbyItem from './NearbyItem';
 import SearchItems from './SearchItems';
-import SearchPlaces from './SearchPlaces';
 import '../css/home.css';
 
 class Home extends React.Component {
-	state = {
-		modal: true
-	}
 
 	render() {
 		return (
 			<div className="home-container">
-				<SearchBar toggle={this.toggle}/>
+				<SearchBar />
 				<SearchItems />
 				{/*<SearchResults />*/}
-				<NearbyItem />
-				<SearchPlaces />
+				<NearbyItem /> 
 			</div>
 		);
 	}

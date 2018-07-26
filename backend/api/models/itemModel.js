@@ -4,8 +4,7 @@ const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const ItemSchema = Schema({
-    restaurantName: { type: String, required: true },
-    restaurantId: { type: String, required: true},
+    place: {type: mongoose.Schema.Types.Mixed},
     loc: {
         type: {
             type: "String",
@@ -15,8 +14,6 @@ const ItemSchema = Schema({
         },
         coordinates: [Number]
     },
-    lat: Number,
-    long: Number,
     name: { type: String, required: true },
     price: Number,
     category: [{ type: String }],

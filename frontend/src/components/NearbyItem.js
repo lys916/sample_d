@@ -2,13 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { searchNearby } from '../actions';
-import '../css/itemlist.css'
-
+import { searchNearby, addDistance } from '../actions';
+import '../css/itemlist.css';
+const promises = [];
 class NearbyItem extends React.Component {
     state = {
         lat: null,
-        long: null
+        long: null,
+        distances: [],
+        getDistance: null
     }
 
    getAverageRating = (ratings) => {
@@ -24,18 +26,17 @@ class NearbyItem extends React.Component {
       return rating;
    }
 
-   getItemDistance = (lat, long) => {
-      return '1.3';
-   }
-
    componentDidMount() {
       // get current location and search nearby top dishes
       if (navigator.geolocation) {
          navigator.geolocation.getCurrentPosition((position)=>{
             const { latitude, longitude } = position.coords;
-            this.setState({ lat: latitude, long: longitude }, ()=>{
+            this.setState({ userLat: latitude, userLong: longitude }, ()=>{
                // search nearby restaurants
-               this.props.searchNearby(this.state.lat, this.state.long);
+               this.props.searchNearby(this.state.userLat, this.state.userLong);
+
+               
+
             })
          });
       } else console.log("Geolocation is not supported by this browser");
@@ -64,9 +65,9 @@ class NearbyItem extends React.Component {
                               
                               {/*item.location.distance ? <div className="distance">{(item.location.distance / 1609).toFixed(2)} miles away</div> : null */}
                               <div className="desc-bottom">
-                              <div className="rest-name">{item.restaurantName}</div>
-                              <div className="address">123 Main st, Fairfield</div>
-                              <div className="distance">{this.getItemDistance(item.lat, item.long)} miles away</div>
+                              <div className="rest-name">{item.place.name}</div>
+                              <div className="address">{item.place.formatted_address}</div>
+                              {item.distance ? <div className="distance">{(item.distance * 0.621371).toString().split('').splice(0, (item.distance * 0.621371).toString().split('').indexOf('.') + 2)} mi</div> : null }
                               </div>
                            </div>
                         </div>
@@ -86,4 +87,4 @@ const mapStateToProps = (state) => {
 	} 
 }
 
-export default connect(mapStateToProps, { searchNearby })(NearbyItem);
+export default connect(mapStateToProps, { searchNearby, addDistance })(NearbyItem);

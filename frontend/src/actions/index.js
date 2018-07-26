@@ -18,6 +18,23 @@ export const getItems = (lat, lng) => {
 	}
 }
 
+export const addDistance = (distances, items) => {
+
+	if(items === 'nearby'){
+		return({
+			type: 'ADD_NEARBY_DISTANCE',
+			payload: distances
+		});
+	}
+
+		if(items === 'results'){
+		return({
+			type: 'ADD_RESULTS_DISTANCE',
+			payload:distances
+		});
+	}
+}
+
 export const setRating = (itemId, venueId, rated) => {
 	return (dispatch) => {
 		axios.post(`${ROOT_URL}`, { itemId, venueId, rated })
@@ -91,6 +108,10 @@ export const addRating = (itemData, history) => {
 		});
 	}
 }
+      // console.log('DRIV state', state);
+      // props.nearbyItems.forEach((item, index)=>{
+      //    // this.getItemDistance(item.place.geometry.location.lat, item.place.geometry.location.lng, index)
+      // });
 
 export const searchNearby = (lat, long) => {
 	return (dispatch) => {
@@ -100,12 +121,45 @@ export const searchNearby = (lat, long) => {
 		dispatch({type: 'NEARBY_LOADING'});
 		axios.get(`${ROOT_URL}/nearbyItems`, config)
 			.then(items => {
-				console.log('nearBy items', items);
 				dispatch({
 					type: 'NEARBY_ITEMS',
 					payload: items.data
 				});
-			});
+
+				const promises = [];
+
+				items.data.forEach((item, index)=>{
+					console.log('getting distingce');
+            	const origin = new window.google.maps.LatLng(lat, long);
+      			const destination = new window.google.maps.LatLng(item.place.geometry.location.lat, item.place.geometry.location.lng);
+
+      			var service = new window.google.maps.DistanceMatrixService();
+
+      			const promise = new Promise(function(resolve, reject){
+         			service.getDistanceMatrix({
+          				origins: [origin],
+          				destinations: [destination],
+          				travelMode: 'DRIVING',
+        					}, (response, status)=>{
+            				if(status === 'OK'){
+               				resolve(Number(response.rows[0].elements[0].distance.text.split(' ')[0]));
+            				}else{
+               				resolve('n/a');
+            				}
+        				});
+      			});
+
+      			promises.push(promise);
+      			if(items.data.length === index+1){
+         			Promise.all(promises).then(distances=>{
+         				dispatch({
+								type: 'NEARBY_DISTANCE',
+								payload: distances
+							});
+         			});
+      			}
+				});
+		});
 	}
 }
 
