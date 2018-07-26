@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Home from './Home';
 import Camera from './Camera';
+import SearchPlaces from './SearchPlaces';
 import ItemInput from './ItemInput';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
