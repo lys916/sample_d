@@ -87,7 +87,8 @@ nearbyItems = (req, res) => {
 	const locQuery = (coords, distance) => {
     	return { loc: { $near: { $geometry: { type: "Point", coordinates: coords }, $maxDistance: parseInt(distance)}}}
 	}
-	Item.find(locQuery([long, lat], 400))
+	const oneMile = 1609.34;
+	Item.find(locQuery([long, lat], oneMile*3))
 		.populate('ratings')
 		.then(items => {
 			res.json(items);
@@ -105,7 +106,8 @@ console.log('SERACHINGXXXXXX', req.query);
 		const locQuery = (coords, distance) => {
     	return { loc: { $near: { $geometry: { type: "Point", coordinates: coords }, $maxDistance: parseInt(distance)}}, name: term}
 		}
-		Item.find(locQuery([long, lat], 400))
+		const oneMile = 1609.34;
+		Item.find(locQuery([long, lat], oneMile*3))
 		.populate('ratings')
 		.then(items => {
 			res.json(items);

@@ -67,7 +67,7 @@ class NearbyItem extends React.Component {
                               <div className="desc-bottom">
                               <div className="rest-name">{item.place.name}</div>
                               <div className="address">{item.place.formatted_address}</div>
-                              <div className="distance">{item.distance}</div>
+                              {item.distance ? <div className="distance">{(item.distance * 0.621371).toString().split('').splice(0, (item.distance * 0.621371).toString().split('').indexOf('.') + 2)} mi</div> : null }
                               </div>
                            </div>
                         </div>

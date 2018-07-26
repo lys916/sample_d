@@ -142,7 +142,7 @@ export const searchNearby = (lat, long) => {
           				travelMode: 'DRIVING',
         					}, (response, status)=>{
             				if(status === 'OK'){
-               				resolve(response.rows[0].elements[0].distance.text);
+               				resolve(Number(response.rows[0].elements[0].distance.text.split(' ')[0]));
             				}else{
                				resolve('n/a');
             				}
