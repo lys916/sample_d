@@ -23,10 +23,13 @@ class ItemInput extends React.Component {
 		imageURL: null,
 		imageBlob: null,
 		atCurrentRestaurant: true,
+		selectRestaurant: false,
 		selectedRestaurant: false,
 		selectedItem: false,
 		stageDelete: false,
-		newDish: false
+		newDish: false,
+		searchPlaces: false,
+		term: ''
     }
     componentDidMount() {
     	// blobURL and blob image coming from Camera.js
@@ -44,6 +47,17 @@ class ItemInput extends React.Component {
 		  });
 	  	} else console.log("Geolocation is not supported by this browser");
 	}
+	setupGooglePlaces = ()=>{
+			// google api for places search
+	  	const input = document.getElementById('pac-input');
+      const autocomplete = new window.google.maps.places.Autocomplete(input);
+      autocomplete.addListener('place_changed', ()=> {
+         const place = autocomplete.getPlace();
+         this.setState({selectedRestaurant: place, searchPlaces: false}, ()=>{
+			this.props.fetchMenu(place.id);
+		});
+      });
+	}
 	// when user is at the current restaurant.. this method will get invoked
 	searchNearbyRestaurant = () => {
 		const { lat, long } = this.state;
@@ -59,7 +73,9 @@ class ItemInput extends React.Component {
 		const service = new window.google.maps.places.PlacesService(map);
 		service.textSearch(request, (results, status) => {
 			if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-				this.setState({locations: results});
+				if(results.length > 0){
+					this.setState({locations: results, selectRestaurant: true});
+				}
 			}  
 		});
 	}
@@ -104,7 +120,7 @@ class ItemInput extends React.Component {
 	}
 	// when user clicks on a particular restaurant from the list.. set it to state
 	handleSelectRestaurant =(rest)=>{
-		this.setState({selectedRestaurant: rest}, ()=>{
+		this.setState({selectedRestaurant: rest, selectRestaurant: false}, ()=>{
 			this.props.fetchMenu(rest.id);
 		});
 	}
@@ -127,6 +143,10 @@ class ItemInput extends React.Component {
 		this.setState({selectedItem: true});
 	}
 
+	toggleSearchPlaces = ()=>{
+		this.setState({searchPlaces: true, selectRestaurant: false});
+	}
+
 	render() {
 		const restaurantList = [];
 		if(this.state.locations){
@@ -145,7 +165,7 @@ class ItemInput extends React.Component {
 				{this.props.location.state.blobURL ? <div className="staged-image">
 					<img src={this.props.location.state.blobURL}/>
 				</div> : <div>You're leaving a review without a photo</div> }
-				{!this.state.selectedRestaurant ?
+				{this.state.selectRestaurant ?
 					<div>
 						<div>Select a restaurant</div>
 						{this.state.atCurrentRestaurant ? 
@@ -163,11 +183,11 @@ class ItemInput extends React.Component {
 								<br/>
 								<br/>
 								<br/>
-								<button>I'm not currently at this restaurant</button>
+								<button onClick={()=>{this.toggleSearchPlaces()}}>I'm not currently at these restaurants</button>
 							</div> 
 						: <div>Show form for user to enter restaurant info</div>}
-					</div> : 
-					<div className="selected-rest-wrapper">
+					</div> : null }
+					{this.state.selectedRestaurant ? <div className="selected-rest-wrapper">
 						<div className="selected-rest" onClick={()=>{this.toggleStageDelete()}}>
 							<div className="rest-name">
 								{this.state.selectedRestaurant.name}
@@ -206,8 +226,10 @@ class ItemInput extends React.Component {
 
 						
 						{this.state.stageDelete ? <div className="delete-selected-rest" onClick={()=>{this.handleRemoveRestaurant()}}>Remove</div> : null}
-					</div>
+					</div> : null
 				}
+
+				{this.state.searchPlaces ? <input id="pac-input" name="term" onClick={this.setupGooglePlaces} onChange={this.handleOnChange} placeholder="enter city & restaurant name" value={this.state.term} style={{width: '80vw', maxWidth: '500px'}}/> : null}
 
 				{/*todo: most this form into a new component ??*/}
 				{this.state.selectedItem ? <form onSubmit={(event) => { this.handleSubmit(event) }}>
