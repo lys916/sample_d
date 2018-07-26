@@ -19,8 +19,7 @@ createItem = (req, res)=>{
   //   ratings: [{type: ObjectId, ref: 'Rating'}],
 
 	console.log('CREATING FOOD ITEM');
-	console.log(req.body);
-	const { lat, long, name, selectedRestaurant, rating, review, price, imageUrl } = req.body;
+	const {name, selectedRestaurant, rating, review, price, imageUrl } = req.body;
 	// save rating
 	if(rating){
 		const newRating = new Rating();
@@ -31,14 +30,13 @@ createItem = (req, res)=>{
 		newRating.rating = rating;
 		newRating.save()
 			.then(savedRating => {
-				console.log('RATING SAVED');
+				const {lat, lng} = selectedRestaurant.geometry.location;
 				newItem = new Item();
-				newItem.restaurantName = selectedRestaurant.name;
-				newItem.restaurantId = selectedRestaurant.id;
+				newItem.place = selectedRestaurant;
 				newItem.name = name;
 				newItem.lat = lat;
-				newItem.long = long;
-				newItem.loc.coordinates = [long, lat];
+				newItem.long = lng;
+				newItem.loc.coordinates = [lng, lat];
 				newItem.price = price;
 				// newItem.tags = tags;
 				if(imageUrl){

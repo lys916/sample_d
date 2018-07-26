@@ -92,18 +92,18 @@ class ItemInput extends React.Component {
 	handleSubmit = (event) => {
 		event.preventDefault();
 		console.log('blob in ItemInput is', this.state.imageBlob);
-		const {lat, long, name, id, selectedRestaurant, rating, review, price, imageURL, imageBlob} = this.state;
+		const {name, id, selectedRestaurant, rating, review, price, imageURL, imageBlob} = this.state;
 		// if state.id is not null then this means user is leaving a 
 		// review for a existing item in the db.
 		// else if there is no id then user is creating a new item.
 		if (id) {
 			// create new review for this dish
 			// send item data to action
-			this.props.addRating({lat, long, id, name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);
+			this.props.addRating({id, name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);
 		} else {
 			// create new item including first review
 			// send item data to action
-			this.props.addItem({lat, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);
+			this.props.addItem({name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);
 		}
 		// reset some state properties
 		this.setState({rating: '', name: '', review: ''});
