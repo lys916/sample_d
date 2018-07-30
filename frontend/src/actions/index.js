@@ -76,10 +76,10 @@ export const addItem = (itemData, history) => {
 
 			})
 		}
-	}else{
-	// add item photo photo
-	   return (dispatch) => {
-	   	itemData.imageUrl = null;
+	} else {
+		// add item without photo
+	    return (dispatch) => {
+	   		itemData.imageUrl = null;
 			axios.post(`${ROOT_URL}/createItem`, itemData)
 			.then(savedItem => {
 					dispatch({
@@ -91,21 +91,50 @@ export const addItem = (itemData, history) => {
 			});
 		}
 	}
-	
 }
 
 export const addRating = (itemData, history) => {
-	// sending dish/item data to server 'createItem' route
-	return (dispatch) => {
-		axios.post(`${ROOT_URL}/addRating`, itemData)
-		.then(savedItem => {
-			dispatch({
-				type: 'SAVED_ITEM',
-				payload: savedItem.data
+	// if user includes a photo then we'll save the photo to
+	// aws first then we'll save the item rating info to db.
+	// else we just save the item rating info to db
+	if (itemData.imageBlob) {
+		const data = new FormData();
+		data.append('file', itemData.imageBlob);
+		// sending dish/item data to server 'addRating' route
+		return (dispatch) => {
+			axios.post(`${ROOT_URL}/uploadPhoto`, data, {
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				}
+			})
+			.then(imageUrl => {
+				console.log('come into the addRating dispatch', imageUrl);
+				// sending dish/item data to server 'addRating' route
+				itemData.imageUrl = imageUrl.data.url;
+				axios.post(`${ROOT_URL}/addRating`, itemData)
+				.then(savedItem => {
+					dispatch({
+						type: 'SAVED_ITEM',
+						payload: savedItem.data
+					});
+					alert('Thank you for leaving a review!');
+					history.push('/');
+				});
+			})
+		}
+	} else {
+		// sending dish/item data to server 'createItem' route
+		return (dispatch) => {
+			axios.post(`${ROOT_URL}/addRating`, itemData)
+			.then(savedItem => {
+				dispatch({
+					type: 'SAVED_ITEM',
+					payload: savedItem.data
+				});
+				alert('Thank you for leaving a review!');
+				history.push('/');
 			});
-			alert('Thank you for leaving a review!');
-			history.push('/');
-		});
+		}
 	}
 }
       // console.log('DRIV state', state);
@@ -184,7 +213,7 @@ export const fetchMenu = (id) => {
 	console.log('action id', id);
 	return (dispatch) => {
 		dispatch({type: 'MENU_LOADING'});
-		axios.get(`${ROOT_URL}/menu`, {params: {id}})
+		axios.get(`${ROOT_URL}/fetchMenu`, { params: {id} })
 			.then(items => {
 				console.log('menu items', items);
 				dispatch({

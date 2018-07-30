@@ -97,10 +97,12 @@ class ItemInput extends React.Component {
 		// review for a existing item in the db.
 		// else if there is no id then user is creating a new item.
 		if (id) {
+			console.log('comes into addRating', id);
 			// create new review for this dish
 			// send item data to action
 			this.props.addRating({id, name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);
 		} else {
+			console.log('comes into addItem', id);
 			// create new item including first review
 			// send item data to action
 			this.props.addItem({name, selectedRestaurant, rating, review, price, imageURL, imageBlob}, this.props.history);

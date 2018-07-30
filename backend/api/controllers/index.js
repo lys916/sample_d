@@ -56,8 +56,8 @@ addRating = (req, res)=>{
 	// this is where we save image to amazon by requiring uploadPhoto module
 	// after saving the image successfully.. 
 	// then we save image data to the database
-	console.log(req.body);
-	const {lat, id, long, name, selectedRestaurant, rating, review, price, imageURL, imageBlob} = req.body;
+	console.log('req.body in addRating controller', req.body);
+	const {lat, id, long, name, selectedRestaurant, rating, review, price, imageUrl, imageBlob} = req.body;
 	// save rating
 	if(rating){
 		const newRating = new Rating();
@@ -71,13 +71,13 @@ addRating = (req, res)=>{
 			Item.findById(id).then(item=>{
 				item.ratings.push(savedRating._id);
 				//if user include a photo
-				if(imageBlob){
-					item.photos.push({url: 'https://www.rotinrice.com/wp-content/uploads/2015/07/IMG_6174.jpg'});
+				if(imageUrl){
+					item.photos.push({url: imageUrl});
 				}
 				item.save().then(updatedItem=>{
 					res.json(updatedItem);
-				}).catch(err => console.log(err));
-			}).catch(err => console.log(err));
+				}).catch(err => console.log('error saving item in newRating', err));
+			}).catch(err => console.log('error finding item in newRating', err));
 		});
 	}
 }
@@ -119,10 +119,12 @@ console.log('SERACHINGXXXXXX', req.query);
 	
 }
 
-menu = (req, res) => {
+fetchMenu = (req, res) => {
 	const { id } = req.query;
-	Item.find({restaurantId: id})
+	console.log('id in menu is', id);
+	Item.find({ "place.id": id })
 		.then(items => {
+			console.log('items returned in fetchMenu is', items);
 			res.json(items);
 		})
 		.catch(err => {
@@ -134,7 +136,7 @@ module.exports = {
 	createItem,
 	nearbyItems,
 	uploadPhoto,
-	menu,
+	fetchMenu,
 	addRating,
 	searchItems
 }

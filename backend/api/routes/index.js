@@ -2,7 +2,7 @@ const {
     createItem,
     nearbyItems,
     uploadPhoto,
-    menu,
+    fetchMenu,
     addRating,
     searchItems
  } = require('../controllers');
@@ -13,6 +13,6 @@ module.exports = server => {
     server.route('/addRating').post(addRating);
     server.route('/nearbyItems').get(nearbyItems);
     server.route('/searchItems').get(searchItems);
-    server.route('/menu').get(menu);
+    server.route('/fetchMenu').get(fetchMenu);
     // server.route('/items').get(findItems);
 }
