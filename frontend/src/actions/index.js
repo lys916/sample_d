@@ -195,6 +195,20 @@ export const fetchMenu = (id) => {
 	}
 }
 
+export const getItem = (id) => {
+	return (dispatch) => {
+		dispatch({type: 'ITEM_LOADING'});
+		axios.get(`${ROOT_URL}/item`, {params: {id}})
+			.then(item => {
+
+				dispatch({
+					type: 'GOT_ITEM',
+					payload: item.data
+				});
+			});
+	}
+}
+
 // export const getLocation = (data)=>{
 // 	let qs = {
 // 		client_id: clientId, 

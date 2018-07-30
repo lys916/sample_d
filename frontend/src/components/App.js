@@ -5,6 +5,7 @@ import Home from './Home';
 import Camera from './Camera';
 import SearchPlaces from './SearchPlaces';
 import ItemInput from './ItemInput';
+import ItemView from './ItemView';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 class App extends Component {
@@ -16,6 +17,7 @@ class App extends Component {
             <Route path='/takePhoto' component={Camera} />
             <Route path='/addItem' component={ItemInput} />
             <Route path='/' exact component={Home}  />
+            <Route path='/items/:id' exact component={ItemView}  />
           </Switch>
         </Router>
       </div>

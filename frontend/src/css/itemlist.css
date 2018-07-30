@@ -1,10 +1,10 @@
 .item-list {
   background: white;
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 .item-list .title {
-  background: #dedede;
+  background: #efefef;
   text-align: left;
   font-size: 17px;
   font-weight: bold;
@@ -17,7 +17,7 @@
 
 .item-list .item {
   text-align: left;
-  border-top: 1px solid #dedede;
+  border-top: 2px solid #efefef;
   display: flex;
 /*  border-bottom: 1px solid #dedede;
   margin: 10px 0px;

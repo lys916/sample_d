@@ -36,18 +36,30 @@ class SearchBar extends React.Component {
 	handleSearch = (event) => {
 		event.preventDefault();
 		const searchData = {
-				lat: this.state.lat,
-				long: this.state.long,
 				term: this.state.term,
 				location: this.state.location
 		}
 		if(this.state.location === "Current location"){
-			searchData.type = 'current';
+			alert();
+			searchData.lat = this.state.lat;
+			searchData.long = this.state.long;
 			this.props.searchItems(searchData);
 		}else{
-			searchData.type = 'city';
-			this.props.searchItems(searchData);
-		}
+			console.log('location', this.state.location);
+			const geocoder = new window.google.maps.Geocoder();
+    		geocoder.geocode( { 'address': this.state.location}, (results, status) => {
+            if (status == 'OK') {
+                  const lat = results[0].geometry.location.lat();
+                  const long = results[0].geometry.location.lng();
+                  searchData.lat = lat;
+                  searchData.long = long;
+                  this.props.searchItems(searchData);
+            } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+            }
+         });
+      }
+			
 		this.setState({term: ''});
 	}
 
