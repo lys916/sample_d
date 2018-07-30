@@ -106,7 +106,7 @@ searchItems = (req, res) => {
     	return { loc: { $near: { $geometry: { type: "Point", coordinates: coords }, $maxDistance: parseInt(distance)}}, name: { "$regex": term, "$options": "i" }}
 		}
 		const oneMile = 1609.34;
-		Item.find(locQuery([long, lat], oneMile*3))
+		Item.find(locQuery([long, lat], oneMile*20))
 		.populate('ratings')
 		.then(items => {
 			res.json(items);
