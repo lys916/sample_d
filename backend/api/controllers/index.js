@@ -33,6 +33,7 @@ createItem = (req, res)=>{
 				const {lat, lng} = selectedRestaurant.geometry.location;
 				newItem = new Item();
 				newItem.place = selectedRestaurant;
+				newItem.placeId = selectedRestaurant.id;
 				newItem.name = name;
 				newItem.lat = lat;
 				newItem.long = lng;
@@ -99,12 +100,10 @@ nearbyItems = (req, res) => {
 }
 
 searchItems = (req, res) => {
-
+	console.log();
 	const { type, term, lat, long, location } = req.query;
-console.log('SERACHINGXXXXXX', req.query);
-	if(type === "current"){
 		const locQuery = (coords, distance) => {
-    	return { loc: { $near: { $geometry: { type: "Point", coordinates: coords }, $maxDistance: parseInt(distance)}}, name: term}
+    	return { loc: { $near: { $geometry: { type: "Point", coordinates: coords }, $maxDistance: parseInt(distance)}}, name: { "$regex": term, "$options": "i" }}
 		}
 		const oneMile = 1609.34;
 		Item.find(locQuery([long, lat], oneMile*3))
@@ -114,16 +113,27 @@ console.log('SERACHINGXXXXXX', req.query);
 		})
 		.catch(err => {
 			console.log(err);
-		})
-	}
-	
+		})	
 }
 
 menu = (req, res) => {
 	const { id } = req.query;
-	Item.find({restaurantId: id})
+	Item.find({placeId: id})
 		.then(items => {
+			console.log('MENU ITEMS', items);
 			res.json(items);
+		})
+		.catch(err => {
+			console.log(err);
+		})
+}
+
+item = (req, res) => {
+	const { id } = req.query;
+	Item.findById(id)
+		.populate('ratings')
+		.then(item => {
+			res.json(item);
 		})
 		.catch(err => {
 			console.log(err);
@@ -136,5 +146,6 @@ module.exports = {
 	uploadPhoto,
 	menu,
 	addRating,
-	searchItems
+	searchItems,
+	item
 }

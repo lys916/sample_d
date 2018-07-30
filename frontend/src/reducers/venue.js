@@ -62,7 +62,9 @@ const initItem = {
 	nearbyItems: [],
 	nearbyLoading: false,
 	menuLoading: false,
-	menu: []
+	menu: [],
+	itemLoading: true,
+	viewItem: {place:{}, photos:[{}], ratings: []}
 }
 
 const ItemReducer = (state = initItem, action) => {
@@ -73,8 +75,14 @@ const ItemReducer = (state = initItem, action) => {
 		case 'GOT_MENU':
 			return {...state, menu: action.payload, menuLoading: false}
 
+		case 'GOT_ITEM':
+			return {...state, viewItem: action.payload, itemLoading: false}
+
 		case 'MENU_LOADING':
 			return {...state, menuLoading: true}
+
+		case 'ITEM_LOADING':
+			return {...state, itemLoading: true}
 
 		case 'NEARBY_LOADING':
 			return {...state, nearbyLoading: true}
