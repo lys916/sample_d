@@ -1,0 +1,63 @@
+.item-view {
+	text-align: left;
+	background: #efefef;
+}
+.item-view .image img{
+	width: 100vw;
+	height: 200px;
+}
+.item-view .dish-info {
+	padding: 7px;
+	font-size: 17px;
+	border-bottom: 1px solid #dedede;
+	background: white;
+}
+.dish-info .place-name {
+	font-size: 15px;
+}
+.dish-info .rating-container {
+	display: flex;
+}
+.rating-container i {
+	font-size: 20px;
+	color: orange;
+	padding-top: 2px;
+}
+.dish-info .address {
+	font-size: 15px;
+}
+.dish-info .phone {
+	font-size: 15px;
+}
+.item-view .rate-review{
+	text-align: center;
+	padding: 10px;
+	border-bottom: 1px solid #dedede;
+	background: white;
+}
+.item-view #map-container {
+	text-align: center;
+	margin-top: 10px;
+	background: white;
+	height: 150px;
+	border-bottom: 1px solid #dedede;
+}
+.reviews .highlights {
+	margin: 20px 0px 5px 7px;
+}
+.reviews .review {
+	background: white;
+	margin-top: 5px;
+	padding: 7px;
+}
+.review .rating-container {
+	display: flex;
+}
+.review .rating-container i{
+	font-size: 15px;
+	color: orange;
+}
+.break-space {
+	height: 10px;
+	background: #efefef;
+}

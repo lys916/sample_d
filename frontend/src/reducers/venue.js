@@ -64,7 +64,7 @@ const initItem = {
 	menuLoading: false,
 	menu: [],
 	itemLoading: true,
-	viewItem: {place:{}, photos:[{}], ratings: []}
+	viewItem: {place:{}, photos:[{}], ratings: [], loc: {coordinates: []}}
 }
 
 const ItemReducer = (state = initItem, action) => {

@@ -7,8 +7,8 @@ import SearchItems from './SearchItems';
 import '../css/home.css';
 
 class Home extends React.Component {
-
 	render() {
+		console.log('home render');
 		return (
 			<div className="home-container">
 				<SearchBar />

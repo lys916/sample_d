@@ -156,9 +156,8 @@ export const searchNearby = (lat, long) => {
 				});
 
 				const promises = [];
-
+				// getting distance for each nearby item
 				items.data.forEach((item, index)=>{
-					console.log('getting distingce');
             	const origin = new window.google.maps.LatLng(lat, long);
       			const destination = new window.google.maps.LatLng(item.place.geometry.location.lat, item.place.geometry.location.lng);
 
