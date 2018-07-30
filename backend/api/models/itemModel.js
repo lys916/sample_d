@@ -5,6 +5,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const ItemSchema = Schema({
     place: {type: mongoose.Schema.Types.Mixed},
+    placeId: {type: String, required: true},
     loc: {
         type: {
             type: "String",

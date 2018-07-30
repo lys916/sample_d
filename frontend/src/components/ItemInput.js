@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { FormGroup, FormControl } from 'react-bootstrap';
 import Script from 'react-load-script';
 import GOOGLE_API_KEY from './config';
 import { addItem, addRating, fetchMenu } from '../actions';
-import ReactStars from 'react-stars';
+import AddReview from './AddReview';
 import '../css/iteminput.css';
 
 class ItemInput extends React.Component {
@@ -31,7 +30,7 @@ class ItemInput extends React.Component {
 		searchPlaces: false,
 		term: ''
     }
-    componentDidMount() {
+   componentDidMount() {
     	// blobURL and blob image coming from Camera.js
     	this.setState({
     		imageURL: this.props.location.state.blobURL,
@@ -127,7 +126,7 @@ class ItemInput extends React.Component {
 		});
 	}
 
-	// state or set a restaurant for deletion
+	// stage or set a restaurant for deletion
 	toggleStageDelete = ()=>{
 		this.setState({stageDelete: !this.state.stageDelete});
 	}
@@ -158,37 +157,34 @@ class ItemInput extends React.Component {
 		}
 		return (
 			<div className="item-input-container">
-				{/*<Script
-					url={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`}
-					onCreate={this.handleScriptCreate}
-					onError={this.handleScriptError}
-					onLoad={this.handleScriptLoad}
-				/>*/}
+
+				{/*IMAGE CONTAINER*/}
 				{this.props.location.state.blobURL ? <div className="staged-image">
 					<img src={this.props.location.state.blobURL}/>
 				</div> : <div>You're leaving a review without a photo</div> }
-				{this.state.selectRestaurant ?
-					<div>
+
+				{/*IF USER IS AT THE CURRENT RESTAURANT - SHOW A LIST OF RESTAURANT FOR USER SELECTION*/}
+				{ this.state.atCurrentRestaurant && !this.state.selectedRestaurant ? 
+					<div className="rest-list">
 						<div>Select a restaurant</div>
-						{this.state.atCurrentRestaurant ? 
-							<div className="rest-list">
-								{
-									restaurantList.map(rest => {
-										return (
-											<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
-												<div className="rest-name">{rest.name}</div>
-												<div className="rest-address">{rest.formatted_address}</div>
-											</div>
-										);
-									})
-								}
-								<br/>
-								<br/>
-								<br/>
-								<button onClick={()=>{this.toggleSearchPlaces()}}>I'm not currently at these restaurants</button>
-							</div> 
-						: <div>Show form for user to enter restaurant info</div>}
+						{
+							restaurantList.map(rest => {
+								return (
+									<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
+										<div className="rest-name">{rest.name}</div>
+										<div className="rest-address">{rest.formatted_address}</div>
+									</div>
+								);
+							})
+						}
+						<br/>
+						<br/>
+						<br/>
+						<button onClick={()=>{this.toggleSearchPlaces()}}>I'm not currently at these restaurants</button>
 					</div> : null }
+
+
+				{/*AFTER USER SELECTED A RESTAURANT - SHOW SELECTED RESTAURANT INFO AND MENU LIST*/}
 					{this.state.selectedRestaurant ? <div className="selected-rest-wrapper">
 						<div className="selected-rest" onClick={()=>{this.toggleStageDelete()}}>
 							<div className="rest-name">
@@ -231,20 +227,17 @@ class ItemInput extends React.Component {
 					</div> : null
 				}
 
+				{/*INPUT BAR FOR SEARCHING FOR PLACES*/}
 				{this.state.searchPlaces ? <input id="pac-input" name="term" onClick={this.setupGooglePlaces} onChange={this.handleOnChange} placeholder="enter city & restaurant name" value={this.state.term} style={{width: '80vw', maxWidth: '500px'}}/> : null}
 
-				{/*todo: most this form into a new component ??*/}
-				{this.state.selectedItem ? <form onSubmit={(event) => { this.handleSubmit(event) }}>
-				<ReactStars  count={5} onChange={this.ratingChanged} size={35} color2={'#ffd700'} value={Number(this.state.rating)}/>
-				<br/>
-				<FormGroup controlId="formControlsTextarea">
-     				 <FormControl componentClass="textarea" placeholder="Enter your review" onChange={this.handleOnChange} name="review" value={this.state.review} />
-    			</FormGroup>
-    		
-    			<br/>
-				<button type="submit">Submit</button>
-				</form> : null}
-				
+				{/*ADD REVIEW STATELESS COMPONENT*/}
+				{
+					this.state.selectedItem ? 
+					<form onSubmit={(event) => { this.handleSubmit(event) }}>
+						<AddReview ratingChanged={this.ratingChanged} handleOnChange={this.handleOnChange} rating={this.state.rating} value={this.state.value}/>
+						<button type="submit">Submit</button>
+					</form> : null
+				}
 
 			</div>
 		);
