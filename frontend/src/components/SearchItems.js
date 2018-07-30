@@ -32,14 +32,14 @@ class SearchItem extends React.Component {
    }
 
 	render() {
-
+      console.log(this.props.searchItems);
 		return (
 			<div className="item-list">
 			   { this.props.searchItems.length > 0 ? <div className="title">Search results</div> : null }
             { !this.props.searchLoading ? 
                this.props.searchItems.map((item, index) => {
                   return (
-                     <Link className="link" key={item.id} to={`/items/${item.id}`}>
+                     <Link className="link" key={item._id} to={`/items/${item._id}`}>
                         <div className="item" key={item.id}>
                            <div className="image">
                               {item.photos.length > 0 ? <img src={item.photos[0].url}/> : <img src='/assets/no_image.png'/>}
@@ -54,9 +54,8 @@ class SearchItem extends React.Component {
                               
                               {/*item.location.distance ? <div className="distance">{(item.location.distance / 1609).toFixed(2)} miles away</div> : null */}
                               <div className="desc-bottom">
-                              <div className="rest-name">{item.restaurantName}</div>
-                              <div className="address">123 Main st, Fairfield</div>
-                              <div className="distance">{this.getItemDistance(item.lat, item.long)} miles away</div>
+                              <div className="rest-name">{item.place.name}</div>
+                              <div className="address">{item.place.formatted_address}</div>
                               </div>
                            </div>
                         </div>

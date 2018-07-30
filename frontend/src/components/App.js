@@ -17,7 +17,7 @@ class App extends Component {
             <Route path='/takePhoto' component={Camera} />
             <Route path='/addItem' component={ItemInput} />
             <Route path='/' exact component={Home}  />
-            <Route path='/items/:id' exact component={ItemView}  />
+            <Route path='/items/:id' component={ItemView}  />
           </Switch>
         </Router>
       </div>
