@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const { uploadPhoto } = require('./files');
-const Rating = require('../models/ratingModel');
 const Item = require('../models/itemModel');
-const Photo = require('../models/photoModel');
 
 createItem = (req, res)=>{
 	 // restaurantName: { type: String, required: true },
@@ -20,35 +18,30 @@ createItem = (req, res)=>{
 
 	console.log('CREATING FOOD ITEM');
 	const {name, selectedRestaurant, rating, review, price, imageUrl } = req.body;
-	// save rating
-	if(rating){
-		const newRating = new Rating();
-		// rating.user_id = req.decoded.userId; // need to add user authenication
-		if(review){
-			newRating.review = review;
-		}
-		newRating.rating = rating;
-		newRating.save()
-			.then(savedRating => {
-				const {lat, lng} = selectedRestaurant.geometry.location;
-				newItem = new Item();
-				newItem.place = selectedRestaurant;
-				newItem.placeId = selectedRestaurant.id;
-				newItem.name = name;
-				newItem.lat = lat;
-				newItem.long = lng;
-				newItem.loc.coordinates = [lng, lat];
-				newItem.price = price;
-				// newItem.tags = tags;
-				if(imageUrl){
-					newItem.photos.push({ url: imageUrl });
-				}
-				newItem.ratings.push(savedRating._id);
-				newItem.save().then(savedItem => {
-					console.log('ITEM SAVED');
-					res.json(savedItem);
-			});
-		});
+	// check to see if required items are passed
+	if(name && selectedRestaurant){
+		// need to add user authenication
+		const {lat, lng} = selectedRestaurant.geometry.location;
+		newItem = new Item();
+		if (review) newItem.reviews.push({ text: review.text });
+		if (imageUrl) newItem.photos.push({ url: imageUrl });
+		if (rating) newItem.ratings.push({ rating });
+		if (price) newItem.price = price;
+		newItem.place = selectedRestaurant;
+		newItem.placeId = selectedRestaurant.id;
+		newItem.name = name;
+		newItem.lat = lat;
+		newItem.long = lng;
+		newItem.loc.coordinates = [lng, lat];
+		// newItem.tags = tags;
+		newItem.save()
+			.then(savedItem => {
+				console.log('ITEM SAVED');
+				res.json(savedItem);
+			})
+			.catch(err => res.error({ 'error creating new item': err }));
+	} else {
+		res.status(420).json({ error: 'must select a restaurant and provide item name'})
 	}
 }
 
