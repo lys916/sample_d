@@ -25,8 +25,11 @@ createItem = (req, res)=>{
 		newItem = new Item();
 		if (review) newItem.reviews.push({ text: review.text });
 		if (imageUrl) newItem.photos.push({ url: imageUrl });
-		if (rating) newItem.ratings.push({ rating });
 		if (price) newItem.price = price;
+		if (rating) {
+			newItem.ratings.push({ rating });
+			newItem.averageRating = rating;
+		}
 		newItem.place = selectedRestaurant;
 		newItem.placeId = selectedRestaurant.id;
 		newItem.name = name;
@@ -41,7 +44,7 @@ createItem = (req, res)=>{
 			})
 			.catch(err => res.error({ 'error creating new item': err }));
 	} else {
-		res.status(420).json({ error: 'must select a restaurant and provide item name'})
+		res.status(400).json({ error: 'must select a restaurant and provide item name'})
 	}
 }
 
@@ -52,28 +55,20 @@ addRating = (req, res)=>{
 	// then we save image data to the database
 	console.log('req.body in addRating controller', req.body);
 	const {lat, id, long, name, selectedRestaurant, rating, review, price, imageUrl, imageBlob} = req.body;
-	// save rating
-	if(rating){
-		const newRating = new Rating();
-		// rating.user_id = req.decoded.userId; // need to add user authenication
-		if(review){
-			newRating.review = review;
+	// save rating (and user to this)
+	if (rating) {
+		// need to add user authenication
+		const update = {
+			$push: { ratings: rating },
+			$inc: { totalRating: rating },
 		}
-		newRating.rating = rating;
-		newRating.save().then(savedRating => {
-			console.log('RATING SAVED');
-			Item.findById(id).then(item=>{
-				item.ratings.push(savedRating._id);
-				//if user include a photo
-				if(imageUrl){
-					item.photos.push({url: imageUrl});
-				}
-				item.save().then(updatedItem=>{
-					res.json(updatedItem);
-				}).catch(err => console.log('error saving item in newRating', err));
-			}).catch(err => console.log('error finding item in newRating', err));
-		});
-	}
+		if (imageUrl) update[$push][photos] = { url: imageUrl };
+		if (review) update[$push][reviews] = { text: review.text };
+		console.log('update doc pre-update', update);
+		Item.findByIdAndUpdate(id, update, { new: true })
+			.then(updatedItem=>{ res.json(updatedItem); })
+			.catch(err => res.status(500).json({ 'error updating item in addRating': err }));
+	} else res.status(400).json({ error: 'must provide a rating' });
 }
 
 nearbyItems = (req, res) => {
