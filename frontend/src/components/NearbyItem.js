@@ -13,19 +13,6 @@ class NearbyItem extends React.Component {
         getDistance: null
     }
 
-   getAverageRating = (ratings) => {
-      let total = 0;
-      let rating = '';
-      ratings.forEach(({rating}) => {
-         total += rating;
-      });
-      rating = (total / ratings.length).toString().slice(0, 3);
-      if(rating.length < 2){
-         rating += '.0';
-      }
-      return rating;
-   }
-
    componentDidMount() {
       // get current location and search nearby top dishes
       if(this.props.nearbyItems.length === 0){
@@ -57,7 +44,7 @@ class NearbyItem extends React.Component {
                               <div className="desc-top">
                                  <div className="name">{index + 1}. {item.name}</div>
                                  <i className="material-icons">star</i>
-                                 <div className="avg-rating">{this.getAverageRating(item.ratings)}</div>
+                                 <div className="avg-rating">{item.totalRatings / item.ratings.length}</div>
 
                               </div>
                               
