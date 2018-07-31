@@ -78,7 +78,6 @@ nearbyItems = (req, res) => {
 	}
 	const oneMile = 1609.34;
 	Item.find(locQuery([long, lat], oneMile*3))
-		.populate('ratings')
 		.then(items => {
 			res.json(items);
 		})
