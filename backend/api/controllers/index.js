@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const { uploadPhoto } = require('./files');
-const Rating = require('../models/ratingModel');
 const Item = require('../models/itemModel');
-const Photo = require('../models/photoModel');
 
 createItem = (req, res)=>{
 	 // restaurantName: { type: String, required: true },
@@ -20,35 +18,33 @@ createItem = (req, res)=>{
 
 	console.log('CREATING FOOD ITEM');
 	const {name, selectedRestaurant, rating, review, price, imageUrl } = req.body;
-	// save rating
-	if(rating){
-		const newRating = new Rating();
-		// rating.user_id = req.decoded.userId; // need to add user authenication
-		if(review){
-			newRating.review = review;
+	// check to see if required items are passed
+	if(name && selectedRestaurant){
+		// need to add user authenication
+		const {lat, lng} = selectedRestaurant.geometry.location;
+		newItem = new Item();
+		if (review) newItem.reviews.push({ text: review.text });
+		if (imageUrl) newItem.photos.push({ url: imageUrl });
+		if (price) newItem.price = price;
+		if (rating) {
+			newItem.ratings.push({ rating });
+			newItem.averageRating = rating;
 		}
-		newRating.rating = rating;
-		newRating.save()
-			.then(savedRating => {
-				const {lat, lng} = selectedRestaurant.geometry.location;
-				newItem = new Item();
-				newItem.place = selectedRestaurant;
-				newItem.placeId = selectedRestaurant.id;
-				newItem.name = name;
-				newItem.lat = lat;
-				newItem.long = lng;
-				newItem.loc.coordinates = [lng, lat];
-				newItem.price = price;
-				// newItem.tags = tags;
-				if(imageUrl){
-					newItem.photos.push({ url: imageUrl });
-				}
-				newItem.ratings.push(savedRating._id);
-				newItem.save().then(savedItem => {
-					console.log('ITEM SAVED');
-					res.json(savedItem);
-			});
-		});
+		newItem.place = selectedRestaurant;
+		newItem.placeId = selectedRestaurant.id;
+		newItem.name = name;
+		newItem.lat = lat;
+		newItem.long = lng;
+		newItem.loc.coordinates = [lng, lat];
+		// newItem.tags = tags;
+		newItem.save()
+			.then(savedItem => {
+				console.log('ITEM SAVED');
+				res.json(savedItem);
+			})
+			.catch(err => res.error({ 'error creating new item': err }));
+	} else {
+		res.status(400).json({ error: 'must select a restaurant and provide item name'})
 	}
 }
 
@@ -59,28 +55,20 @@ addRating = (req, res)=>{
 	// then we save image data to the database
 	console.log('req.body in addRating controller', req.body);
 	const {lat, id, long, name, selectedRestaurant, rating, review, price, imageUrl, imageBlob} = req.body;
-	// save rating
-	if(rating){
-		const newRating = new Rating();
-		// rating.user_id = req.decoded.userId; // need to add user authenication
-		if(review){
-			newRating.review = review;
+	// save rating (and user to this)
+	if (rating) {
+		// need to add user authenication
+		const update = {
+			$push: { ratings: rating },
+			$inc: { totalRating: rating },
 		}
-		newRating.rating = rating;
-		newRating.save().then(savedRating => {
-			console.log('RATING SAVED');
-			Item.findById(id).then(item=>{
-				item.ratings.push(savedRating._id);
-				//if user include a photo
-				if(imageUrl){
-					item.photos.push({url: imageUrl});
-				}
-				item.save().then(updatedItem=>{
-					res.json(updatedItem);
-				}).catch(err => console.log('error saving item in newRating', err));
-			}).catch(err => console.log('error finding item in newRating', err));
-		});
-	}
+		if (imageUrl) update[$push][photos] = { url: imageUrl };
+		if (review) update[$push][reviews] = { text: review.text };
+		console.log('update doc pre-update', update);
+		Item.findByIdAndUpdate(id, update, { new: true })
+			.then(updatedItem=>{ res.json(updatedItem); })
+			.catch(err => res.status(500).json({ 'error updating item in addRating': err }));
+	} else res.status(400).json({ error: 'must provide a rating' });
 }
 
 nearbyItems = (req, res) => {
@@ -90,7 +78,6 @@ nearbyItems = (req, res) => {
 	}
 	const oneMile = 1609.34;
 	Item.find(locQuery([long, lat], oneMile*3))
-		.populate('ratings')
 		.then(items => {
 			res.json(items);
 		})
@@ -132,7 +119,6 @@ fetchMenu = (req, res) => {
 item = (req, res) => {
 	const { id } = req.query;
 	Item.findById(id)
-		.populate('ratings')
 		.then(item => {
 			res.json(item);
 		})

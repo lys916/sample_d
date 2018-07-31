@@ -19,28 +19,30 @@ const ItemSchema = Schema({
     price: Number,
     category: [{ type: String }],
     cuisine: [{ type: String }],
+    totalRatings: Number,
     totalValueRatings: Number,
-    numValueRatings: Number,
     spicyVotes: Number,
     instaVotes: Number,
     celebrateVotes: Number,
-    photos: [{type: mongoose.Schema.Types.Mixed}],
-    ratings: [{type: ObjectId, ref: 'Rating'}],
-    // reviews: [{
-    //     text: {
-    //         type: String,
-    //         maxLength: 50,
-    //     },
-    //     user_id: ObjectId,
-    // }],
-    // ratings: [{
-    //     rating: Number,
-    //     user_id: ObjectId,
-    // }],
-    // valueRatings: [{
-    //     rating: Number,
-    //     user_id: ObjectId,
-    // }],
+    photos: [{
+        url: String,
+        winPercent: Number
+    }],
+    reviews: [{
+        text: {
+            type: String,
+            maxLength: 50,
+        },
+        user_id: ObjectId,
+    }],
+    ratings: [{
+        rating: Number,
+        user_id: ObjectId,
+    }],
+    valueRatings: [{
+        rating: Number,
+        user_id: ObjectId,
+    }],
     spicyVote: Boolean,
     instaVote: Boolean,
     celebrateVote: Boolean,
