@@ -30,6 +30,23 @@
 	}	
 }
 
+.search .add-button {
+	border: 2px solid white;
+	color: white;
+	width: 30vw;
+	float: right;
+	padding: 1vw;
+	border-radius: 10px;
+	font-size: 14px;
+	margin-bottom: 10px;
+}
+
+@media screen and (min-width: 430px) {
+	.search .add-button {
+		font-size: 16px;
+	}	
+}
+
 .search form input {
 	width: 100%;
 	font-size: 15px;

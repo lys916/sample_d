@@ -4,6 +4,7 @@ import Script from 'react-load-script';
 import GOOGLE_API_KEY from './config';
 import { addItem, addRating, fetchMenu } from '../actions';
 import AddReview from './AddReview';
+import AddButton from './AddButton';
 import '../css/iteminput.css';
 
 class ItemInput extends React.Component {
@@ -23,8 +24,8 @@ class ItemInput extends React.Component {
 		imageBlob: null,
 		atCurrentRestaurant: true,
 		selectRestaurant: false,
-		selectedRestaurant: false,
-		selectedItem: false,
+		selectedRestaurant: null,
+		selectedItem: null,
 		stageDelete: false,
 		newDish: false,
 		searchPlaces: false,
@@ -35,6 +36,9 @@ class ItemInput extends React.Component {
     	this.setState({
     		imageURL: this.props.location.state.blobURL,
 			imageBlob: this.props.location.state.blob,
+			selectedRestaurant: this.props.location.state.item.place,
+			name: this.props.location.state.item.name,
+			selectedItem: this.props.location.state.item.name
     	});
     	// get user's current location in lat and lng
 		if (navigator.geolocation) {
@@ -148,7 +152,12 @@ class ItemInput extends React.Component {
 		this.setState({searchPlaces: true, selectRestaurant: false});
 	}
 
+	cancelView = ()=>{
+        this.props.history.push('/');
+    }
+
 	render() {
+		console.log('input item props', this.props);
 		const restaurantList = [];
 		if(this.state.locations){
 			for(let i = 0; i < 5; i++){
@@ -156,12 +165,18 @@ class ItemInput extends React.Component {
 			}
 		}
 		return (
-			<div className="item-input-container">
+			<div className="item-input">
 
 				{/*IMAGE CONTAINER*/}
-				{this.props.location.state.blobURL ? <div className="staged-image">
-					<img src={this.props.location.state.blobURL}/>
-				</div> : <div>You're leaving a review without a photo</div> }
+				{this.props.location.state.blobURL ? 
+					<div className="staged-image">
+						<img src={this.props.location.state.blobURL}/>
+					</div> : 
+					<div className="staged-image">
+						<img src={this.props.location.state.item.photos[0].url}/>
+						<div className="exit" onClick={()=>{this.cancelView()}}><i className="material-icons">cancel</i></div>
+						<AddButton style={addButtonStyle} />
+					</div> }
 
 				{/*IF USER IS AT THE CURRENT RESTAURANT - SHOW A LIST OF RESTAURANT FOR USER SELECTION*/}
 				{ this.state.atCurrentRestaurant && !this.state.selectedRestaurant ? 
@@ -184,8 +199,8 @@ class ItemInput extends React.Component {
 					</div> : null }
 
 
-				{/*AFTER USER SELECTED A RESTAURANT - SHOW SELECTED RESTAURANT INFO AND MENU LIST*/}
-					{this.state.selectedRestaurant ? <div className="selected-rest-wrapper">
+				{/*SHOW SELECTED RESTAURANT INFO AND MENU LIST*/}
+					{this.state.selectedRestaurant ? <div className="selected-rest-container">
 						<div className="selected-rest" onClick={()=>{this.toggleStageDelete()}}>
 							<div className="rest-name">
 								{this.state.selectedRestaurant.name}
@@ -220,7 +235,7 @@ class ItemInput extends React.Component {
 							<input onChange={this.handleOnChange} name="name" value={this.state.name} placeholder="
 							Enter dish name"/>
 							<button onClick={()=>{this.handleSelectItem()}}>Next</button>
-						</div> : <div>{this.state.name}</div> }
+						</div> : <div className="selected-item">{this.state.name}</div> }
 
 						
 						{this.state.stageDelete ? <div className="delete-selected-rest" onClick={()=>{this.handleRemoveRestaurant()}}>Remove</div> : null}
@@ -238,10 +253,31 @@ class ItemInput extends React.Component {
 						<button type="submit">Submit</button>
 					</form> : null
 				}
-
+				<div className="break-vh"></div>
 			</div>
 		);
 	}
+}
+
+const addButtonStyle = {
+	button: {
+		background: '#DE3734',
+		height: '35px',
+		width: '35px',
+		position: 'absolute',
+		color: 'white',
+		bottom: '0',
+		right: '0',
+		borderRadius: '100%',
+		margin: '5px',
+		boxShadow: '2px 3px 4px #bbbbbb'
+	},
+	icon: {
+		fontSize: '23px',
+		marginTop: '5px'
+	},
+	iconImage: 'add_a_photo'
+
 }
 
 const mapStateToProps = (state) => {

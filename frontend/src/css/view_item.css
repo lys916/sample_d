@@ -2,9 +2,26 @@
 	text-align: left;
 	background: #efefef;
 }
+.item-view .image {
+	position: relative;
+	text-align: center;
+	background: white;
+	display: flex;
+	justify-content: center;
+}
 .item-view .image img{
-	width: 100vw;
 	height: 200px;
+}
+.item-view .image .arrow {
+	text-align: center;
+	padding-top: 70px;
+}
+.item-view .image .arrow:hover {
+	background: #efefef;
+}
+.item-view .image .arrow i{
+	font-size: 50px;
+	color: gray;
 }
 .item-view .dish-info {
 	padding: 7px;
@@ -35,6 +52,25 @@
 	border-bottom: 1px solid #dedede;
 	background: white;
 }
+.item-view .rate-review .flip-button {
+	background: #2c46e2;
+	display: flex;
+	justify-content: center;
+	width: 220px;
+	margin: 0 auto;
+	border-radius: 2px;
+}
+.item-view .rate-review .button{
+	font-size: 15px;
+	padding: 3px 10px;
+	background: #2C46E2;
+	border: none;
+	color: white;
+}
+.item-view .rate-review i {
+	color: white;
+	padding-top: 2px;
+}
 .item-view #map-container {
 	text-align: center;
 	margin-top: 10px;
@@ -60,4 +96,23 @@
 .break-space {
 	height: 10px;
 	background: #efefef;
+}
+
+/*ADD RATING AND REVIEW*/
+.item-view .add-review {
+	background: white;
+}
+
+.item-view form {
+	background: white;
+	text-align: center;
+}
+
+form .submit-review {
+	border: none;
+	background: #2C46E2;
+	color: white;
+	font-size: 17px;
+	padding: 5px 15px;
+	margin-bottom: 15px;
 }
