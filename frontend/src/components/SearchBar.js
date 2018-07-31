@@ -16,6 +16,7 @@ class SearchBar extends React.Component {
 	}
 
 	componentDidMount() {
+		console.log('history', this.props.history);
 		
 	}
 
@@ -86,9 +87,10 @@ class SearchBar extends React.Component {
 	}
 
 	render() {
+
 		return (
 			<div className="search">
-				<AddReviewModal />
+				<AddReviewModal history={this.props.history}/>
 				<form onSubmit={(event)=>{this.handleSearch(event)}}>
 				<input className="search-term" placeholder="e.g. tacos, noodles" value={this.state.term} name="term" onChange={this.handleOnChange} />
 

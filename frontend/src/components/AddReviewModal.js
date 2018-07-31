@@ -7,12 +7,25 @@ import '../css/add_review.css';
 class AddReviewModal extends React.Component {
 
 	state = {
-		show: false
+		show: false,
+		blob: null,
+		blobURL: null
 	}
 
 	toggle = ()=>{
 		this.setState({show: !this.state.show});
 	}
+	handleUpload = (e) => {
+	   const file = e.target.files[0];
+	   const blobURL = URL.createObjectURL(file);
+	   this.setState({show: false, blob: file, blobURL }, ()=>{
+	   	this.props.history.push({
+				pathname: '/addItem',
+				state: { blob: this.state.blob, blobURL: this.state.blobURL }
+			})
+	   });
+     
+   }
 
 	render() {
 		return (
@@ -24,7 +37,8 @@ class AddReviewModal extends React.Component {
 			    <Modal.Body className="modal-body">
 			    	<div className="modal-body">
 				    	<Link to="/takePhoto"><button>Take a photo</button></Link><br/>
-				    	<button>Upload photo</button><br/>
+				    	<input type="file" id="file" className="inputfile" accept="image/*" name='deviceUpload' capture="camera" onChange={this.handleUpload} />
+				    	<label htmlFor="file" className="choose-file">Choose a file</label><br/>
 				    	<Link to={{ pathname: `/addItem`, state: { blob: null, blobURL: null }}}><button>Review without photo</button></Link>
 			    	</div>
 			    </Modal.Body>

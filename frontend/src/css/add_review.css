@@ -36,3 +36,22 @@
 	border-radius: 4px;
 	margin: 5px 0;
 }
+
+.modal-body .choose-file {
+	background: blue;
+	border: none;
+	color: white;
+	font-size: 17px;
+	padding: 10px;
+	border-radius: 4px;
+	margin: 5px 0;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
