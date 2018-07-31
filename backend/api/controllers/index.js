@@ -119,7 +119,6 @@ fetchMenu = (req, res) => {
 item = (req, res) => {
 	const { id } = req.query;
 	Item.findById(id)
-		.populate('ratings')
 		.then(item => {
 			res.json(item);
 		})
