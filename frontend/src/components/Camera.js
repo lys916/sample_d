@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Camera from 'react-camera';
 import { Link } from 'react-router-dom';
+import '../css/camera.css';
 
 class CameraComp extends React.Component {
     state = {
@@ -28,6 +29,10 @@ class CameraComp extends React.Component {
 		this.setState({showCam: true});
 	}
 
+    cancelView = ()=>{
+        this.props.history.push('/');
+    }
+
 	takePicture = ()=> {
         this.camera.capture()
             .then(blob => {
@@ -46,6 +51,7 @@ class CameraComp extends React.Component {
 	render() {
 		return (
 			<div className="camera-container">
+                <div className="exit" onClick={()=>{this.cancelView()}}>x</div>
 				<div className="camera-content">
 					{ this.state.showCam ? 
                         <div>
@@ -56,12 +62,7 @@ class CameraComp extends React.Component {
                                     <div style={style.captureButton} />
                                 </div>
                             </Camera>
-                            <div>
-                                <label for='deviceUpload'>Select photo from device: </label>
-                                <input type="file" accept="image/*" name='deviceUpload' capture="camera" onChange={this.handleUpload} />
-                            </div>
-                            <br/>
-                            <Link to={{ pathname: `/addItem`, state: { blob: null, blobURL: null }}}><button className="skip-photo">Review without a photo</button></Link>
+                            
                         </div> : 
                         <div>
                             <img style={style.captureImage} src={this.state.blobURL}/>
@@ -81,6 +82,8 @@ class CameraComp extends React.Component {
 const style = {
   preview: {
     position: 'relative',
+    backgroundColor: 'black',
+    height: '100vh'
   },
   captureContainer: {
     display: 'flex',
@@ -110,3 +113,10 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {  })(CameraComp);
+
+// <div>
+//                                 <label for='deviceUpload'>Select photo from device: </label>
+//                                 <input type="file" accept="image/*" name='deviceUpload' capture="camera" onChange={this.handleUpload} />
+//                             </div>
+//                             <br/>
+//                             <Link to={{ pathname: `/addItem`, state: { blob: null, blobURL: null }}}><button className="skip-photo">Review without a photo</button></Link>

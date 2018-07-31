@@ -11,7 +11,7 @@ class Home extends React.Component {
 		console.log('home render');
 		return (
 			<div className="home-container">
-				<SearchBar />
+				<SearchBar history={this.props.history}/>
 				<SearchItems />
 				<NearbyItem />
 				<br/><br/>
