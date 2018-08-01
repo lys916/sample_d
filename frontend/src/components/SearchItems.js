@@ -48,7 +48,7 @@ class SearchItem extends React.Component {
                               <div className="desc-top">
                                  <div className="name">{index + 1}. {item.name}</div>
                                  <i className="material-icons">star</i>
-                                 <div className="avg-rating">{item.totalRatings / item.reviews.length}</div>
+                                 <div className="avg-rating">{item.totalRating / item.reviews.length}</div>
 
                               </div>
                               

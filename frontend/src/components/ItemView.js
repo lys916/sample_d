@@ -147,7 +147,7 @@ class ItemView extends React.Component {
 				<div className="dish-info">
 					<div className="item-name">{item.name}</div>
 					<div className="rating-container">
-						<div className="rating">{item.totalRatings ? (item.totalRatings / item.reviews.length) : null}</div>
+						<div className="rating">{item.totalRating ? (item.totalRating / item.reviews.length) : null}</div>
 						<i className="material-icons">star</i>
 					</div>
 					<div className="place-name">{item.place.name}</div>

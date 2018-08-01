@@ -43,7 +43,7 @@ class NearbyItem extends React.Component {
                                  <div className="name">{index + 1}. {item.name}</div>
                                  <i className="material-icons">star</i>
                                  <div className="avg-rating">
-                                 {item.totalRatings / item.reviews.length}</div>
+                                 {item.totalRating / item.reviews.length}</div>
 
                               </div>
                               

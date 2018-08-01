@@ -50,6 +50,7 @@ createItem = (req, res)=>{
 }
 
 addRating = (req, res)=>{
+	console.log('Adding Rating...');
 	// NOTE:
 	// this is where we save image to amazon by requiring uploadPhoto module
 	// after saving the image successfully.. 
@@ -60,9 +61,12 @@ addRating = (req, res)=>{
 		// need to add user authenication
 		const reviewData = {text: review, rating: rating};
 		console.log('REVIEW DATA', reviewData);
-		Item.findByIdAndUpdate(itemId, {$push: {reviews: reviewData}, $inc: {totalRatings: rating}}, { new: true })
-			.then(updatedItem=>{ res.json(updatedItem); })
-			.catch(err => res.status(500).json({ 'error updating item in addRating': err }));
+		Item.findByIdAndUpdate(itemId, {$push: {reviews: reviewData}, $inc: {totalRating: rating}}, { new: true })
+			.then(updatedItem=>{ 
+				console.log('Updated Review', updatedItem.reviews);
+				res.json(updatedItem); 
+			})
+			.catch(err => console.log('ERROR', err));
 	} else res.status(400).json({ error: 'must provide a rating' });
 }
 
