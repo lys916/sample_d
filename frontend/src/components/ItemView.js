@@ -26,7 +26,7 @@ class ItemView extends React.Component {
 		this.props.getItem(this.props.match.params.id);
 		console.log('MAIN PROPS', this.props);
 		console.log('itemview mounted');
-		console.log(document.getElementById("map-container"))
+		console.log('map-container in componentDidMount', document.getElementById("map-container"))
 		
 	}
 
@@ -34,17 +34,17 @@ class ItemView extends React.Component {
 		if(!state.mapSet){
 			const item = props.viewItem;
 			if(item.loc.coordinates.length > 1){
-		   	var myLatlng = new window.google.maps.LatLng(item.loc.coordinates[1],item.loc.coordinates[0]);
-				var mapOptions = {
-				  zoom: 16,
-				  center: myLatlng
+		   	const myLatlng = new window.google.maps.LatLng(item.loc.coordinates[1],item.loc.coordinates[0]);
+				const mapOptions = {
+					zoom: 16,
+					center: myLatlng
 				}
 				console.log('DERIVED PROPS', props);
 				console.log('MAP CONTAINER', document.getElementById("map-container"));
 
-				var map = new window.google.maps.Map(document.getElementById("map-container"), mapOptions);
+				const map = new window.google.maps.Map(document.getElementById("map-container"), mapOptions);
 
-				var marker = new window.google.maps.Marker({
+				const marker = new window.google.maps.Marker({
 				    position: myLatlng,
 				    title:"Test title"
 				});
@@ -136,7 +136,7 @@ class ItemView extends React.Component {
 
 				<div className="image">
 					<AddPhotoModal show={this.state.showPhotoModal} toggle={this.toggleModal} handleUpload={this.handleUpload } fromRoute="viewItem" itemId={this.props.match.params.id}/>
-					<div onClick={()=>{this.toggleModal('photo')}}>
+						<div onClick={()=>{this.toggleModal('photo')}}>
 							<AddButton style={addButtonStyle} />
 						</div>
 					<div className="arrow" onClick={()=>{this.viewNextImage('prev')}}><i className="material-icons">keyboard_arrow_left</i></div>

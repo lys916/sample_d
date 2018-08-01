@@ -51,7 +51,6 @@ class CameraComp extends React.Component {
             this.props.addPhoto({imageURL: this.state.blobURL, imageBlob: this.state.blob, itemId: this.props.location.itemId});
             this.props.history.push(`/items/${this.props.location.itemId}`);
         }
-       
    }
 
 	render() {
@@ -75,9 +74,10 @@ class CameraComp extends React.Component {
                             <img style={style.captureImage} src={this.state.blobURL}/>
                             <div>
                                 <button onClick={()=>{this.setState({showCam: true})}}>Re-take</button>
-                                <Link to={{ pathname: `/addItem`, cameraState: { ...this.props.location.addItemState, imageBlob: this.state.blob, imageURL: this.state.blobURL, showModal: false }}}>no
+                                <Link to={{ pathname: `/addItem`, state: { ...this.props.location.addItemState, imageBlob: this.state.blob, imageURL: this.state.blobURL, showModal: false }}}>
+                                    Next
                                 </Link>
-                                <div onClick={(e)=>{this.handleUpload(e)}}>Next</div>
+                                {/* <div onClick={(e)=>{this.handleUpload(e)}}>Next</div> */}
                             </div>
                         </div>
 	        		}

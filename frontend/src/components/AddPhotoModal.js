@@ -9,10 +9,9 @@ class AddPhotoModal extends React.Component {
 	state = {
 	}
 
-	
-   test = ()=>{
-   	alert();
-   }
+	test = ()=>{
+		alert();
+	}
 	render() {
 		console.log('prop - add review modal', this.props);
 		let test = {};
@@ -25,11 +24,10 @@ class AddPhotoModal extends React.Component {
 		return (
 			<div className="add-photo">
 				<Modal className="modal" show={this.props.show}>
-				
 			    <Modal.Body className="modal-body">
-			    <div className="exit" onClick={()=>{this.props.toggle('photo')}}>
-					<i className="material-icons">cancel</i>
-				</div>
+					<div className="exit" onClick={()=>{this.props.toggle('photo')}}>
+						<i className="material-icons">cancel</i>
+					</div>
 			    	<div className="modal-body">
 				    	<Link to={{ pathname: `/takePhoto`, addItemState: {...this.props}, fromRoute: this.props.fromRoute, itemId: this.props.itemId }}>
 				    		<div className="camera-button"  onClick={()=>{this.props.toggle('photo')}}>
@@ -37,14 +35,11 @@ class AddPhotoModal extends React.Component {
 					    		<div>Open camera NOW</div>
 				    		</div>
 				    	</Link><br/>
-
 				    	<div className="device-file">
-				    	<i className="material-icons">cloud_upload</i>
-				    	<input type="file" id="file" className="inputfile" accept="image/*" name='deviceUpload' capture="camera" onChange={this.props.handleUpload} />
-
-				    	<label htmlFor="file" className="choose-file">Choose a file</label><br/>
+							<i className="material-icons">cloud_upload</i>
+							<input type="file" id="file" className="inputfile" accept="image/*" name='deviceUpload' capture="camera" onChange={this.props.handleUpload} />
+							<label htmlFor="file" className="choose-file">Choose a file</label><br/>
 				    	</div>
-
 			    	</div>
 			    </Modal.Body>
 			  </Modal>

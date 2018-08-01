@@ -37,13 +37,13 @@ class ItemInput extends React.Component {
     }
    componentDidMount() {
     	// blobURL and blob image coming from Camera.js
-   //  	this.setState({
-   //  		imageURL: this.props.location.state.blobURL,
-			// imageBlob: this.props.location.state.blob,
+    	this.setState({
+    		imageURL: this.props.location.state.blobURL,
+			imageBlob: this.props.location.state.blob,
 			// selectedRestaurant: this.props.location.state.item.place,
 			// name: this.props.location.state.item.name,
 			// selectedItem: this.props.location.state.item.name
-   //  	});
+    	});
     	// get user's current location in lat and lng
     	if(this.props.location.cameraState){
     		this.setState(this.props.location.cameraState);
@@ -106,9 +106,8 @@ class ItemInput extends React.Component {
 	   const file = e.target.files[0];
 	   const blobURL = URL.createObjectURL(file);
 	   this.setState({showModal: false, imageBlob: file, imageURL: blobURL }, ()=>{
-	   });
-     
-   }
+	   }); 
+    }
 
 	// 'handleSubmit' will send item data over to action 'add item'
 	handleSubmit = (event) => {
@@ -197,24 +196,22 @@ class ItemInput extends React.Component {
 						<div onClick={this.toggleModal}>
 							<AddButton style={addButtonStyle} />
 						</div>
-					</div> : null } 
+					</div> 
+				: null } 
 					
 
 				{/*IF USER IS AT THE CURRENT RESTAURANT - SHOW A LIST OF RESTAURANT FOR USER SELECTION*/}
-				{ this.state.atCurrentRestaurant && !this.state.selectedRestaurant ? 
+				{this.state.atCurrentRestaurant && !this.state.selectedRestaurant ? 
 					<div className="rest-list">
 						<div>Select a restaurant</div>
-						{
-							restaurantList.map(rest => {
-								return (
-								
-										<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
-											<div className="rest-name">{rest.name}</div>
-											<div className="rest-address">{rest.formatted_address}</div>
-										</div>
-								);
-							})
-						}
+						{restaurantList.map(rest => {
+							return (
+								<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
+									<div className="rest-name">{rest.name}</div>
+									<div className="rest-address">{rest.formatted_address}</div>
+								</div>
+							);
+						})}
 						<br/>
 						<br/>
 						<br/>
@@ -223,7 +220,8 @@ class ItemInput extends React.Component {
 
 
 				{/*SHOW SELECTED RESTAURANT INFO AND MENU LIST*/}
-					{this.state.selectedRestaurant ? <div className="selected-rest-container">
+				{this.state.selectedRestaurant ? 
+					<div className="selected-rest-container">
 						<div className="selected-rest" onClick={()=>{this.toggleStageDelete()}}>
 							<div className="rest-name">
 								{this.state.selectedRestaurant.name}
@@ -262,20 +260,18 @@ class ItemInput extends React.Component {
 
 						
 						{this.state.stageDelete ? <div className="delete-selected-rest" onClick={()=>{this.handleRemoveRestaurant()}}>Remove</div> : null}
-					</div> : null
-				}
+					</div> 
+				: null}
 
 				{/*INPUT BAR FOR SEARCHING FOR PLACES*/}
 				{this.state.searchPlaces ? <input id="pac-input" name="term" onClick={this.setupGooglePlaces} onChange={this.handleOnChange} placeholder="enter city & restaurant name" value={this.state.term} style={{width: '80vw', maxWidth: '500px'}}/> : null}
 
 				{/*ADD REVIEW STATELESS COMPONENT*/}
-				{
-					this.state.selectedItem ? 
-					<form onSubmit={(event) => { this.handleSubmit(event) }}>
-						<AddReview ratingChanged={this.ratingChanged} handleOnChange={this.handleOnChange} rating={this.state.rating} value={this.state.value}/>
-						<button type="submit">Submit</button>
-					</form> : null
-				}
+				{this.state.selectedItem ? 
+				<form onSubmit={(event) => { this.handleSubmit(event) }}>
+					<AddReview ratingChanged={this.ratingChanged} handleOnChange={this.handleOnChange} rating={this.state.rating} value={this.state.value}/>
+					<button type="submit">Submit</button>
+				</form> : null}
 				<div className="break-vh"></div>
 			</div>
 		);
