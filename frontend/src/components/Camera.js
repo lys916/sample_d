@@ -24,6 +24,7 @@ class CameraComp extends React.Component {
     }
 
     componentWillUnmount() {
+        console.log('componentWillUnmount gets called in Camera.js');
         this.state.video.srcObject.getTracks().forEach(track => track.stop());
     }
 

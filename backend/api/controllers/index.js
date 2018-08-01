@@ -40,7 +40,7 @@ createItem = (req, res)=>{
 		// newItem.tags = tags;
 		newItem.save()
 			.then(savedItem => {
-				console.log('ITEM SAVED');
+				console.log('ITEM SAVED', savedItem);
 				res.json(savedItem);
 			})
 			.catch(err => console.log({ 'error creating new item': err }));
