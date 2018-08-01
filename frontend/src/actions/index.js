@@ -1,5 +1,4 @@
 import axios from 'axios';
-import GOOGLE_API_KEY from '../components/config';
 
 const searchURL = 'https://api.foursquare.com/v2/venues/search';
 const detailURL = 'https://api.foursquare.com/v2/venues';
@@ -228,7 +227,6 @@ export const getItem = (id) => {
 		dispatch({type: 'ITEM_LOADING'});
 		axios.get(`${ROOT_URL}/item`, {params: {id}})
 			.then(item => {
-
 				dispatch({
 					type: 'GOT_ITEM',
 					payload: item.data
@@ -236,14 +234,6 @@ export const getItem = (id) => {
 			});
 	}
 }
-
-export const getSearchAutoComplete = (query, session) => {
-	const AUTOCOMPLETE_URL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
-	
-	return (dispatch) => {
-		axios.get(`${AUTOCOMPLETE_URL}?input=${query}&key=${GOOGLE_API_KEY}&session_token=${session}`)
-	}
-};
 
 // export const getLocation = (data)=>{
 // 	let qs = {
