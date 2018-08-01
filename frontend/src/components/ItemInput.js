@@ -37,13 +37,12 @@ class ItemInput extends React.Component {
     }
    componentDidMount() {
     	// blobURL and blob image coming from Camera.js
-    	this.setState({
-    		imageURL: this.props.location.state.blobURL,
-			imageBlob: this.props.location.state.blob,
-			// selectedRestaurant: this.props.location.state.item.place,
-			// name: this.props.location.state.item.name,
-			// selectedItem: this.props.location.state.item.name
-    	});
+    	if(this.props.location.state){
+	    	this.setState({
+	    			imageURL: this.props.location.state.blobURL,
+					imageBlob: this.props.location.state.blob,
+	    	});
+    	}
     	// get user's current location in lat and lng
     	if(this.props.location.cameraState){
     		this.setState(this.props.location.cameraState);
