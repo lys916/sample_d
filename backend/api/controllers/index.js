@@ -28,7 +28,7 @@ createItem = (req, res)=>{
 		if (price) newItem.price = price;
 		if (rating) {
 			newItem.ratings.push({ rating });
-			newItem.averageRating = rating;
+			newItem.totalRating = rating;
 		}
 		newItem.place = selectedRestaurant;
 		newItem.placeId = selectedRestaurant.id;
