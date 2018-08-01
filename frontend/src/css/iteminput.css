@@ -1,3 +1,29 @@
+.item-input {
+}
+
+.item-input .staged-image {
+	position: relative;
+	background: white;
+}
+
+.staged-image img {
+	height: 200px;
+}
+
+.staged-image .exit i{
+	position: absolute;
+	font-size: 30px;
+	right: 0;
+	top: 0;
+	color: #bbbbbb;
+	margin: 3px;
+}
+
+
+.selected-rest-container {
+	background: white;
+	margin-top: 10px;
+}
 /*RESTAURANT LIST*/
 .rest-list .select-rest {
 	border-top: 1px solid #dedede;
@@ -8,3 +34,35 @@
 		border-top: 1px solid #dedede;
 	margin: 3px 0px;
 }
+
+.item-input .selected-item {
+	font-size: 22px;
+}
+
+.item-input button {
+	background: #DE3734;
+	color: white;
+	font-size: 18px;
+	padding: 5px 15px;
+	border: none;
+	border-radius: 5px;
+}
+
+/*STAR RATING AND REVIEW*/
+.add-review {
+	background: white;
+	text-align: center;
+}
+
+.add-review .star-rating {
+	width: 190px;
+	margin: 0 auto;
+}
+
+.add-review .review-input {
+	height: 75px;
+	font-size: 18px;
+}
+
+
+

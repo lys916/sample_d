@@ -4,6 +4,9 @@ import Script from 'react-load-script';
 import GOOGLE_API_KEY from './config';
 import { addItem, addRating, fetchMenu } from '../actions';
 import AddReview from './AddReview';
+import AddButton from './AddButton';
+import AddPhotoModal from './AddPhotoModal';
+import { Link } from 'react-router-dom';
 import '../css/iteminput.css';
 
 class ItemInput extends React.Component {
@@ -23,20 +26,28 @@ class ItemInput extends React.Component {
 		imageBlob: null,
 		atCurrentRestaurant: true,
 		selectRestaurant: false,
-		selectedRestaurant: false,
-		selectedItem: false,
+		selectedRestaurant: null,
+		selectedItem: null,
 		stageDelete: false,
 		newDish: false,
 		searchPlaces: false,
-		term: ''
+		term: '',
+		imageAdded: false,
+		showModal: false
     }
    componentDidMount() {
     	// blobURL and blob image coming from Camera.js
-    	this.setState({
-    		imageURL: this.props.location.state.blobURL,
-			imageBlob: this.props.location.state.blob,
-    	});
+   //  	this.setState({
+   //  		imageURL: this.props.location.state.blobURL,
+			// imageBlob: this.props.location.state.blob,
+			// selectedRestaurant: this.props.location.state.item.place,
+			// name: this.props.location.state.item.name,
+			// selectedItem: this.props.location.state.item.name
+   //  	});
     	// get user's current location in lat and lng
+    	if(this.props.location.cameraState){
+    		this.setState(this.props.location.cameraState);
+    	}
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((position)=>{
 				const { latitude, longitude } = position.coords;
@@ -79,6 +90,10 @@ class ItemInput extends React.Component {
 		});
 	}
 
+	toggleModal = ()=>{
+		this.setState({showModal: !this.state.showModal, show: !this.state.show});
+	}
+
 	handleOnChange = (event) => {
 		this.setState({ [event.target.name]: event.target.value });
 	}
@@ -86,6 +101,14 @@ class ItemInput extends React.Component {
 	ratingChanged = (rating)=>{
 		this.setState({rating});
 	}
+
+	handleUpload = (e) => {
+	   const file = e.target.files[0];
+	   const blobURL = URL.createObjectURL(file);
+	   this.setState({showModal: false, imageBlob: file, imageURL: blobURL }, ()=>{
+	   });
+     
+   }
 
 	// 'handleSubmit' will send item data over to action 'add item'
 	handleSubmit = (event) => {
@@ -139,7 +162,9 @@ class ItemInput extends React.Component {
 	handleSelectItem = (item)=>{
 		console.log('ITEM SELECT', item);
 		if(item){
-			this.setState({name: item.name, id: item._id});
+			this.setState({name: item.name, id: item._id}, ()=>{
+				this.props.history.push(`${this.props.location.pathname}/${item.name}`);
+			});
 		}
 		this.setState({selectedItem: true});
 	}
@@ -148,7 +173,12 @@ class ItemInput extends React.Component {
 		this.setState({searchPlaces: true, selectRestaurant: false});
 	}
 
+	cancelView = ()=>{
+        this.props.history.push('/');
+    }
+
 	render() {
+		console.log('input item props', this.props);
 		const restaurantList = [];
 		if(this.state.locations){
 			for(let i = 0; i < 5; i++){
@@ -156,12 +186,19 @@ class ItemInput extends React.Component {
 			}
 		}
 		return (
-			<div className="item-input-container">
-
+			<div className="item-input">
+				<AddPhotoModal show={this.state.showModal} toggle={this.toggleModal} {...this.state} {...this.props} handleUpload={this.handleUpload }/>
 				{/*IMAGE CONTAINER*/}
-				{this.props.location.state.blobURL ? <div className="staged-image">
-					<img src={this.props.location.state.blobURL}/>
-				</div> : <div>You're leaving a review without a photo</div> }
+				{this.state.selectedItem ? 
+					<div className="staged-image">
+						
+						{this.state.imageURL ? <img src={this.state.imageURL} /> : <img src="/assets/no_image.png" /> }
+						{/*<div className="exit" onClick={()=>{this.cancelView()}}><i className="material-icons">cancel</i></div>*/}
+						<div onClick={this.toggleModal}>
+							<AddButton style={addButtonStyle} />
+						</div>
+					</div> : null } 
+					
 
 				{/*IF USER IS AT THE CURRENT RESTAURANT - SHOW A LIST OF RESTAURANT FOR USER SELECTION*/}
 				{ this.state.atCurrentRestaurant && !this.state.selectedRestaurant ? 
@@ -170,10 +207,11 @@ class ItemInput extends React.Component {
 						{
 							restaurantList.map(rest => {
 								return (
-									<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
-										<div className="rest-name">{rest.name}</div>
-										<div className="rest-address">{rest.formatted_address}</div>
-									</div>
+								
+										<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
+											<div className="rest-name">{rest.name}</div>
+											<div className="rest-address">{rest.formatted_address}</div>
+										</div>
 								);
 							})
 						}
@@ -184,8 +222,8 @@ class ItemInput extends React.Component {
 					</div> : null }
 
 
-				{/*AFTER USER SELECTED A RESTAURANT - SHOW SELECTED RESTAURANT INFO AND MENU LIST*/}
-					{this.state.selectedRestaurant ? <div className="selected-rest-wrapper">
+				{/*SHOW SELECTED RESTAURANT INFO AND MENU LIST*/}
+					{this.state.selectedRestaurant ? <div className="selected-rest-container">
 						<div className="selected-rest" onClick={()=>{this.toggleStageDelete()}}>
 							<div className="rest-name">
 								{this.state.selectedRestaurant.name}
@@ -220,7 +258,7 @@ class ItemInput extends React.Component {
 							<input onChange={this.handleOnChange} name="name" value={this.state.name} placeholder="
 							Enter dish name"/>
 							<button onClick={()=>{this.handleSelectItem()}}>Next</button>
-						</div> : <div>{this.state.name}</div> }
+						</div> : <div className="selected-item">{this.state.name}</div> }
 
 						
 						{this.state.stageDelete ? <div className="delete-selected-rest" onClick={()=>{this.handleRemoveRestaurant()}}>Remove</div> : null}
@@ -238,10 +276,31 @@ class ItemInput extends React.Component {
 						<button type="submit">Submit</button>
 					</form> : null
 				}
-
+				<div className="break-vh"></div>
 			</div>
 		);
 	}
+}
+
+const addButtonStyle = {
+	button: {
+		background: '#DE3734',
+		height: '35px',
+		width: '35px',
+		position: 'absolute',
+		color: 'white',
+		bottom: '0',
+		right: '0',
+		borderRadius: '100%',
+		margin: '5px',
+		boxShadow: '2px 3px 4px #bbbbbb'
+	},
+	icon: {
+		fontSize: '23px',
+		marginTop: '5px'
+	},
+	iconImage: 'add_a_photo'
+
 }
 
 const mapStateToProps = (state) => {

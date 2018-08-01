@@ -15,7 +15,6 @@ class NearbyItem extends React.Component {
 
    componentDidMount() {
       // get current location and search nearby top dishes
-      if(this.props.nearbyItems.length === 0){
          if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position)=>{
                const { latitude, longitude } = position.coords;
@@ -25,7 +24,6 @@ class NearbyItem extends React.Component {
                })
             });
          } else console.log("Geolocation is not supported by this browser");
-      }
    }
 
 	render() {
@@ -44,7 +42,8 @@ class NearbyItem extends React.Component {
                               <div className="desc-top">
                                  <div className="name">{index + 1}. {item.name}</div>
                                  <i className="material-icons">star</i>
-                                 <div className="avg-rating">{item.totalRating / item.ratings.length}</div>
+                                 <div className="avg-rating">
+                                 {item.totalRatings / item.reviews.length}</div>
 
                               </div>
                               

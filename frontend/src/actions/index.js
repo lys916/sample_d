@@ -93,6 +93,39 @@ export const addItem = (itemData, history) => {
 	}
 }
 
+export const addPhoto = (itemData, history) => {
+	console.log('adding photo', itemData);
+	// if user includes a photo then we'll save the photo to
+	// aws first then we'll save the item info to db.
+	// else we just save the item info to db
+	if(itemData.imageBlob){
+		const data = new FormData();
+		data.append('file', itemData.imageBlob);
+		// sending dish/item data to server 'createItem' route
+		
+		return (dispatch) => {
+			dispatch({type: 'ADDING_PHOTO'});
+			axios.post(`${ROOT_URL}/uploadPhoto`, data, {
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				}
+			})
+			.then(imageUrl => {
+				itemData.imageUrl = imageUrl.data.url;
+				axios.put(`${ROOT_URL}/addPhoto`, itemData)
+				.then(updatedItem => {
+					console.log('ADDED PHOTO', updatedItem.data);
+					dispatch({
+						type: 'UPDATED_ITEM',
+						payload: updatedItem.data
+					});
+				});
+
+			})
+		}
+	}
+}
+
 export const addRating = (itemData, history) => {
 	// if user includes a photo then we'll save the photo to
 	// aws first then we'll save the item rating info to db.
@@ -128,11 +161,15 @@ export const addRating = (itemData, history) => {
 			axios.post(`${ROOT_URL}/addRating`, itemData)
 			.then(savedItem => {
 				dispatch({
-					type: 'SAVED_ITEM',
+					type: 'UPDATED_ITEM',
 					payload: savedItem.data
 				});
-				alert('Thank you for leaving a review!');
-				history.push('/');
+					if(itemData.fromRoute === 'viewItem'){
+						history.push(`/items/${itemData.itemId}`);
+					}else{
+						alert('Thank you for leaving a review!');
+						history.push('/');
+					}
 			});
 		}
 	}
@@ -143,6 +180,7 @@ export const addRating = (itemData, history) => {
       // });
 
 export const searchNearby = (lat, long) => {
+	console.log('fetching near by items');
 	return (dispatch) => {
 		const config = {
 			params: {lat: lat, long: long}
@@ -150,6 +188,7 @@ export const searchNearby = (lat, long) => {
 		dispatch({type: 'NEARBY_LOADING'});
 		axios.get(`${ROOT_URL}/nearbyItems`, config)
 			.then(items => {
+				console.log('return nearby items', items);
 				dispatch({
 					type: 'NEARBY_ITEMS',
 					payload: items.data
@@ -223,6 +262,7 @@ export const fetchMenu = (id) => {
 }
 
 export const getItem = (id) => {
+	console.log('ID GET ITEM', id);
 	return (dispatch) => {
 		dispatch({type: 'ITEM_LOADING'});
 		axios.get(`${ROOT_URL}/item`, {params: {id}})

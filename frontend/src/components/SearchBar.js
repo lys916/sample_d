@@ -13,6 +13,7 @@ class SearchBar extends React.Component {
 		lat: null,
 		long: null,
 		inputType: 'select',
+		showModal: false
 	}
 
 	componentDidMount() {
@@ -79,15 +80,24 @@ class SearchBar extends React.Component {
 		}
 	}
 
+	toggleModal = ()=>{
+		this.setState({showModal: !this.state.showModal});
+	}
+
 	handleOnChange = (event) => {
 		if (event.target.value === "Current location") this.getCurrentLocation();
 		this.setState({ [event.target.name]: event.target.value });
 	}
 
+	handleAddReview = ()=>{
+		this.props.history.push({pathname: '/addItem'});
+	}
+
 	render() {
 		return (
 			<div className="search">
-				<AddReviewModal history={this.props.history}/>
+				<div onClick={this.handleAddReview} className="add-button">Add review</div>
+				<AddReviewModal history={this.props.history} show={this.state.showModal} toggle={this.toggleModal}/>
 				<form onSubmit={(event)=>{this.handleSearch(event)}}>
 				<input className="search-term" placeholder="e.g. tacos, noodles" value={this.state.term} name="term" onChange={this.handleOnChange} />
 

@@ -1,0 +1,62 @@
+/*ADD PHOTO MODAL*/
+.modal .exit i{
+	position: absolute;
+	top: 0;
+	right: 0;
+	color: gray;
+	font-size: 30px;
+}
+
+.add-review .modal .modal-body{
+	min-width: 400px;
+	color: red;
+}
+
+.modal-body {
+	text-align: center;
+}
+
+.modal-body .camera-button {
+	display: flex;
+	background: #de3732;
+	border: none;
+	color: white;
+	font-size: 17px;
+	padding: 10px;
+	border-radius: 4px;
+	justify-content: center;
+	width: 70%;
+	font-weight: bold;
+	margin: 0 auto;
+}
+
+.modal-body i {
+	margin-right: 10px;
+}
+
+.modal-body .device-file {
+	display: flex;
+	background: #de3732;
+	border: none;
+	color: white;
+	font-size: 17px;
+	padding: 10px 10px 5px 10px;
+	border-radius: 4px;
+	justify-content: center;
+	width: 70%;
+	font-weight: bold;
+	margin: 0 auto;
+}
+
+.modal-body .choose-file {
+
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}

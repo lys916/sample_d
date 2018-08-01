@@ -5,7 +5,8 @@ const {
     fetchMenu,
     addRating,
     searchItems,
-    item
+    item, 
+    addPhoto
  } = require('../controllers');
 
 module.exports = server => {
@@ -16,5 +17,6 @@ module.exports = server => {
     server.route('/searchItems').get(searchItems);
     server.route('/fetchMenu').get(fetchMenu);
     server.route('/item').get(item);
+    server.route('/addPhoto').put(addPhoto);
     // server.route('/items').get(findItems);
 }
