@@ -57,6 +57,7 @@ const VenueReducer = (venues = [], action) => {
 
 const initItem = {
 	allItems: [],
+	autoCompleteItems: [],
 	searchLoading: false,
 	searchItems: [],
 	nearbyItems: [],
@@ -104,7 +105,7 @@ const ItemReducer = (state = initItem, action) => {
 			return {...state, searchItems: action.payload, searchLoading: false}
 
 		default:
-		return state;
+			return state;
 	}
 };
 

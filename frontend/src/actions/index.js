@@ -227,7 +227,6 @@ export const getItem = (id) => {
 		dispatch({type: 'ITEM_LOADING'});
 		axios.get(`${ROOT_URL}/item`, {params: {id}})
 			.then(item => {
-
 				dispatch({
 					type: 'GOT_ITEM',
 					payload: item.data

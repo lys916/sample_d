@@ -12,16 +12,17 @@ class SearchBar extends React.Component {
 		location: '',
 		lat: null,
 		long: null,
-		inputType: 'select'
+		inputType: 'select',
 	}
 
 	componentDidMount() {
 		console.log('history', this.props.history);
-		
-	}
-
-	handleOnChange = (event) => {
-		this.setState({ [event.target.name]: event.target.value });
+		const input = document.getElementById('search-location');
+		const autocomplete = new window.google.maps.places.Autocomplete(input);
+		autocomplete.addListener('place_changed', () => {
+			const place = autocomplete.getPlace();
+			this.setState({ location: place.formatted_address });
+		});
 	}
 
 	getCurrentLocation = ()=>{
@@ -60,7 +61,6 @@ class SearchBar extends React.Component {
             }
          });
       }
-			
 		this.setState({term: ''});
 	}
 
@@ -80,24 +80,21 @@ class SearchBar extends React.Component {
 	}
 
 	handleOnChange = (event) => {
-		if(event.target.value === "Current location"){
-			this.getCurrentLocation();
-		}
+		if (event.target.value === "Current location") this.getCurrentLocation();
 		this.setState({ [event.target.name]: event.target.value });
 	}
 
 	render() {
-
 		return (
 			<div className="search">
 				<AddReviewModal history={this.props.history}/>
 				<form onSubmit={(event)=>{this.handleSearch(event)}}>
 				<input className="search-term" placeholder="e.g. tacos, noodles" value={this.state.term} name="term" onChange={this.handleOnChange} />
 
-				<input list="current-location" name="location" placeholder="enter a location" value={this.state.location} onChange={this.handleOnChange}/>
+				<input id='search-location' list="current-location" name="location" placeholder="enter a location" value={this.state.location} onChange={this.handleOnChange}/>
 
 				<datalist id="current-location">
-				  <option value="Current location" className="option" >Current location</option>
+					<option value="Current location" className="option" >Current location</option>
 				</datalist>
 				<button type="submit">Search</button>
 				</form>
@@ -108,6 +105,7 @@ class SearchBar extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		predictions: state.items.autoCompleteItems,
 	} 
 }
 
