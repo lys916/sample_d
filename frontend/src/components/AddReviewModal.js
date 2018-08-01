@@ -25,6 +25,7 @@ class AddReviewModal extends React.Component {
    }
 
 	render() {
+		console.log('prop - add review modal', this.props.item);
 		return (
 			<div className="add-review">
 				<Modal className="modal" show={this.props.show}>
@@ -38,7 +39,7 @@ class AddReviewModal extends React.Component {
 			    </Modal.Body>
 
 			    <Modal.Footer>
-			      <Button onClick={this.props.toggle}>Cancel</Button>
+			      <Button onClick={()=>{this.props.toggle('review')}}>Cancel</Button>
 			    </Modal.Footer>
 			  </Modal>
 			</div>

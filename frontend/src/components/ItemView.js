@@ -2,27 +2,29 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { venues } from '../dummy-data';
 import { Link } from 'react-router-dom';
-import { getItem} from '../actions';
+import { getItem, addPhoto, addRating} from '../actions';
 import { getAverageRating } from '../helper-functions';
 import AddReviewModal from './AddReviewModal';
 import AddButton from './AddButton';
 import AddReview from './AddReview';
+import AddPhotoModal from './AddPhotoModal';
 import '../css/view_item.css';
 
 class ItemView extends React.Component {
 
 	state = {
-		showModal: false,
+		showReviewModal: false,
 		photoIndex: 0,
 		addRating: false,
 		rating: '',
 		review: '',
-		mapSet: false
+		mapSet: false,
+		showPhotoModal: false
 	};
 	
 	componentDidMount(){
 		this.props.getItem(this.props.match.params.id);
-	
+		console.log('MAIN PROPS', this.props);
 		console.log('itemview mounted');
 		console.log(document.getElementById("map-container"))
 		
@@ -37,6 +39,9 @@ class ItemView extends React.Component {
 				  zoom: 16,
 				  center: myLatlng
 				}
+				console.log('DERIVED PROPS', props);
+				console.log('MAP CONTAINER', document.getElementById("map-container"));
+
 				var map = new window.google.maps.Map(document.getElementById("map-container"), mapOptions);
 
 				var marker = new window.google.maps.Marker({
@@ -48,12 +53,10 @@ class ItemView extends React.Component {
 		   	return state.mapSet = true;
 			}
 		}
+		return state;
 		
 	}
 
-	componentWillMount(){
-		console.log('itemview will mount');
-	}
 
 	componentDidUpdate(){
 		console.log('itemview did update');
@@ -63,8 +66,14 @@ class ItemView extends React.Component {
 		console.log('itemview unmount');
 	}
 
-	toggleModal = ()=>{
-		this.setState({showModal: !this.state.showModal});
+	toggleModal = (modal)=>{
+		if(modal === 'review'){
+			this.setState({showReviewModal: !this.state.showReviewModal});
+		}
+		if(modal === 'photo'){
+			this.setState({showPhotoModal: !this.state.showPhotoModal});
+		}
+
 	}
 
 	handleOnChange = (event) => {
@@ -94,26 +103,42 @@ class ItemView extends React.Component {
 		if (this.props.viewItem._id) {
 			// create new review for this dish
 			// send item data to action
-			const itemId = this.props.viewItem._id;
-			const rating = this.state.rating;
-			const review = this.state.review;
-			alert('In process of changing the backend model, wait after the backend is done then save this rating and review.');
-
-			// this.props.addRating({id, rating, review});
+			const itemData = {
+				itemId: this.props.viewItem._id,
+				rating: this.state.rating,
+				review: this.state.review,
+				fromRoute: 'viewItem'
+			}
+			this.setState({rating: '', review: '', addRating: !this.state.addRating});
+			this.props.addRating(itemData, this.props.history);
 		} 
-		this.setState({rating: '', review: ''});
 	}
+
+	handleUpload = (e) => {
+	   const file = e.target.files[0];
+	   const blobURL = URL.createObjectURL(file);
+	   this.setState({showPhotoModal: false }, ()=>{
+	   });
+     	this.props.addPhoto({imageURL: blobURL, imageBlob: file, itemId: this.props.match.params.id});
+   }
 
 	render() {
 		const item = this.props.viewItem;
 		console.log('props', this.props);
+		const highlights = this.props.viewItem.reviews.filter(review=>{
+			return review.text !== '';
+			
+		});
 		return (
 			<div className="item-view">
 
-				<AddReviewModal history={this.props.history} previousRoute={'itemView'} toggle={this.toggleModal} show={this.state.showModal} item={this.props.viewItem}/>
+				<AddReviewModal history={this.props.history} previousRoute={'itemView'} toggle={this.toggleModal} show={this.state.showReviewModal} item={this.props.viewItem}/>
 
 				<div className="image">
-					<AddButton style={addButtonStyle} />
+					<AddPhotoModal show={this.state.showPhotoModal} toggle={this.toggleModal} handleUpload={this.handleUpload } fromRoute="viewItem" itemId={this.props.match.params.id}/>
+					<div onClick={()=>{this.toggleModal('photo')}}>
+							<AddButton style={addButtonStyle} />
+						</div>
 					<div className="arrow" onClick={()=>{this.viewNextImage('prev')}}><i className="material-icons">keyboard_arrow_left</i></div>
 					{item.photos.length > 0 ? <img src={item.photos[this.state.photoIndex].url} /> : <img src="/assets/no_image.png" /> }
 					<div className="arrow" onClick={()=>{this.viewNextImage('next')}}><i className="material-icons">keyboard_arrow_right</i></div>
@@ -122,7 +147,7 @@ class ItemView extends React.Component {
 				<div className="dish-info">
 					<div className="item-name">{item.name}</div>
 					<div className="rating-container">
-						<div className="rating">{getAverageRating(item.ratings)}</div>
+						<div className="rating">{item.totalRatings ? (item.totalRatings / item.reviews.length) : null}</div>
 						<i className="material-icons">star</i>
 					</div>
 					<div className="place-name">{item.place.name}</div>
@@ -150,14 +175,14 @@ class ItemView extends React.Component {
 				<div className="reviews">
 					<div className="highlights">Review Highlights</div>
 					{
-						this.props.viewItem.ratings.map(rating=>{
+						highlights.map(review=>{
 							return (
-								<div className="review">
+								<div className="review" key={review._id}>
 									<div className="rating-container">
-									<div className="rating">{rating.rating}</div>
+									<div className="rating">{review.rating}</div>
 									<i className="material-icons">star</i>
 									</div>
-									{rating.review ? <div>{rating.review}</div> : null}
+									{review.text ? <div>{review.text}</div> : null}
 								</div>
 							)
 							
@@ -197,4 +222,4 @@ const mapStateToProps = (state) => {
 	} 
 }
 
-export default connect(mapStateToProps, { getItem })(ItemView);
+export default connect(mapStateToProps, { getItem, addPhoto, addRating })(ItemView);

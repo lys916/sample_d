@@ -33,12 +33,10 @@ const ItemSchema = Schema({
             type: String,
             maxLength: 50,
         },
-        user_id: ObjectId,
-    }],
-    ratings: [{
         rating: Number,
-        user_id: ObjectId,
+        user_id: {type: ObjectId, ref: 'User'},
     }],
+
     valueRatings: [{
         rating: Number,
         user_id: ObjectId,

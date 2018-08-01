@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Camera from 'react-camera';
 import { Link } from 'react-router-dom';
+import { addPhoto} from '../actions';
 import '../css/camera.css';
 
 class CameraComp extends React.Component {
@@ -19,6 +20,7 @@ class CameraComp extends React.Component {
 
     componentDidMount() {
         this.state.video = this.camera.video;
+        console.log('CAMERA MAIN PROPS', this.props);
     }
 
     componentWillUnmount() {
@@ -43,12 +45,16 @@ class CameraComp extends React.Component {
     }
 
     handleUpload = (e) => {
-        const file = e.target.files[0];
-        const blobURL = URL.createObjectURL(file);
-        this.setState({ showCam: false, blob: file, blobURL });
-    }
+        if(this.props.location.fromRoute === 'viewItem'){
+            // save photo to aws and db
+            this.props.addPhoto({imageURL: this.state.blobURL, imageBlob: this.state.blob, itemId: this.props.location.itemId});
+            this.props.history.push(`/items/${this.props.location.itemId}`);
+        }
+       
+   }
 
 	render() {
+        console.log('camera props', this.props);
 		return (
 			<div className="camera-container">
                 <div className="exit" onClick={()=>{this.cancelView()}}>x</div>
@@ -68,8 +74,9 @@ class CameraComp extends React.Component {
                             <img style={style.captureImage} src={this.state.blobURL}/>
                             <div>
                                 <button onClick={()=>{this.setState({showCam: true})}}>Re-take</button>
-                                <Link to={{ pathname: `/addItem`, state: { blob: this.state.blob, blobURL: this.state.blobURL }}}>Next
+                                <Link to={{ pathname: `/addItem`, cameraState: { ...this.props.location.addItemState, imageBlob: this.state.blob, imageURL: this.state.blobURL, showModal: false }}}>no
                                 </Link>
+                                <div onClick={(e)=>{this.handleUpload(e)}}>Next</div>
                             </div>
                         </div>
 	        		}
@@ -112,7 +119,7 @@ const mapStateToProps = (state) => {
 	} 
 }
 
-export default connect(mapStateToProps, {  })(CameraComp);
+export default connect(mapStateToProps, { addPhoto })(CameraComp);
 
 // <div>
 //                                 <label for='deviceUpload'>Select photo from device: </label>

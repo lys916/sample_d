@@ -63,8 +63,9 @@ const initItem = {
 	nearbyLoading: false,
 	menuLoading: false,
 	menu: [],
+	addingPhoto: false,
 	itemLoading: true,
-	viewItem: {place:{}, photos:[{}], ratings: [], loc: {coordinates: []}}
+	viewItem: {place:{}, photos:[{}], reviews: [], totalRatings: null, loc: {coordinates: []}}
 }
 
 const ItemReducer = (state = initItem, action) => {
@@ -101,7 +102,18 @@ const ItemReducer = (state = initItem, action) => {
 			return {...state, searchLoading: true}
 
 		case 'SEARCHED_ITEMS':
-			return {...state, searchItems: action.payload, searchLoading: false}
+			return {...state, searchItems: action.payload, photoLoading: false}
+
+		case 'UPDATED_ITEM':
+			// const copyItems = Object.assign([], state.allItems);
+			// const updatedItems = copyItems.map(item => {
+			// 	if(item._id === action.payload._id){
+			// 		return action.payload;
+			// 	}
+			// 	return item;
+			// });
+			return {...state, viewItem: action.payload, addingPhoto: false}
+
 
 		default:
 		return state;

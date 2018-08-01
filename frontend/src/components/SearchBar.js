@@ -91,11 +91,15 @@ class SearchBar extends React.Component {
 		this.setState({ [event.target.name]: event.target.value });
 	}
 
+	handleAddReview = ()=>{
+		this.props.history.push({pathname: '/addItem'});
+	}
+
 	render() {
 
 		return (
 			<div className="search">
-				<div onClick={this.toggleModal} className="add-button">Add review</div>
+				<div onClick={this.handleAddReview} className="add-button">Add review</div>
 				<AddReviewModal history={this.props.history} show={this.state.showModal} toggle={this.toggleModal}/>
 				<form onSubmit={(event)=>{this.handleSearch(event)}}>
 				<input className="search-term" placeholder="e.g. tacos, noodles" value={this.state.term} name="term" onChange={this.handleOnChange} />

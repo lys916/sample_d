@@ -5,6 +5,8 @@ import GOOGLE_API_KEY from './config';
 import { addItem, addRating, fetchMenu } from '../actions';
 import AddReview from './AddReview';
 import AddButton from './AddButton';
+import AddPhotoModal from './AddPhotoModal';
+import { Link } from 'react-router-dom';
 import '../css/iteminput.css';
 
 class ItemInput extends React.Component {
@@ -29,18 +31,23 @@ class ItemInput extends React.Component {
 		stageDelete: false,
 		newDish: false,
 		searchPlaces: false,
-		term: ''
+		term: '',
+		imageAdded: false,
+		showModal: false
     }
    componentDidMount() {
     	// blobURL and blob image coming from Camera.js
-    	this.setState({
-    		imageURL: this.props.location.state.blobURL,
-			imageBlob: this.props.location.state.blob,
-			selectedRestaurant: this.props.location.state.item.place,
-			name: this.props.location.state.item.name,
-			selectedItem: this.props.location.state.item.name
-    	});
+   //  	this.setState({
+   //  		imageURL: this.props.location.state.blobURL,
+			// imageBlob: this.props.location.state.blob,
+			// selectedRestaurant: this.props.location.state.item.place,
+			// name: this.props.location.state.item.name,
+			// selectedItem: this.props.location.state.item.name
+   //  	});
     	// get user's current location in lat and lng
+    	if(this.props.location.cameraState){
+    		this.setState(this.props.location.cameraState);
+    	}
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((position)=>{
 				const { latitude, longitude } = position.coords;
@@ -83,6 +90,10 @@ class ItemInput extends React.Component {
 		});
 	}
 
+	toggleModal = ()=>{
+		this.setState({showModal: !this.state.showModal, show: !this.state.show});
+	}
+
 	handleOnChange = (event) => {
 		this.setState({ [event.target.name]: event.target.value });
 	}
@@ -90,6 +101,14 @@ class ItemInput extends React.Component {
 	ratingChanged = (rating)=>{
 		this.setState({rating});
 	}
+
+	handleUpload = (e) => {
+	   const file = e.target.files[0];
+	   const blobURL = URL.createObjectURL(file);
+	   this.setState({showModal: false, imageBlob: file, imageURL: blobURL }, ()=>{
+	   });
+     
+   }
 
 	// 'handleSubmit' will send item data over to action 'add item'
 	handleSubmit = (event) => {
@@ -143,7 +162,9 @@ class ItemInput extends React.Component {
 	handleSelectItem = (item)=>{
 		console.log('ITEM SELECT', item);
 		if(item){
-			this.setState({name: item.name, id: item._id});
+			this.setState({name: item.name, id: item._id}, ()=>{
+				this.props.history.push(`${this.props.location.pathname}/${item.name}`);
+			});
 		}
 		this.setState({selectedItem: true});
 	}
@@ -166,17 +187,18 @@ class ItemInput extends React.Component {
 		}
 		return (
 			<div className="item-input">
-
+				<AddPhotoModal show={this.state.showModal} toggle={this.toggleModal} {...this.state} {...this.props} handleUpload={this.handleUpload }/>
 				{/*IMAGE CONTAINER*/}
-				{this.props.location.state.blobURL ? 
+				{this.state.selectedItem ? 
 					<div className="staged-image">
-						<img src={this.props.location.state.blobURL}/>
-					</div> : 
-					<div className="staged-image">
-						<img src={this.props.location.state.item.photos[0].url}/>
-						<div className="exit" onClick={()=>{this.cancelView()}}><i className="material-icons">cancel</i></div>
-						<AddButton style={addButtonStyle} />
-					</div> }
+						
+						{this.state.imageURL ? <img src={this.state.imageURL} /> : <img src="/assets/no_image.png" /> }
+						{/*<div className="exit" onClick={()=>{this.cancelView()}}><i className="material-icons">cancel</i></div>*/}
+						<div onClick={this.toggleModal}>
+							<AddButton style={addButtonStyle} />
+						</div>
+					</div> : null } 
+					
 
 				{/*IF USER IS AT THE CURRENT RESTAURANT - SHOW A LIST OF RESTAURANT FOR USER SELECTION*/}
 				{ this.state.atCurrentRestaurant && !this.state.selectedRestaurant ? 
@@ -185,10 +207,11 @@ class ItemInput extends React.Component {
 						{
 							restaurantList.map(rest => {
 								return (
-									<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
-										<div className="rest-name">{rest.name}</div>
-										<div className="rest-address">{rest.formatted_address}</div>
-									</div>
+								
+										<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
+											<div className="rest-name">{rest.name}</div>
+											<div className="rest-address">{rest.formatted_address}</div>
+										</div>
 								);
 							})
 						}
