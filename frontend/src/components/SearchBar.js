@@ -100,14 +100,23 @@ class SearchBar extends React.Component {
 				<div onClick={this.handleAddReview} className="add-button">Add review</div>
 				<AddReviewModal history={this.props.history} show={this.state.showModal} toggle={this.toggleModal}/>
 				<form onSubmit={(event)=>{this.handleSearch(event)}}>
-				<input className="search-term" placeholder="e.g. tacos, noodles" value={this.state.term} name="term" onChange={this.handleOnChange} />
-
-				<input id='search-location' list="current-location" name="location" placeholder="enter a location" value={this.state.location} onChange={this.handleOnChange}/>
-
-				<datalist id="current-location">
-					<option value="Current location" className="option" >Current location</option>
-				</datalist>
-				<button type="submit">Search</button>
+					<input 
+						className="search-term" 
+						placeholder="e.g. tacos, noodles" 
+						value={this.state.term} 
+						name="term" 
+						onChange={this.handleOnChange} />
+					<input 
+						id='search-location' 
+						list="current-location" 
+						name="location" 
+						placeholder="enter a location" 
+						value={this.state.location} 
+						onChange={this.handleOnChange}/>
+					<datalist id="current-location">
+						<option value="Current location" className="option" >Current location</option>
+					</datalist>
+					<button type="submit">Search</button>
 				</form>
 			</div>
 		);
