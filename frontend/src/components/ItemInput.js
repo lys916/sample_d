@@ -232,38 +232,44 @@ class ItemInput extends React.Component {
 
 						{ this.props.menu.length > 0 && !this.state.selectedItem && !this.state.newDish ? 
 							<div className="dish-list">
-								<h4>Select a dish</h4>
+								<h3 className='select-title'>Which dish are you rating?</h3>
 								{ this.props.menu.map(item=>{
 									return (
 										<button className="selectable-dish" onClick={()=>{this.handleSelectItem(item)}}>{item.name}</button>
 									);
 								})}
-								<button className='add-new-dish' onClick={()=>{this.setState({newDish: true})}}>Add new dish</button>
+								<button className='add-new-dish' onClick={()=>{this.setState({newDish: true})}}>Can't find it?<br />add a new dish!</button>
 							</div> : null }
 
 						{ this.state.newDish ? 
-							<div>
+							<div className='input-new-dish'>
 								<input 
-									onChange={this.handleOnChange} 
+									onChange={this.handleOnChange}
+									className='new-dish-text-input'
 									name="name" 
 									value={this.state.name} 
 									placeholder="Enter dish name"
 								/>
-								<button onClick={()=>{this.handleSelectItem()}}>Next</button>
+								<button onClick={()=>{this.handleSelectItem()}}>Create</button>
 							</div> 
 						: null }
 
-						{ !this.props.menu.length > 0 && !this.state.selectedItem ? <div>
-							<div>There's no item on the menu for this restaurant at this time</div>
-							<div>Add a new dish</div>
-							<input 
-								onChange={this.handleOnChange} 
-								name="name" 
-								value={this.state.name} 
-								placeholder="Enter dish name"
-							/>
-							<button onClick={()=>{this.handleSelectItem()}}>Next</button>
-						</div> : <div className="selected-item">{this.state.name}</div> }
+						{ !this.props.menu.length > 0 && !this.state.selectedItem ? 
+							<div>
+								<h4>Oops! No items on the menu<br />for this restaurant right now</h4>
+								<h4>Can you add it for us?</h4>
+								<div className='input-new-dish'>
+									<input 
+										onChange={this.handleOnChange} 
+										name="name"
+										className='new-dish-text-input'
+										value={this.state.name} 
+										placeholder="Enter dish name"
+									/>
+									<button onClick={()=>{this.handleSelectItem()}}>Next</button>
+								</div>
+							</div> 
+						: <div className="selected-item">{this.state.name}</div> }
 						
 						{this.state.stageDelete ? 
 							<div className="delete-selected-rest" onClick={()=>{this.handleRemoveRestaurant()}}>

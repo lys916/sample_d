@@ -57,16 +57,35 @@
 .dish-list {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 }
 
 .dish-list .selectable-dish {
-	background: #dedede;
+	background: white;
+	border: 2px solid #dedede;
 	color: black;
+	margin: 5px;
 }
 
 .dish-list .add-new-dish {
 	background: #DE3734;
 	color: white; 
+	margin: 12px;
+}
+
+/* Enter new dish */
+.input-new-dish {
+	padding: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.new-dish-text-input {
+	height: 35px;
+	width: 170px;
+	border: 1px solid #DE3734;
+	padding-left: 8px;
 }
 
 /*STAR RATING AND REVIEW*/
