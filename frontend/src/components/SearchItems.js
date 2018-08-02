@@ -32,7 +32,6 @@ class SearchItem extends React.Component {
    }
 
 	render() {
-      console.log(this.props.searchItems);
 		return (
 			<div className="item-list">
 			   { this.props.searchItems.length > 0 ? <div className="title">Search results</div> : null }

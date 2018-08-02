@@ -103,7 +103,7 @@ const ItemReducer = (state = initItem, action) => {
 			return {...state, searchLoading: true}
 
 		case 'SEARCHED_ITEMS':
-			return {...state, searchItems: action.payload, photoLoading: false}
+			return {...state, searchItems: action.payload, photoLoading: false, searchLoading: false}
 
 		case 'UPDATED_ITEM':
 			// const copyItems = Object.assign([], state.allItems);
