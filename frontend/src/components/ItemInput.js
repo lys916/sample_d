@@ -35,12 +35,12 @@ class ItemInput extends React.Component {
 		imageAdded: false,
 		showModal: false
     }
-   componentDidMount() {
+    componentDidMount() {
     	// blobURL and blob image coming from Camera.js
     	if(this.props.location.state){
 	    	this.setState({
-	    			imageURL: this.props.location.state.blobURL,
-					imageBlob: this.props.location.state.blob,
+				imageURL: this.props.location.state.blobURL,
+				imageBlob: this.props.location.state.blob,
 	    	});
     	}
     	// get user's current location in lat and lng
@@ -57,12 +57,12 @@ class ItemInput extends React.Component {
 	  	} else console.log("Geolocation is not supported by this browser");
 	}
 	setupGooglePlaces = ()=>{
-			// google api for places search
+		// google api for places search
 	  	const input = document.getElementById('pac-input');
-      const autocomplete = new window.google.maps.places.Autocomplete(input);
-      autocomplete.addListener('place_changed', ()=> {
-         const place = autocomplete.getPlace();
-         this.setState({selectedRestaurant: place, searchPlaces: false}, ()=>{
+		const autocomplete = new window.google.maps.places.Autocomplete(input);
+		autocomplete.addListener('place_changed', ()=> {
+		const place = autocomplete.getPlace();
+		this.setState({selectedRestaurant: place, searchPlaces: false}, ()=>{
 			this.props.fetchMenu(place.id);
 		});
       });
@@ -178,8 +178,8 @@ class ItemInput extends React.Component {
 	render() {
 		console.log('input item props', this.props);
 		const restaurantList = [];
-		if(this.state.locations){
-			for(let i = 0; i < 5; i++){
+		if (this.state.locations) {
+			for (let i = 0; i < 5; i++) {
 				restaurantList.push(this.state.locations[i]);
 			}
 		}
@@ -189,7 +189,6 @@ class ItemInput extends React.Component {
 				{/*IMAGE CONTAINER*/}
 				{this.state.selectedItem ? 
 					<div className="staged-image">
-						
 						{this.state.imageURL ? <img src={this.state.imageURL} /> : <img src="/assets/no_image.png" /> }
 						{/*<div className="exit" onClick={()=>{this.cancelView()}}><i className="material-icons">cancel</i></div>*/}
 						<div onClick={this.toggleModal}>
@@ -202,20 +201,21 @@ class ItemInput extends React.Component {
 				{/*IF USER IS AT THE CURRENT RESTAURANT - SHOW A LIST OF RESTAURANT FOR USER SELECTION*/}
 				{this.state.atCurrentRestaurant && !this.state.selectedRestaurant ? 
 					<div className="rest-list">
-						<div>Select a restaurant</div>
-						{restaurantList.map(rest => {
-							return (
-								<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
-									<div className="rest-name">{rest.name}</div>
-									<div className="rest-address">{rest.formatted_address}</div>
-								</div>
-							);
-						})}
+						<h3>Restaurants close by</h3>
+							{restaurantList.length > 0 ? 
+								restaurantList.map(rest => {
+									return (
+										<div className="select-rest" key={rest.id} onClick={()=>{this.handleSelectRestaurant(rest)}}>
+											<h4 className="rest-name">{rest.name}</h4>
+											<div className="rest-address">{rest.formatted_address}</div>
+										</div>
+									);
+								}) 
+							: <div>Finding your current location...</div> }
 						<br/>
-						<br/>
-						<br/>
-						<button onClick={()=>{this.toggleSearchPlaces()}}>I'm not currently at these restaurants</button>
-					</div> : null }
+						<button onClick={()=>{this.toggleSearchPlaces()}}>I'm not close by</button>
+					</div> 
+				: null }
 
 
 				{/*SHOW SELECTED RESTAURANT INFO AND MENU LIST*/}
@@ -263,14 +263,25 @@ class ItemInput extends React.Component {
 				: null}
 
 				{/*INPUT BAR FOR SEARCHING FOR PLACES*/}
-				{this.state.searchPlaces ? <input id="pac-input" name="term" onClick={this.setupGooglePlaces} onChange={this.handleOnChange} placeholder="enter city & restaurant name" value={this.state.term} style={{width: '80vw', maxWidth: '500px'}}/> : null}
+				{this.state.searchPlaces ? 
+					<input
+					    id="pac-input" 
+					    name="term" 
+					    onClick={this.setupGooglePlaces} 
+					    onChange={this.handleOnChange} 
+					    placeholder="find by entering city & restaurant name"
+					    value={this.state.term} 
+					    style={{width: '80vw', maxWidth: '500px'}}
+                    /> 
+				: null}
 
 				{/*ADD REVIEW STATELESS COMPONENT*/}
 				{this.state.selectedItem ? 
-				<form onSubmit={(event) => { this.handleSubmit(event) }}>
-					<AddReview ratingChanged={this.ratingChanged} handleOnChange={this.handleOnChange} rating={this.state.rating} value={this.state.value}/>
-					<button type="submit">Submit</button>
-				</form> : null}
+					<form onSubmit={(event) => { this.handleSubmit(event) }}>
+						<AddReview ratingChanged={this.ratingChanged} handleOnChange={this.handleOnChange} rating={this.state.rating} value={this.state.value}/>
+						<button type="submit">Submit</button>
+					</form> 
+				: null}
 				<div className="break-vh"></div>
 			</div>
 		);

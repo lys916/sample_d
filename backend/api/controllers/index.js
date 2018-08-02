@@ -29,7 +29,7 @@ createItem = (req, res)=>{
 		if (review) newItem.reviews.push({ text: review, rating: rating, user_id: null });
 		if (imageUrl) newItem.photos.push({ url: imageUrl });
 		if (price) newItem.price = price;
-		if (rating) newItem.totalRatings = rating;
+		if (rating) newItem.totalRating = rating;
 		newItem.place = selectedRestaurant;
 		newItem.placeId = selectedRestaurant.id;
 		newItem.name = name;

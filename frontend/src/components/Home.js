@@ -4,18 +4,22 @@ import VenueList from '../unused components/VenueList';
 import SearchBar from './SearchBar';
 import NearbyItem from './NearbyItem';
 import SearchItems from './SearchItems';
-import '../css/home.css';
+import styled from 'styled-components';
+
+const HomeDiv = styled.div`
+	background: #efefef;
+`;
 
 class Home extends React.Component {
 	render() {
 		console.log('home render');
 		return (
-			<div className="home-container">
+			<HomeDiv>
 				<SearchBar history={this.props.history}/>
 				<SearchItems />
 				<NearbyItem />
 				<br/><br/>
-			</div>
+			</HomeDiv>
 		);
 	}
 }
