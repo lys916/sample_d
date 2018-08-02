@@ -75,7 +75,7 @@
 
 /* Enter new dish */
 .input-new-dish {
-	padding: 15px;
+	padding: 15px 15px 25px 15px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
