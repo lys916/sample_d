@@ -22,6 +22,7 @@ class SearchBar extends React.Component {
 		const autocomplete = new window.google.maps.places.Autocomplete(input);
 		autocomplete.addListener('place_changed', () => {
 			const place = autocomplete.getPlace();
+			console.log('PLACE', place.formatted_address);
 			this.setState({ location: place.formatted_address });
 		});
 	}

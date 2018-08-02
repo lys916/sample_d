@@ -238,6 +238,7 @@ export const searchItems = (searchData) => {
 		dispatch({type: 'SEARCH_LOADING'});
 		axios.get(`${ROOT_URL}/searchItems`, config)
 			.then(items => {
+				console.log('SEARCHED ITEMS', items.data);
 				dispatch({
 					type: 'SEARCHED_ITEMS',
 					payload: items.data
