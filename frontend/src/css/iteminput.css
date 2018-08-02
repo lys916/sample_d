@@ -16,10 +16,6 @@
 	margin: 3px;
 }
 
-.selected-rest-container {
-	background: white;
-	margin-top: 10px;
-}
 /*RESTAURANT LIST*/
 .rest-list {
 	margin-bottom: 10px;
@@ -46,6 +42,31 @@
 	padding: 5px 15px;
 	border: none;
 	border-radius: 5px;
+}
+
+/* DISH SELECTION AT RESTAURANT */
+.selected-rest-container {
+	background: white;
+	margin: 8px;
+}
+
+.selected-rest {
+	padding: 14px;
+}
+
+.dish-list {
+	display: flex;
+	flex-direction: column;
+}
+
+.dish-list .selectable-dish {
+	background: #dedede;
+	color: black;
+}
+
+.dish-list .add-new-dish {
+	background: #DE3734;
+	color: white; 
 }
 
 /*STAR RATING AND REVIEW*/

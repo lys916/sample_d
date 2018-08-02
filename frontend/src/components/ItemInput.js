@@ -211,7 +211,7 @@ class ItemInput extends React.Component {
 										</div>
 									);
 								}) 
-							: <div>Finding your current location...</div> }
+							: <h4>Finding your current location...</h4> }
 						<br/>
 						<button onClick={()=>{this.toggleSearchPlaces()}}>I'm not close by</button>
 					</div> 
@@ -222,9 +222,9 @@ class ItemInput extends React.Component {
 				{this.state.selectedRestaurant ? 
 					<div className="selected-rest-container">
 						<div className="selected-rest" onClick={()=>{this.toggleStageDelete()}}>
-							<div className="rest-name">
+							<h3 className="rest-name">
 								{this.state.selectedRestaurant.name}
-								</div>
+							</h3>
 							<div className="rest-address">
 								{this.state.selectedRestaurant.formatted_address}
 							</div>
@@ -232,33 +232,44 @@ class ItemInput extends React.Component {
 
 						{ this.props.menu.length > 0 && !this.state.selectedItem && !this.state.newDish ? 
 							<div className="dish-list">
-							<br/>
-							<br/>
-							<div>Select a dish</div>
-							{ this.props.menu.map(item=>{
-								return (
-									<div className="select-dish" onClick={()=>{this.handleSelectItem(item)}}>{item.name}</div>
-								);
-							})}
-							<button onClick={()=>{this.setState({newDish: true})}}>Add new dish</button>
+								<h4>Select a dish</h4>
+								{ this.props.menu.map(item=>{
+									return (
+										<button className="selectable-dish" onClick={()=>{this.handleSelectItem(item)}}>{item.name}</button>
+									);
+								})}
+								<button className='add-new-dish' onClick={()=>{this.setState({newDish: true})}}>Add new dish</button>
 							</div> : null }
 
 						{ this.state.newDish ? 
 							<div>
-							<input onChange={this.handleOnChange} name="name" value={this.state.name} placeholder="
-							Enter dish name"/>
-							<button onClick={()=>{this.handleSelectItem()}}>Next</button> </div> : null }
+								<input 
+									onChange={this.handleOnChange} 
+									name="name" 
+									value={this.state.name} 
+									placeholder="Enter dish name"
+								/>
+								<button onClick={()=>{this.handleSelectItem()}}>Next</button>
+							</div> 
+						: null }
 
 						{ !this.props.menu.length > 0 && !this.state.selectedItem ? <div>
 							<div>There's no item on the menu for this restaurant at this time</div>
 							<div>Add a new dish</div>
-							<input onChange={this.handleOnChange} name="name" value={this.state.name} placeholder="
-							Enter dish name"/>
+							<input 
+								onChange={this.handleOnChange} 
+								name="name" 
+								value={this.state.name} 
+								placeholder="Enter dish name"
+							/>
 							<button onClick={()=>{this.handleSelectItem()}}>Next</button>
 						</div> : <div className="selected-item">{this.state.name}</div> }
-
 						
-						{this.state.stageDelete ? <div className="delete-selected-rest" onClick={()=>{this.handleRemoveRestaurant()}}>Remove</div> : null}
+						{this.state.stageDelete ? 
+							<div className="delete-selected-rest" onClick={()=>{this.handleRemoveRestaurant()}}>
+								Remove
+							</div> 
+						: null}
 					</div> 
 				: null}
 
