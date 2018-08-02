@@ -9,7 +9,7 @@ class SearchBar extends React.Component {
 		service: null,
 		map: null,
 		term: '',
-		location: 'fairfield, ca',
+		location: '',
 		lat: null,
 		long: null,
 		inputType: 'select',
