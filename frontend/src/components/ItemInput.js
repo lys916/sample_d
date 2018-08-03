@@ -296,7 +296,7 @@ class ItemInput extends React.Component {
 				{this.state.selectedItem ? 
 					<form onSubmit={(event) => { this.handleSubmit(event) }}>
 						<AddReview ratingChanged={this.ratingChanged} handleOnChange={this.handleOnChange} rating={this.state.rating} value={this.state.value}/>
-						<button type="subm												it">Submit</button>
+						<button type="submit">Submit</button>
 					</form> 
 				: null}
 				<div className="break-vh"></div>
