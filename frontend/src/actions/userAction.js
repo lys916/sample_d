@@ -17,9 +17,9 @@ export const signOut = (history) => {
   return ({ type: LOGGED_OUT });
 }
 
-export const toggleModal = (modalName) => {
+export const toggleModal = (modalData) => {
   console.log('toggling modal');
-  return ({ type: 'TOGGLE_MODAL', payload: modalName });
+  return ({ type: 'TOGGLE_MODAL', payload: modalData });
 }
 
 export const signUp = (newUser) => {
@@ -28,8 +28,9 @@ export const signUp = (newUser) => {
     return (dispatch) => {
       axios.post('http://localhost:5000/userSignup', newUser)
       .then(res => {
+        console.log('signup - got res from server');
         if(res.status === 200){
-            console.log('user successfuly signed up.');
+            console.log('user successfuly signed up.', res.data);
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('confirmed', res.data.confirmed);
             localStorage.setItem('username', res.data.username);
@@ -67,7 +68,7 @@ export const confirm = (user) => {
   }
 }
 
-export const signIn = (user) => {
+export const signIn = (user, history, nextRoute) => {
   if(user.loginType !== '' || user.password !== ''){
     return (dispatch) => {
       axios.post('http://localhost:5000/userLogin', user)
@@ -82,7 +83,10 @@ export const signIn = (user) => {
           dispatch({
             type: LOGGED_IN,
             payload: res.data
-          });     
+          });
+          if(nextRoute){
+            history.push(`/${nextRoute}`);
+          }  
         }
         if(res.data.error === 'needConfirm'){
           dispatch({

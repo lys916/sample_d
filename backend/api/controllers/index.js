@@ -29,7 +29,7 @@ createItem = (req, res)=>{
 		if (review) newItem.reviews.push({ text: review, rating: rating, user_id: null });
 		if (imageUrl) newItem.photos.push({ url: imageUrl });
 		if (price) newItem.price = price;
-		if (rating) newItem.totalRatings = rating;
+		if (rating) newItem.totalRating = rating;
 		newItem.place = selectedRestaurant;
 		newItem.placeId = selectedRestaurant.id;
 		newItem.name = name;
@@ -50,11 +50,7 @@ createItem = (req, res)=>{
 }
 
 addRating = (req, res)=>{
-	console.log('Adding Rating...');
-	// NOTE:
-	// this is where we save image to amazon by requiring uploadPhoto module
-	// after saving the image successfully.. 
-	// then we save image data to the database
+
 	const {rating, review, itemId} = req.body;
 	// save rating (and user to this)
 	if (rating) {

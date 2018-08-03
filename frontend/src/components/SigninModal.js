@@ -13,7 +13,7 @@ class SigninModal extends React.Component {
   }
 
   handleSignIn = () => {
-      this.props.signIn(this.state, this.props.history);
+      this.props.signIn(this.state, this.props.history, this.props.user.nextRoute);
   }
 
   handleOnChange = (event) => {
@@ -32,9 +32,9 @@ class SigninModal extends React.Component {
 						<i className="material-icons">cancel</i>
 					</div>
 			    	<div className="modal-body">
-						<div className="title">Homechef Login</div>
+						<div className="title">{this.props.user.alertMessage}</div>
         				<input name="loginType" value={this.state.loginType} 
-        					placeholder="Email or Phone #" onChange={this.handleOnChange}/><br />
+        					placeholder="Email" onChange={this.handleOnChange}/><br />
 
         				<input name="password" type="password" value={this.state.value} 
         					placeholder="Password" onChange={this.handleOnChange}/><br />

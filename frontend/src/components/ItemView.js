@@ -131,24 +131,34 @@ class ItemView extends React.Component {
 		});
 		return (
 			<div className="item-view">
-
-				<AddReviewModal history={this.props.history} previousRoute={'itemView'} toggle={this.toggleModal} show={this.state.showReviewModal} item={this.props.viewItem}/>
-
+				<AddReviewModal 
+					history={this.props.history} 
+					previousRoute={'itemView'} 
+					toggle={this.toggleModal} 
+					show={this.state.showReviewModal} 
+					item={this.props.viewItem}/>
 				<div className="image">
-					<AddPhotoModal show={this.state.showPhotoModal} toggle={this.toggleModal} handleUpload={this.handleUpload } fromRoute="viewItem" itemId={this.props.match.params.id}/>
-						<div onClick={()=>{this.toggleModal('photo')}}>
-							<AddButton style={addButtonStyle} />
-						</div>
+					<AddPhotoModal 
+						show={this.state.showPhotoModal} 
+						toggle={this.toggleModal} 
+						handleUpload={this.handleUpload } 
+						fromRoute="viewItem" 
+						itemId={this.props.match.params.id}/>
+					<div onClick={()=>{this.toggleModal('photo')}}>
+						<AddButton style={addButtonStyle} />
+					</div>
 					<div className="arrow" onClick={()=>{this.viewNextImage('prev')}}><i className="material-icons">keyboard_arrow_left</i></div>
 					{item.photos.length > 0 ? <img src={item.photos[this.state.photoIndex].url} /> : <img src="/assets/no_image.png" /> }
 					<div className="arrow" onClick={()=>{this.viewNextImage('next')}}><i className="material-icons">keyboard_arrow_right</i></div>
 				</div>
 
 				<div className="dish-info">
-					<div className="item-name">{item.name}</div>
-					<div className="rating-container">
-						<div className="rating">{item.totalRating ? (item.totalRating / item.reviews.length) : null}</div>
-						<i className="material-icons">star</i>
+					<div className='rating-name-container'>
+						<h4 className="item-name">{item.name}</h4>
+						<div className="rating-container">
+							<div className="rating">{item.totalRating ? (item.totalRating / item.reviews.length) : null}</div>
+							<i className="material-icons">star</i>
+						</div>
 					</div>
 					<div className="place-name">{item.place.name}</div>
 					<div className="address">{item.place.formatted_address}</div>
@@ -156,24 +166,22 @@ class ItemView extends React.Component {
 				</div>
 				<div className="rate-review" >
 					<div className="flip-button" onClick={this.addRatingReview}>
-						<div className="button">Add rating and review
-						</div>
+						<div className="button">Add rating and review</div>
 						<i className="material-icons">{this.state.addRating ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</i>
 					</div>
 				</div>
 
 				{/*RATE AND REVIEW COMPONENT*/}
-				{
-					this.state.addRating ? 
+				{this.state.addRating ? 
 					<form onSubmit={(event) => { this.handleSubmit(event) }}>
 						<AddReview ratingChanged={this.ratingChanged} handleOnChange={this.handleOnChange} rating={this.state.rating} value={this.state.value}/>
 						<button className="submit-review" type="submit">Submit</button>
-					</form> : null
-				}
+					</form> 
+				: null}
 
 				<div id="map-container"></div>
 				<div className="reviews">
-					<div className="highlights">Review Highlights</div>
+					<h4 className="highlights">Review Highlights</h4>
 					{
 						highlights.map(review=>{
 							return (
@@ -203,7 +211,7 @@ const addButtonStyle = {
 		position: 'absolute',
 		color: 'white',
 		bottom: '0',
-		right: '0',
+		right: '4px',
 		borderRadius: '100%',
 		margin: '5px',
 		boxShadow: '2px 3px 4px #bbbbbb'

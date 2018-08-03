@@ -10,11 +10,16 @@
 	justify-content: center;
 }
 .item-view .image img{
+	/* flex-shrink: 0; */
 	height: 200px;
+	width: 100%;
+	overflow: hidden;
+	object-fit: cover;
 }
 .item-view .image .arrow {
 	text-align: center;
 	padding-top: 70px;
+	/* position: absolute; */
 }
 .item-view .image .arrow:hover {
 	background: #efefef;
@@ -24,7 +29,7 @@
 	color: gray;
 }
 .item-view .dish-info {
-	padding: 7px;
+	padding: 12px 20px;
 	font-size: 17px;
 	border-bottom: 1px solid #dedede;
 	background: white;
@@ -32,8 +37,17 @@
 .dish-info .place-name {
 	font-size: 15px;
 }
+.dish-info .rating-name-container {
+	display: flex;
+	align-items: center;
+	margin: 10px 0;
+}
 .dish-info .rating-container {
 	display: flex;
+	padding-left: 10px;
+}
+.dish-info .rating-name-container .item-name {
+	margin: 0;
 }
 .rating-container i {
 	font-size: 20px;
@@ -48,7 +62,7 @@
 }
 .item-view .rate-review{
 	text-align: center;
-	padding: 10px;
+	padding: 10px 20px;
 	border-bottom: 1px solid #dedede;
 	background: white;
 }
@@ -56,8 +70,9 @@
 	background: #707070;
 	display: flex;
 	justify-content: center;
-	width: 220px;
+	width: 100%;
 	margin: 0 auto;
+	padding: 5px 0;
 	border-radius: 2px;
 }
 .item-view .rate-review .button{
@@ -79,12 +94,12 @@
 	border-bottom: 1px solid #dedede;
 }
 .reviews .highlights {
-	margin: 20px 0px 5px 7px;
+	margin: 20px 20px 12px 20px;
 }
 .reviews .review {
 	background: white;
 	margin-top: 5px;
-	padding: 7px;
+	padding: 10px 20px;
 }
 .review .rating-container {
 	display: flex;
