@@ -50,11 +50,7 @@ createItem = (req, res)=>{
 }
 
 addRating = (req, res)=>{
-	console.log('Adding Rating...');
-	// NOTE:
-	// this is where we save image to amazon by requiring uploadPhoto module
-	// after saving the image successfully.. 
-	// then we save image data to the database
+
 	const {rating, review, itemId} = req.body;
 	// save rating (and user to this)
 	if (rating) {

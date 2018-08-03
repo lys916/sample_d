@@ -13,7 +13,7 @@ class AddPhotoModal extends React.Component {
 		alert();
 	}
 	render() {
-		console.log('prop - add review modal', this.props);
+		console.log(this.props.show);
 		let test = {};
 		if(this.props.state){
 			test.selectedRestaurant = this.props.state.selectedRestaurant;

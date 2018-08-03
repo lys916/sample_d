@@ -49,10 +49,12 @@ export const setRating = (itemId, venueId, rated) => {
 }
 
 export const addItem = (itemData, history) => {
+	console.log('action - adding item');
 	// if user includes a photo then we'll save the photo to
 	// aws first then we'll save the item info to db.
 	// else we just save the item info to db
 	if(itemData.imageBlob){
+		console.log('action - saving image to aws');
 		const data = new FormData();
 		data.append('file', itemData.imageBlob);
 		// sending dish/item data to server 'createItem' route
@@ -64,8 +66,10 @@ export const addItem = (itemData, history) => {
 			})
 			.then(imageUrl => {
 				itemData.imageUrl = imageUrl.data.url;
+				console.log('action - saving item info to db');
 				axios.post(`${ROOT_URL}/createItem`, itemData)
 				.then(savedItem => {
+					console.log('action -  item saved', savedItem.data);
 					dispatch({
 						type: 'SAVED_ITEM',
 						payload: savedItem.data
@@ -77,11 +81,13 @@ export const addItem = (itemData, history) => {
 			})
 		}
 	} else {
+		console.log('actiong - saving item w/o photo');
 		// add item without photo
 	    return (dispatch) => {
-	   		itemData.imageUrl = null;
+	   	itemData.imageUrl = null;
 			axios.post(`${ROOT_URL}/createItem`, itemData)
 			.then(savedItem => {
+				console.log('action -  item saved', savedItem.data);
 					dispatch({
 						type: 'SAVED_ITEM',
 						payload: savedItem.data

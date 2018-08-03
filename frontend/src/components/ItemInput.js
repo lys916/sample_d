@@ -102,16 +102,16 @@ class ItemInput extends React.Component {
 	}
 
 	handleUpload = (e) => {
+		this.toggleModal();
 	   const file = e.target.files[0];
 	   const blobURL = URL.createObjectURL(file);
-	   this.setState({showModal: false, imageBlob: file, imageURL: blobURL }, ()=>{
-	   }); 
+	   this.setState({imageBlob: file, imageURL: blobURL });
     }
 
 	// 'handleSubmit' will send item data over to action 'add item'
 	handleSubmit = (event) => {
 		event.preventDefault();
-		console.log('blob in ItemInput is', this.state.imageBlob);
+		console.log('blob in ItemInput is', this.state);
 		const {name, id, selectedRestaurant, rating, review, price, imageURL, imageBlob} = this.state;
 		// if state.id is not null then this means user is leaving a 
 		// review for a existing item in the db.
@@ -176,7 +176,6 @@ class ItemInput extends React.Component {
     }
 
 	render() {
-		console.log('input item props', this.props);
 		const restaurantList = [];
 		if (this.state.locations) {
 			for (let i = 0; i < 5; i++) {
@@ -235,7 +234,7 @@ class ItemInput extends React.Component {
 								<h3 className='select-title'>Which dish are you rating?</h3>
 								{ this.props.menu.map(item=>{
 									return (
-										<button className="selectable-dish" onClick={()=>{this.handleSelectItem(item)}}>{item.name}</button>
+										<button className="selectable-dish" key={item._id} onClick={()=>{this.handleSelectItem(item)}}>{item.name}</button>
 									);
 								})}
 								<button className='add-new-dish' onClick={()=>{this.setState({newDish: true})}}>Can't find it?<br />add a new dish!</button>

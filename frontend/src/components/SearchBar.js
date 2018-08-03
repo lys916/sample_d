@@ -1,8 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getItems, searchItems } from '../actions';
+import { toggleModal, signOut } from '../actions/userAction';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import AddReviewModal from './AddReviewModal';
+import JoinModal from './JoinModal';
+import SigninModal from './SigninModal';
+import ConfirmModal from './ConfirmModal';
 import '../css/search_bar.css';
 class SearchBar extends React.Component {
 	state = {
@@ -13,7 +17,9 @@ class SearchBar extends React.Component {
 		lat: null,
 		long: null,
 		inputType: 'select',
-		showModal: false
+		showModal: false,
+		showJoinModal: false,
+		showSigninModal: false
 	}
 
 	componentDidMount() {
@@ -81,8 +87,11 @@ class SearchBar extends React.Component {
 		}
 	}
 
-	toggleModal = ()=>{
-		this.setState({showModal: !this.state.showModal});
+	handleToggleModal = (modalName, nextRoute, prevRoute, alertMessage)=>{
+		//keeping track of next route and previous route, in case where we want
+		//to redirect user after successful login. 
+		//login can be made through addreview butotn on searchbar or input item page
+		this.props.toggleModal({modalName, nextRoute, prevRoute, alertMessage});
 	}
 
 	handleOnChange = (event) => {
@@ -91,14 +100,43 @@ class SearchBar extends React.Component {
 	}
 
 	handleAddReview = ()=>{
-		this.props.history.push({pathname: '/addItem'});
+		if(this.props.user.confirmed && this.props.user.logged_in){
+			this.props.history.push({pathname: '/addItem'});
+		}
+		if(this.props.user.userId && !this.props.user.confirmed){
+			this.handleToggleModal('showConfirmModal', 'addItem', null, 'Please confirm your account. ');
+		}
+		if(!this.props.user.logged_in){
+			this.handleToggleModal('showSigninModal', 'addItem', null, 'You must be signed in to add a review.');
+		}
+		
+	}
+
+	handleSignOut = ()=>{
+		this.props.signOut();
 	}
 
 	render() {
 		return (
 			<div className="search">
-				<div onClick={this.handleAddReview} className="add-button">Add review</div>
-				<AddReviewModal history={this.props.history} show={this.state.showModal} toggle={this.toggleModal}/>
+				<JoinModal toggleModal={this.handleToggleModal}/>
+				<SigninModal toggleModal={this.handleToggleModal} history={this.props.history}/>
+				<ConfirmModal toggleModal={this.handleToggleModal}/>
+				<div class="top-bar">
+					<div onClick={this.handleAddReview} className="top-button add-button">Add review</div>
+					{this.props.user.logged_in ? 
+						<div className="signout-profile">
+							<div className="top-button sign-out" onClick={this.handleSignOut}>Sign out</div>
+							<div className="top-button profile"><i className="material-icons">person</i></div>
+						</div> : 
+						<div className="signin-join">
+						<div onClick={()=>{this.handleToggleModal('showSigninModal', null, null, 'Sign in')}} className="top-button signin">Sign in</div>
+							<div onClick={()=>{this.handleToggleModal('showJoinModal')}} className="top-button join">Join</div>
+						</div>}
+					
+				</div>
+				<div className="search-bars">
+					<AddReviewModal history={this.props.history} show={this.state.showModal} toggle={this.toggleModal}/>
 				<form onSubmit={(event)=>{this.handleSearch(event)}}>
 					<input 
 						className="search-term" 
@@ -117,16 +155,20 @@ class SearchBar extends React.Component {
 						<option value="Current location" className="option" >Current location</option>
 					</datalist>
 					<button type="submit">Search</button>
-				</form>
+					</form>
+				</div>
+
 			</div>
 		);
 	}
 }
 
 const mapStateToProps = (state) => {
+	console.log('user', state.user);
 	return {
 		predictions: state.items.autoCompleteItems,
+		user: state.user
 	} 
 }
 
-export default connect(mapStateToProps, { getItems, searchItems })(SearchBar);
+export default connect(mapStateToProps, { getItems, searchItems, toggleModal, signOut })(SearchBar);

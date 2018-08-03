@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 require('dotenv').config();
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require('uuid-v4');
 // const jwt = require("jsonwebtoken");
 // const mySecret = process.env.SECRET || "random";
 const bucket = process.env.S3_BUCKET_NAME;

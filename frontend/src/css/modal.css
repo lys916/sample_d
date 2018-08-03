@@ -1,12 +1,9 @@
-/*ADD PHOTO MODAL*/
-.modal .exit i{
-	position: absolute;
-	top: 0;
-	right: 0;
-	color: gray;
-	font-size: 30px;
-}
 
+/*UNIVERAL*/
+
+
+
+/*ADD PHOTO MODAL*/
 .add-review .modal .modal-body{
 	min-width: 400px;
 	color: red;
@@ -14,6 +11,44 @@
 
 .modal-body {
 	text-align: center;
+	position: relative;
+}
+.modal-body .exit {
+	/*this is to set .exit clickable*/
+	height: 35px;
+	width: 35px;
+}
+.modal-body .exit i{
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	color: #999999;
+	font-size: 30px;
+}
+.modal-body .title {
+	font-size: 22px;
+	margin-bottom: 20px;
+	color: #de3732;
+	background: #efefef;
+}
+
+.modal-body input {
+	width: 90%;
+	font-size: 18px;
+	padding: 5px;
+	margin-top: 5px;
+	border: none;
+	border-bottom: 1px solid #dedede;
+
+}
+
+.modal-body button {
+	margin-top: 20px;
+	background: #de3732;
+	font-size: 20px;
+	padding: 3px 20px;
+	border: none;
+	color: white;
 }
 
 .modal-body .camera-button {
@@ -31,7 +66,7 @@
 }
 
 .modal-body i {
-	margin-right: 10px;
+	/*margin-right: 10px;*/
 }
 
 .modal-body .device-file {
