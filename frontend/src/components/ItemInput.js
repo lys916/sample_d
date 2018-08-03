@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Script from 'react-load-script';
+// import GOOGLE_API_KEY from './config';
 import { addItem, addRating, fetchMenu } from '../actions';
 import AddReview from './AddReview';
 import AddButton from './AddButton';
