@@ -6,7 +6,10 @@ const fileUpload = require('express-fileupload');
 
 const server = express();
 const corsOptions = {
-    "origin": "http://localhost:3000",
+    "origin": (
+        "http://localhost:3000",
+        "https://delp-be.herokuapp.com/"
+    ),
     "credentials": true,
 };
 
