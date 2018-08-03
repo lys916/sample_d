@@ -8,7 +8,7 @@ const server = express();
 const corsOptions = {
     "origin": (
         "http://localhost:3000",
-        "https://delp-be.herokuapp.com/"
+        "https://delp-fe.herokuapp.com/"
     ),
     "credentials": true,
 };
