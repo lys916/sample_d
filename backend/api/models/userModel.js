@@ -1,39 +1,18 @@
 const mongoose = require('mongoose');
-require('mongoose-type-email');
-const bcrypt = require('bcrypt');
-const Schema = mongoose.Schema;
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const BCYRPT_COST = 12;
-
-const UserSchema = Schema({
-   email: {
-      type: mongoose.SchemaTypes.Email,
-      required: true,
-      unique: true,
-      lowercase: true,
-   },
-   password: {
-      type: String,
-      required: true,
-      minlength: 10,
-   },
+const UserSchema = new mongoose.Schema({
+   name: {type: String, required: true},
+   loginType: {type: String, required: true, unique: true},
+   password: {type: String, required: true},
+   createdOn: {type: Date, default: Date.now},
+   conCode: {type: Number},
+   confirmed: {type: Boolean, default: false}
 });
 
-UserSchema.pre('save', function(next) {
-   const user = this;
-   if (!user.isModified('password')) return next();
-   bcrypt.hash(user.password, BCYRPT_COST, function(error, hash) {
-      if (error) return next(error);
-      user.password = hash;
-      next();
-   });
-});
+const UserModel = mongoose.model('User', UserSchema);
 
-UserSchema.methods.checkPassword = function(plainTextPassword, cb) {
-   bcrypt.compare(plainTextPassword, this.password, (err, isMatch) => {
-      if (err) return cb(err);
-      cb(null, isMatch);
-   });
-};
+module.exports = UserModel;
 
-module.exports = mongoose.model('User', UserSchema);

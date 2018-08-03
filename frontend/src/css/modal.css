@@ -1,11 +1,18 @@
-/*ADD PHOTO MODAL*/
+
+/*UNIVERAL*/
 .modal .exit i{
 	position: absolute;
-	top: 0;
-	right: 0;
-	color: gray;
+	top: 3px;
+	right: 3px;
+	color: #999999;
 	font-size: 30px;
 }
+
+/*ADD PHOTO MODAL*/
+.modal {
+}
+
+
 
 .add-review .modal .modal-body{
 	min-width: 400px;
@@ -31,7 +38,7 @@
 }
 
 .modal-body i {
-	margin-right: 10px;
+	/*margin-right: 10px;*/
 }
 
 .modal-body .device-file {
