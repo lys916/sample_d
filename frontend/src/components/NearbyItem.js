@@ -53,7 +53,7 @@ class NearbyItem extends React.Component {
                             </Link>
                             );
                     }) 
-                : <div>Loading...</div>}
+                : <div className='loading'>Finding your current location...</div>}
 			</div>
 		);
 	}

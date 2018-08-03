@@ -92,16 +92,21 @@
 .add-review {
 	background: white;
 	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 0 20px;
 }
 
 .add-review .star-rating {
-	width: 190px;
+	width: 200px;
 	margin: 0 auto;
 }
 
 .add-review .review-input {
 	height: 75px;
 	font-size: 18px;
+	padding: 10px;
 }
 
 
