@@ -6,7 +6,7 @@ export const USER_AUTHENTICATED = 'USER_AUTHENTICATED';
 export const USER_UNAUTHENTICATED = 'USER_UNAUTHENTICATED';
 export const AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR';
 export const CHECK_IF_AUTHENTICATED = 'CHECK_IF_AUTHENTICATED';
-
+const ROOT_URL = 'https://delp-be.herokuapp.com';
 
 export const signOut = (history) => {
   localStorage.removeItem('token');
@@ -26,7 +26,7 @@ export const signUp = (newUser) => {
   console.log('action signing up');
   if(newUser.name !== '' || newUser.loginType !== '' || newUser.password !== ''){
     return (dispatch) => {
-      axios.post('http://localhost:5000/userSignup', newUser)
+      axios.post('${ROOT_URL}/userSignup', newUser)
       .then(res => {
         console.log('signup - got res from server');
         if(res.status === 200){
@@ -49,7 +49,7 @@ export const confirm = (user) => {
   console.log('action confirming user', user);
   if(user.code !== '' && user.userId !== ''){
     return (dispatch) => {
-      axios.post('http://localhost:5000/userConfirmation', user)
+      axios.post('${ROOT_URL}/userConfirmation', user)
       .then(res => {
        if(res.status === 200 && !res.data.error){
             console.log('user is confirmed');
@@ -71,7 +71,7 @@ export const confirm = (user) => {
 export const signIn = (user, history, nextRoute) => {
   if(user.loginType !== '' || user.password !== ''){
     return (dispatch) => {
-      axios.post('http://localhost:5000/userLogin', user)
+      axios.post('${ROOT_URL}/userLogin', user)
       .then(res => {
         if(res.status === 200 && !res.data.error){
           console.log('action - user signed in successfuly', res.data);
