@@ -26,7 +26,7 @@ export const signUp = (newUser) => {
   console.log('action signing up');
   if(newUser.name !== '' || newUser.loginType !== '' || newUser.password !== ''){
     return (dispatch) => {
-      axios.post('${ROOT_URL}/userSignup', newUser)
+      axios.post(`${ROOT_URL}/userSignup`, newUser)
       .then(res => {
         console.log('signup - got res from server');
         if(res.status === 200){
@@ -49,7 +49,7 @@ export const confirm = (user) => {
   console.log('action confirming user', user);
   if(user.code !== '' && user.userId !== ''){
     return (dispatch) => {
-      axios.post('${ROOT_URL}/userConfirmation', user)
+      axios.post(`${ROOT_URL}/userConfirmation`, user)
       .then(res => {
        if(res.status === 200 && !res.data.error){
             console.log('user is confirmed');
@@ -71,7 +71,7 @@ export const confirm = (user) => {
 export const signIn = (user, history, nextRoute) => {
   if(user.loginType !== '' || user.password !== ''){
     return (dispatch) => {
-      axios.post('${ROOT_URL}/userLogin', user)
+      axios.post(`${ROOT_URL}/userLogin`, user)
       .then(res => {
         if(res.status === 200 && !res.data.error){
           console.log('action - user signed in successfuly', res.data);
