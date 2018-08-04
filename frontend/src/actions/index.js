@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const searchURL = 'https://api.foursquare.com/v2/venues/search';
 const detailURL = 'https://api.foursquare.com/v2/venues';
-const ROOT_URL = 'https://delp-be.herokuapp.com/'; 
+const ROOT_URL = 'https://delp-be.herokuapp.com'; 
 
 export const getItems = (lat, lng) => {
 	console.log('reaches in getItems action', lat, lng);
